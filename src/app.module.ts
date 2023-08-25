@@ -1,0 +1,38 @@
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import { PrismaService } from './prisma/prisma.service';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { GestanteModule } from './gestante/gestante.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { PrismaModule } from './prisma/prisma.module';
+import { ClinicaModule } from './clinica/clinica.module';
+import { ProfissionalModule } from './profissional/profissional.module';
+import { AgendaModule } from './agenda/agenda.module';
+import { LoginModule } from './login/login.module';
+import { EspecialidadeModule } from './especialidade/especialidade.module';
+import { ConsultaModule } from './consulta/consulta.module';
+import { ProntuarioModule } from './prontuario/prontuario.module';
+
+@Module({
+  imports: [
+    GestanteModule,
+    PrismaModule,
+    ClinicaModule,
+    ProfissionalModule,
+    AgendaModule,
+    LoginModule,
+    EspecialidadeModule,
+    ConsultaModule,
+    ProntuarioModule,
+  ],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    PrismaService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
+})
+export class AppModule {}

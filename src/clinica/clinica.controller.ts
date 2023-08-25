@@ -1,0 +1,74 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Put,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { ClinicaService } from './clinica.service';
+import { CreateClinicaDto } from './dto/create-clinica.dto';
+import { UpdateClinicaDto } from './dto/update-clinica.dto';
+
+@Controller('clinica')
+export class ClinicaController {
+  constructor(private readonly clinicaService: ClinicaService) {}
+
+  @Post()
+  async create(@Body() body: CreateClinicaDto) {
+    const result = await this.clinicaService.create(body);
+
+    return {
+      message: 'Clinica criada com sucesso',
+      id: result,
+      dados: body,
+    };
+  }
+
+  @Get()
+  async findAll() {
+    const result = { clinicas: await this.clinicaService.findAll() };
+    return result;
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const result = { clinica: await this.clinicaService.findOne(+id) };
+    return result;
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() updateClinicaDto: UpdateClinicaDto,
+  ) {
+    const result = await this.clinicaService.update(id, updateClinicaDto);
+
+    if (typeof result !== 'string') {
+      return {
+        message: 'Clinica editada com sucesso',
+        id: id,
+        dados: updateClinicaDto,
+      };
+    } else {
+      throw new HttpException(`Id Invalid`, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    const result = await this.clinicaService.remove(+id);
+
+    if (typeof result !== 'string') {
+      return {
+        message: result,
+      };
+    } else {
+      throw new HttpException(`Id Invalid`, HttpStatus.NOT_FOUND);
+    }
+  }
+}
