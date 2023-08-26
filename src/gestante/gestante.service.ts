@@ -15,8 +15,6 @@ interface CreateGestanteParams {
   data_parto: string;
   foto?: string;
   telefone: string;
-  tipo_telefone: number;
-  id_telefone?: number;
   logradouro?: string;
   numero?: string;
   complemento?: string;
@@ -60,7 +58,7 @@ export class GestanteService {
   }
 
   async create(body: CreateGestanteParams) {
-    const queryGestante = `call insertGestanteTelefone(
+    const queryGestante = `call insertGestante(
       '${body.nome}', 
       '${body.data_nascimento}',
       '${body.senha}',
@@ -71,14 +69,13 @@ export class GestanteService {
       ${body.semana_gestacao},
       '${body.data_parto}',
       '${body.foto}',
-      '${body.telefone}',
-      ${body.tipo_telefone} );`;
+      '${body.telefone}');`;
 
     const idQueryGestante = `select LastIdGestante() as id`;
 
-    const validacaoCpf: [] = await this.validacaoCpf(body);
+    const validacaoEmail: [] = await this.validacaoEmail(body);
 
-    if (validacaoCpf.length == 0) {
+    if (validacaoEmail.length == 0) {
       await this.prisma.$queryRawUnsafe(queryGestante);
 
       const result = await this.prisma.$queryRawUnsafe(idQueryGestante);
@@ -86,7 +83,7 @@ export class GestanteService {
       return Number(result[0].id);
     } else {
       throw new HttpException(
-        'Já existe um usuário cadastrado com este cpf',
+        'Já existe um usuário cadastrado com este email',
         HttpStatus.CONFLICT,
       );
     }
@@ -96,14 +93,8 @@ export class GestanteService {
     const query = `select tbl_gestante.id, tbl_gestante.nome as nome, date_format(tbl_gestante.data_nascimento, '%d/%m/%Y') as data_nascimento,
     tbl_gestante.email as email,tbl_gestante.senha as senha, tbl_gestante.cpf as cpf, tbl_gestante.peso as peso, tbl_gestante.altura as altura,
     date_format(tbl_gestante.data_parto, '%d/%m/%Y') as data_parto, tbl_gestante.foto as foto, tbl_gestante.semana_gestacao,
-    tbl_telefone.numero as telefone, tbl_tipo_telefone.tipo as tipo_telefone, tbl_gestante_telefone.id_telefone as id_telefone
+    tbl_gestante.telefone as telefone
    from tbl_gestante
-     inner join tbl_gestante_telefone
-       on tbl_gestante.id = tbl_gestante_telefone.id_gestante
-     inner join tbl_telefone
-       on tbl_telefone.id = tbl_gestante_telefone.id_telefone
-     inner join tbl_tipo_telefone
-       on tbl_telefone.id_tipo_telefone = tbl_tipo_telefone.id
        order by tbl_gestante.id asc;`;
 
     const result = await this.prisma.$queryRawUnsafe(query);
@@ -114,15 +105,10 @@ export class GestanteService {
     const query = `select tbl_gestante.id, tbl_gestante.nome as nome, date_format(tbl_gestante.data_nascimento, '%d/%m/%Y') as data_nascimento,
     tbl_gestante.email as email,tbl_gestante.senha as senha, tbl_gestante.cpf as cpf, tbl_gestante.peso as peso, tbl_gestante.altura as altura,
     date_format(tbl_gestante.data_parto, '%d/%m/%Y') as data_parto, tbl_gestante.foto as foto, tbl_gestante.semana_gestacao,
-    tbl_telefone.numero as telefone, tbl_tipo_telefone.tipo as tipo_telefone, tbl_gestante_telefone.id_telefone as id_telefone
-   from tbl_gestante
-     inner join tbl_gestante_telefone
-       on tbl_gestante.id = tbl_gestante_telefone.id_gestante
-     inner join tbl_telefone
-       on tbl_telefone.id = tbl_gestante_telefone.id_telefone
-     inner join tbl_tipo_telefone
-       on tbl_telefone.id_tipo_telefone = tbl_tipo_telefone.id where tbl_gestante.id = ${id}
-       order by tbl_gestante.id asc`;
+    tbl_gestante.telefone as telefone
+    from tbl_gestante
+    where tbl_gestante.id = ${id}
+    order by tbl_gestante.id asc`;
 
     const result = this.prisma.$queryRawUnsafe(query);
     return result;
@@ -136,7 +122,7 @@ export class GestanteService {
         message: 'Id Invalid',
       };
     }
-    const queryGestante = `call updateGestanteTelefone(
+    const queryGestante = `call updateGestante(
       ${id},
       '${body.nome}', 
       '${body.data_nascimento}',
@@ -148,9 +134,7 @@ export class GestanteService {
       ${body.semana_gestacao},
       '${body.data_parto}',
       '${body.foto}',
-      '${body.telefone}',
-      ${body.tipo_telefone},
-      ${body.id_telefone});`;
+      '${body.telefone}');`;
 
     const result = await this.prisma.$queryRawUnsafe(queryGestante);
     return result[0].f0;
@@ -185,8 +169,6 @@ export class GestanteService {
         '${body.data_parto}',
         '${body.foto}',
         '${body.telefone}',
-        ${body.tipo_telefone},
-        ${body.id_telefone},
        '${body.logradouro}',
         '${body.numero}',
         '${body.bairro}',
@@ -223,8 +205,6 @@ export class GestanteService {
       '${body.data_parto}',
       '${body.foto}',
       '${body.telefone}',
-      ${body.tipo_telefone},
-      ${body.id_telefone},
      '${body.logradouro}',
       '${body.numero}',
       '${body.bairro}',

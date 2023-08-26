@@ -48,14 +48,6 @@ export class CreateGestanteDto {
   @IsString()
   telefone: string;
 
-  @IsNotEmpty()
-  @IsNumber()
-  tipo_telefone: number;
-
-  @IsOptional()
-  @IsNumber()
-  id_telefone: number;
-
   @IsOptional()
   @IsString()
   cep: string;
