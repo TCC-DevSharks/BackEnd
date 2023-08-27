@@ -195,7 +195,7 @@ export class ClinicaService {
     const valId = await this.validacaoID(id);
 
     if (valId == false) {
-      return 'Id Invalid';
+      return 'Id Invalido';
     }
 
     const sqlCidade = `select id from tbl_cidade where cidade ="${body.cidade}";`;
@@ -239,11 +239,9 @@ export class ClinicaService {
 
   async remove(id: number) {
     const valId = await this.validacaoID(id);
-    console.log(valId);
-    
 
     if (valId == false) {
-      return 'Id Invalid';
+      return 'Id Invalido';
     }
     const query = `call deleteClinica(${id})`;
 
