@@ -63,7 +63,7 @@ export class AgendaService {
     tbl_agenda.lembrete as lembrete,
     tbl_agenda.descricao as descricao, 
     tbl_agenda.id_gestante as IdGestante 
-    from tbl_agenda where tbl_agenda.id = ${id} order by id asc`;
+    from tbl_agenda where tbl_agenda.id_gestante = ${id}`;
 
     const result = await this.prisma.$queryRawUnsafe(sql);
 

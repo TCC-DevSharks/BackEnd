@@ -137,6 +137,10 @@ export class GestanteService {
       '${body.telefone}');`;
 
     const result = await this.prisma.$queryRawUnsafe(queryGestante);
+    console.log(queryGestante);
+    
+    console.log(result);
+    
     return result[0].f0;
   }
 
