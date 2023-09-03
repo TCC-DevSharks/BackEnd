@@ -12,6 +12,7 @@ import { LoginModule } from './login/login.module';
 import { EspecialidadeModule } from './especialidade/especialidade.module';
 import { ConsultaModule } from './consulta/consulta.module';
 import { ProntuarioModule } from './prontuario/prontuario.module';
+import { EnxovalModule } from './enxoval/enxoval.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ProntuarioModule } from './prontuario/prontuario.module';
     EspecialidadeModule,
     ConsultaModule,
     ProntuarioModule,
+    EnxovalModule,
   ],
   controllers: [AppController],
   providers: [

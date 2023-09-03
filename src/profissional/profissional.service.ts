@@ -164,8 +164,11 @@ export class ProfissionalService {
     if (valId == false) {
       return 'Id Invalid';
     }
+    const saltOrRounds = 10;
+    const password = body.senha;
+    const hash = await bcrypt.hash(password, saltOrRounds);
     const sql = `call procUpdateProfissional('${id}',
-      '${body.senha}',
+      '${hash}',
       '${body.email}',
       '${body.cpf}',
       '${body.foto}',

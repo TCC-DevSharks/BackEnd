@@ -128,9 +128,12 @@ export class ClinicaService {
     if (valId == false) {
       return 'Id Invalido';
     }
+    const saltOrRounds = 10;
+    const password = body.senha;
+    const hash = await bcrypt.hash(password, saltOrRounds);
 
     const sql = `call procUpdateClinica(${id},'${body.cnpj}','${body.razao_social}',
-        '${body.senha}','${body.email}','${body.descricao}',
+        '${hash}','${body.email}','${body.descricao}',
         '${body.foto}','${body.telefone}',${body.tipo_telefone},
         ${body.id_telefone},${body.id_endereco},
         '${body.numero}','${body.complemento}','${body.cep}');`;

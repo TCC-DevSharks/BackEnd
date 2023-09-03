@@ -122,11 +122,14 @@ export class GestanteService {
         message: 'Id Invalid',
       };
     }
+    const saltOrRounds = 10;
+    const password = body.senha;
+    const hash = await bcrypt.hash(password, saltOrRounds);
     const queryGestante = `call procUpdateGestante(
       ${id},
       '${body.nome}', 
       '${body.data_nascimento}',
-      '${body.senha}',
+      '${hash}',
       '${body.email}',
       '${body.cpf}',
       ${body.peso},
@@ -150,12 +153,15 @@ export class GestanteService {
         message: 'Id Invalid',
       };
     }
+    const saltOrRounds = 10;
+    const password = body.senha;
+    const hash = await bcrypt.hash(password, saltOrRounds);
 
     const queryGestante = `call procUpdateGestanteEndereco(
         ${id},
         '${body.nome}', 
         '${body.data_nascimento}',
-        '${body.senha}',
+        '${hash}',
         '${body.email}',
         '${body.cpf}',
         ${body.peso},
