@@ -23,7 +23,7 @@ export class LoginService {
         const array = [{ mensagem: 'A senha ou o email está errada' }];
         return array;
       }
-      return resultId[0].id;
+      return [{ id: resultId[0].id }];
     }
   }
 
@@ -44,7 +44,7 @@ export class LoginService {
         const array = [{ mensagem: 'A senha ou o email está errada' }];
         return array;
       }
-      return resultId[0].id;
+      return [{ id: resultId[0].id }];
     }
   }
 
@@ -65,7 +65,7 @@ export class LoginService {
         const array = [{ mensagem: 'A senha ou o email está errada' }];
         return array;
       }
-      return resultId[0].id;
+      return [{ id: resultId[0].id }];
     }
   }
 }
