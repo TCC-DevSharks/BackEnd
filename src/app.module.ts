@@ -13,6 +13,7 @@ import { EspecialidadeModule } from './especialidade/especialidade.module';
 import { ConsultaModule } from './consulta/consulta.module';
 import { ProntuarioModule } from './prontuario/prontuario.module';
 import { EnxovalModule } from './enxoval/enxoval.module';
+import { SugestaoNomeModule } from './sugestao-nome/sugestao-nome.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { EnxovalModule } from './enxoval/enxoval.module';
     ConsultaModule,
     ProntuarioModule,
     EnxovalModule,
+    SugestaoNomeModule,
   ],
   controllers: [AppController],
   providers: [

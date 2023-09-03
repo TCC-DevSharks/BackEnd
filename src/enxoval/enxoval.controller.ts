@@ -18,11 +18,11 @@ export class EnxovalController {
 
   @Get()
   async findAll() {
-    return await this.enxovalService.findAll();
+    return { enxoval: await this.enxovalService.findAll() };
   }
 
   @Get('categoria')
   async findOne(@Query('categoria') categoria: string) {
-    return await this.enxovalService.findOne(categoria);
+    return { exoval: await this.enxovalService.findOne(categoria) };
   }
 }
