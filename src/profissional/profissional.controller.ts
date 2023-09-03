@@ -22,16 +22,15 @@ export class ProfissionalController {
     const result = await this.profissionalService.create(body);
 
     return {
-      message: 'Profissional cadastrado com sucesso',
-      id: result,
-      dados: body,
+      message: result[0].f0,
+      id: result[0].f1,
     };
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const result = {
-      profissional: await this.profissionalService.findOne(+id),
+      profissionais: await this.profissionalService.findOne(+id),
     };
     return result;
   }
@@ -51,8 +50,6 @@ export class ProfissionalController {
     if (typeof result === 'string') {
       return {
         message: result,
-        id: id,
-        dados: body,
       };
     } else {
       throw new HttpException(`${result.message}`, HttpStatus.NOT_FOUND);

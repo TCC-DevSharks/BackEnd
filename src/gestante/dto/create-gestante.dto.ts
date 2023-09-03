@@ -1,15 +1,16 @@
 import {
   IsDateString,
   IsEmail,
-  IsEmpty,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
+  MaxLength,
 } from 'class-validator';
 
 export class CreateGestanteDto {
   @IsNotEmpty()
+  @MaxLength(150)
   @IsString()
   nome: string;
 
@@ -17,13 +18,16 @@ export class CreateGestanteDto {
   @IsDateString()
   data_nascimento: string;
 
+  @MaxLength(100)
   @IsNotEmpty()
   senha: string;
 
+  @MaxLength(255)
   @IsNotEmpty()
   @IsEmail()
   email: string;
 
+  @MaxLength(18)
   @IsString()
   cpf: string;
 
@@ -41,38 +45,27 @@ export class CreateGestanteDto {
   @IsDateString()
   data_parto: string;
 
+  @MaxLength(255)
   @IsString()
   foto: string;
 
+  @MaxLength(20)
   @IsNotEmpty()
   @IsString()
   telefone: string;
 
+  @MaxLength(10)
   @IsOptional()
   @IsString()
   cep: string;
 
-  @IsOptional()
-  @IsString()
-  logradouro: string;
-
+  @MaxLength(10)
   @IsOptional()
   @IsString()
   numero: string;
 
-  @IsOptional()
-  @IsString()
-  bairro: string;
-
+  @MaxLength(50)
   @IsOptional()
   @IsString()
   complemento: string;
-
-  @IsOptional()
-  @IsString()
-  cidade: string;
-
-  @IsOptional()
-  @IsString()
-  estado: string;
 }

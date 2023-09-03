@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
@@ -22,10 +21,10 @@ export class ClinicaController {
   async create(@Body() body: CreateClinicaDto) {
     const result = await this.clinicaService.create(body);
 
+    console.log(result);
+
     return {
-      message: 'Clinica criada com sucesso',
-      id: result,
-      dados: body,
+      message: result,
     };
   }
 
@@ -65,7 +64,7 @@ export class ClinicaController {
 
     if (typeof result !== 'string') {
       return {
-        message: result,
+        message: result[0].f0,
       };
     } else {
       throw new HttpException(`Id Invalid`, HttpStatus.NOT_FOUND);

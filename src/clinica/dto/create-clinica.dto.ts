@@ -2,27 +2,32 @@ import {
   IsEmail,
   IsNotEmpty,
   IsNumber,
-  IsOptional,
   IsString,
+  MaxLength,
 } from 'class-validator';
 
 export class CreateClinicaDto {
+  @MaxLength(100)
   @IsString()
   @IsNotEmpty()
   razao_social: string;
 
+  @MaxLength(20)
   @IsString()
   @IsNotEmpty()
   cnpj: string;
 
+  @MaxLength(200)
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
+  @MaxLength(100)
   @IsString()
   @IsNotEmpty()
   senha: string;
 
+  @MaxLength(255)
   @IsString()
   @IsNotEmpty()
   foto: string;
@@ -31,6 +36,7 @@ export class CreateClinicaDto {
   @IsNotEmpty()
   descricao: string;
 
+  @MaxLength(20)
   @IsNotEmpty()
   @IsString()
   telefone: string;
@@ -39,39 +45,73 @@ export class CreateClinicaDto {
   @IsNumber()
   tipo_telefone: number;
 
-  @IsOptional()
-  @IsNumber()
-  id_telefone: number;
-
-  @IsOptional()
-  @IsNumber()
-  id_endereco: number;
-
-  @IsOptional()
+  @MaxLength(10)
   @IsString()
   cep: string;
 
-  @IsOptional()
-  @IsString()
-  logradouro: string;
-
-  @IsOptional()
+  @MaxLength(10)
   @IsString()
   numero: string;
 
-  @IsOptional()
-  @IsString()
-  bairro: string;
-
-  @IsOptional()
+  @MaxLength(50)
   @IsString()
   complemento: string;
+}
 
-  @IsOptional()
+export class CreateResponseClinicaDto {
+  @MaxLength(100)
   @IsString()
-  cidade: string;
+  @IsNotEmpty()
+  razao_social: string;
 
-  @IsOptional()
+  @MaxLength(20)
   @IsString()
-  estado: string;
+  @IsNotEmpty()
+  cnpj: string;
+
+  @MaxLength(200)
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @MaxLength(100)
+  @IsString()
+  @IsNotEmpty()
+  senha: string;
+
+  @MaxLength(255)
+  @IsString()
+  @IsNotEmpty()
+  foto: string;
+
+  @IsString()
+  @IsNotEmpty()
+  descricao: string;
+
+  @MaxLength(20)
+  @IsNotEmpty()
+  @IsString()
+  telefone: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  tipo_telefone: number;
+
+  @IsNumber()
+  id_telefone: number;
+
+  @IsNumber()
+  id_endereco: number;
+
+  @MaxLength(10)
+  @IsString()
+  cep: string;
+
+  @MaxLength(10)
+  @IsString()
+  numero: string;
+
+  @MaxLength(50)
+  @IsString()
+  complemento: string;
 }

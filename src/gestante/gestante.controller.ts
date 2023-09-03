@@ -19,22 +19,12 @@ export class GestanteController {
 
   @Post()
   async create(@Body() body: CreateGestanteDto) {
-    const validacaoEmail = await this.gestanteService.validacaoEmail(body);
+    const result = await this.gestanteService.create(body);
 
-    if (validacaoEmail.length === 0) {
-      const result = await this.gestanteService.create(body);
-
-      return {
-        message: 'Pregnant created successfully',
-        id: result,
-        dados: body,
-      };
-    } else {
-      throw new HttpException(
-        'Já existe um usuário cadastrado com este email',
-        HttpStatus.CONFLICT,
-      );
-    }
+    return {
+      message: 'Gestante criada com sucesso',
+      id: result,
+    };
   }
 
   @Get()
@@ -59,8 +49,6 @@ export class GestanteController {
     if (typeof result === 'string') {
       return {
         message: result,
-        id: id,
-        dados: updateGestanteDto,
       };
     } else {
       throw new HttpException(`${result.message}`, HttpStatus.NOT_FOUND);
@@ -80,8 +68,6 @@ export class GestanteController {
     if (typeof result === 'string') {
       return {
         message: result,
-        id: id,
-        dados: updateGestanteDto,
       };
     } else {
       throw new HttpException(`${result.message}`, HttpStatus.NOT_FOUND);

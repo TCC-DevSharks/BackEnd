@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsString,
+  MaxLength,
 } from 'class-validator';
 
 export class CreateAgendaDto {
@@ -11,6 +12,7 @@ export class CreateAgendaDto {
   @IsDateString()
   dia: string;
 
+  @MaxLength(50)
   @IsNotEmpty()
   @IsString()
   titulo: string;
@@ -19,6 +21,7 @@ export class CreateAgendaDto {
   @IsBoolean()
   lembrete: boolean;
 
+  @MaxLength(100)
   @IsNotEmpty()
   @IsString()
   descricao: string;

@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateGestanteDto } from './dto/update-gestante.dto';
+import * as bcrypt from 'bcrypt';
 
 interface CreateGestanteParams {
-  id?: number;
   nome: string;
   email: string;
   senha: string;
@@ -13,14 +13,10 @@ interface CreateGestanteParams {
   data_nascimento: string;
   semana_gestacao: number;
   data_parto: string;
-  foto?: string;
+  foto: string;
   telefone: string;
-  logradouro?: string;
   numero?: string;
   complemento?: string;
-  bairro?: string;
-  cidade?: string;
-  estado?: string;
   cep?: string;
 }
 
@@ -58,10 +54,14 @@ export class GestanteService {
   }
 
   async create(body: CreateGestanteParams) {
-    const queryGestante = `call insertGestante(
+    const saltOrRounds = 10;
+    const password = body.senha;
+    const hash = await bcrypt.hash(password, saltOrRounds);
+
+    const queryGestante = `call procInsertGestante(
       '${body.nome}', 
       '${body.data_nascimento}',
-      '${body.senha}',
+      '${hash}',
       '${body.email}',
       '${body.cpf}',
       ${body.peso},
@@ -71,7 +71,7 @@ export class GestanteService {
       '${body.foto}',
       '${body.telefone}');`;
 
-    const idQueryGestante = `select LastIdGestante() as id`;
+    const idQueryGestante = `select funcLastIdGestante() as id`;
 
     const validacaoEmail: [] = await this.validacaoEmail(body);
 
@@ -122,7 +122,7 @@ export class GestanteService {
         message: 'Id Invalid',
       };
     }
-    const queryGestante = `call updateGestante(
+    const queryGestante = `call procUpdateGestante(
       ${id},
       '${body.nome}', 
       '${body.data_nascimento}',
@@ -137,10 +137,7 @@ export class GestanteService {
       '${body.telefone}');`;
 
     const result = await this.prisma.$queryRawUnsafe(queryGestante);
-    console.log(queryGestante);
-    
-    console.log(result);
-    
+
     return result[0].f0;
   }
 
@@ -154,13 +151,7 @@ export class GestanteService {
       };
     }
 
-    const sql = `select id from tbl_cidade where cidade ="${body.cidade}";`;
-
-    const resultSQLCidade: [] = await this.prisma.$queryRawUnsafe(sql);
-    const resultSQLCidadeData = await this.prisma.$queryRawUnsafe(sql);
-
-    if (resultSQLCidade.length !== 0) {
-      const queryGestante = `call updateGestanteEndereco(
+    const queryGestante = `call procUpdateGestanteEndereco(
         ${id},
         '${body.nome}', 
         '${body.data_nascimento}',
@@ -173,49 +164,9 @@ export class GestanteService {
         '${body.data_parto}',
         '${body.foto}',
         '${body.telefone}',
-       '${body.logradouro}',
         '${body.numero}',
-        '${body.bairro}',
         '${body.complemento}',
-        '${body.cep}',
-        ${resultSQLCidadeData[0].id}
-        );`;
-
-      const result = await this.prisma.$queryRawUnsafe(queryGestante);
-
-      return result[0].f0;
-    }
-
-    const sqlEstado = `select id from tbl_estado where sigla ="${body.estado}";`;
-
-    //Transforma a sigla do estado passado no id do mesmo
-    const resultSQLEstadoData = await this.prisma.$queryRawUnsafe(sqlEstado);
-
-    const queryCidade = `insert into tbl_cidade(cidade,id_estado)values('${body.cidade}',${resultSQLEstadoData[0].id})`;
-    const resultCidade = await this.prisma.$queryRawUnsafe(queryCidade);
-    const queryId = 'select LastIdCidades() as cidade;';
-    const resultId = await this.prisma.$queryRawUnsafe(queryId);
-
-    const queryGestante = `call updateGestanteEndereco(
-      ${id},
-      '${body.nome}', 
-      '${body.data_nascimento}',
-      '${body.senha}',
-      '${body.email}',
-      '${body.cpf}',
-      ${body.peso},
-      ${body.altura},
-      ${body.semana_gestacao},
-      '${body.data_parto}',
-      '${body.foto}',
-      '${body.telefone}',
-     '${body.logradouro}',
-      '${body.numero}',
-      '${body.bairro}',
-      '${body.complemento}',
-      '${body.cep}',
-      ${resultId[0].cidade}
-      );`;
+        '${body.cep}');`;
 
     const result = await this.prisma.$queryRawUnsafe(queryGestante);
 
@@ -223,14 +174,10 @@ export class GestanteService {
   }
 
   async findEndress(id: number) {
-    const sql = `select tbl_endereco_gestante.id as id, tbl_endereco_gestante.logradouro as logradouro, 
+    const sql = `select tbl_endereco_gestante.id as id, 
     tbl_endereco_gestante.numero as numero, tbl_endereco_gestante.complemento as complemento, 
-    tbl_endereco_gestante.cep as cep, tbl_cidade.cidade as cidade, tbl_estado.nome as estado
+    tbl_endereco_gestante.cep as cep
     from tbl_endereco_gestante
-      inner join tbl_cidade
-        on tbl_endereco_gestante.id_cidade = tbl_cidade.id
-        inner join tbl_estado
-        on tbl_cidade.id_estado = tbl_estado.id
         where tbl_endereco_gestante.id_gestante = ${id};`;
 
     const result = await this.prisma.$queryRawUnsafe(sql);
@@ -239,7 +186,7 @@ export class GestanteService {
   }
 
   remove(id: number) {
-    const query = `call deleteGestante(${id})`;
+    const query = `call procDeleteGestante(${id})`;
 
     const result = this.prisma.$queryRawUnsafe(query);
     return result;
