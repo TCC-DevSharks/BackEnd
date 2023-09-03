@@ -1,61 +1,71 @@
 import { Injectable } from '@nestjs/common';
-import { log } from 'console';
 import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class LoginService {
   constructor(private prisma: PrismaService) {}
 
   async findGestante(email: string, senha: string) {
-    const sql = `select * from tbl_gestante where email = '${email}' and senha = '${senha}'`;
+    const sql = `select senha, id from tbl_gestante where email = '${email}'`;
 
     const result: [] = await this.prisma.$queryRawUnsafe(sql);
     const resultId = await this.prisma.$queryRawUnsafe(sql);
 
     if (result.length === 0) {
-      const array = [{ mensagem: false }];
+      const array = [{ mensagem: 'A senha ou o email esta errada' }];
       return array;
     } else {
-      const gestanteQuery = `select tbl_gestante.id, tbl_gestante.nome as nome, date_format(tbl_gestante.data_nascimento, '%d/%m/%Y') as data_nascimento,
-      tbl_gestante.email as email,tbl_gestante.senha as senha
-     from tbl_gestante
-       where tbl_gestante.id = ${resultId[0].id}
-         order by tbl_gestante.id asc`;
+      const password = senha;
+      const isMatch = await bcrypt.compare(password, resultId[0].senha);
 
-      const gestante = await this.prisma.$queryRawUnsafe(gestanteQuery);
-      return gestante;
+      if (isMatch === false) {
+        const array = [{ mensagem: 'A senha ou o email está errada' }];
+        return array;
+      }
+      return resultId[0].id;
     }
   }
 
   async findClinica(email: string, senha: string) {
-    const sql = `select * from tbl_clinica where email = '${email}' and senha = '${senha}'`;
+    const sql = `select senha, id from tbl_clinica where email = '${email}'`;
 
     const result: [] = await this.prisma.$queryRawUnsafe(sql);
     const resultId = await this.prisma.$queryRawUnsafe(sql);
 
     if (result.length === 0) {
-      return false;
+      const array = [{ mensagem: 'A senha ou o email esta errada' }];
+      return array;
     } else {
-      return {
-        message: true,
-        id_gestante: resultId[0].id,
-      };
+      const password = senha;
+      const isMatch = await bcrypt.compare(password, resultId[0].senha);
+
+      if (isMatch === false) {
+        const array = [{ mensagem: 'A senha ou o email está errada' }];
+        return array;
+      }
+      return resultId[0].id;
     }
   }
 
   async findProfissional(email: string, senha: string) {
-    const sql = `select * from tbl_profissional where email = '${email}' and senha = '${senha}'`;
+    const sql = `select * from tbl_profissional where email = '${email}'`;
 
     const result: [] = await this.prisma.$queryRawUnsafe(sql);
     const resultId = await this.prisma.$queryRawUnsafe(sql);
 
     if (result.length === 0) {
-      return false;
+      const array = [{ mensagem: 'A senha ou o email esta errada' }];
+      return array;
     } else {
-      return {
-        message: true,
-        id_gestante: resultId[0].id,
-      };
+      const password = senha;
+      const isMatch = await bcrypt.compare(password, resultId[0].senha);
+
+      if (isMatch === false) {
+        const array = [{ mensagem: 'A senha ou o email está errada' }];
+        return array;
+      }
+      return resultId[0].id;
     }
   }
 }
