@@ -45,7 +45,6 @@ export class CreateGestanteDto {
   @IsDateString()
   data_parto: string;
 
-  @MaxLength(255)
   @IsString()
   foto: string;
 

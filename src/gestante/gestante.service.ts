@@ -125,6 +125,7 @@ export class GestanteService {
     const saltOrRounds = 10;
     const password = body.senha;
     const hash = await bcrypt.hash(password, saltOrRounds);
+    
     const queryGestante = `call procUpdateGestante(
       ${id},
       '${body.nome}', 
