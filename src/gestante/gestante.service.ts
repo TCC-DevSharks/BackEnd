@@ -122,29 +122,44 @@ export class GestanteService {
         message: 'Id Invalid',
       };
     }
-    const saltOrRounds = 10;
-    const password = body.senha;
-    const hash = await bcrypt.hash(password, saltOrRounds);
-    
+
     const queryGestante = `call procUpdateGestante(
       ${id},
       '${body.nome}', 
       '${body.data_nascimento}',
-      '${hash}',
       '${body.email}',
       '${body.cpf}',
-      ${body.peso},
-      ${body.altura},
       ${body.semana_gestacao},
       '${body.data_parto}',
       '${body.foto}',
-      '${body.telefone}');`;
+      '${body.telefone}',
+      '${body.cep}',
+      '${body.numero}',
+      '${body.complemento}');`;
 
     const result = await this.prisma.$queryRawUnsafe(queryGestante);
 
     return result[0].f0;
   }
 
+  async updateWeight(id: number, body: UpdateGestanteDto) {
+    const valId = await this.validacaoID(id);
+
+    if (valId == false) {
+      return {
+        message: 'Id Invalid',
+      };
+    }
+
+    const queryGestante = `update tbl_gestante set
+    peso = ${body.peso},
+    altura = ${body.altura}
+    where tbl_gestante.id = ${id}`;
+
+    const result = await this.prisma.$queryRawUnsafe(queryGestante);
+
+    return true;
+  }
   async insertEndress(id: number, body: UpdateGestanteDto) {
     const valId = await this.validacaoID(id);
 

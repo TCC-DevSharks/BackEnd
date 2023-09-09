@@ -55,6 +55,25 @@ export class GestanteController {
     }
   }
 
+  @Put('peso/:id')
+  async updateWeight(
+    @Param('id') id: number,
+    @Body() updateGestanteDto: UpdateGestanteDto,
+  ) {
+    const result = await this.gestanteService.updateWeight(
+      id,
+      updateGestanteDto,
+    );
+
+    if (result === true) {
+      return {
+        message: 'Weight already updated',
+      };
+    } else {
+      throw new HttpException(`${result.message}`, HttpStatus.NOT_FOUND);
+    }
+  }
+
   @Put('endereco/:id')
   async insertEndereco(
     @Param('id') id: number,
