@@ -153,7 +153,8 @@ export class GestanteService {
 
     const queryGestante = `update tbl_gestante set
     peso = ${body.peso},
-    altura = ${body.altura}
+    altura = ${body.altura},
+    foto = "${body.foto}"
     where tbl_gestante.id = ${id}`;
 
     const result = await this.prisma.$queryRawUnsafe(queryGestante);
