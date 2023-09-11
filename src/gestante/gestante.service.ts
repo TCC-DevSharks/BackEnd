@@ -123,6 +123,14 @@ export class GestanteService {
       };
     }
 
+    const query = `select id from tbl_endereco_gestante where id_gestante = '${id}'`;
+
+    const resultData: [] = await this.prisma.$queryRawUnsafe(query);
+
+    if (resultData.length == 0) {
+      return this.insertEndress(id, body)
+    }
+    
     const queryGestante = `call procUpdateGestante(
       ${id},
       '${body.nome}', 
@@ -176,17 +184,6 @@ export class GestanteService {
 
     const queryGestante = `call procUpdateGestanteEndereco(
         ${id},
-        '${body.nome}', 
-        '${body.data_nascimento}',
-        '${hash}',
-        '${body.email}',
-        '${body.cpf}',
-        ${body.peso},
-        ${body.altura},
-        ${body.semana_gestacao},
-        '${body.data_parto}',
-        '${body.foto}',
-        '${body.telefone}',
         '${body.numero}',
         '${body.complemento}',
         '${body.cep}');`;
