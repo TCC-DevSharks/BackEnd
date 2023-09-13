@@ -14,6 +14,10 @@ import { ConsultaModule } from './consulta/consulta.module';
 import { ProntuarioModule } from './prontuario/prontuario.module';
 import { EnxovalModule } from './enxoval/enxoval.module';
 import { SugestaoNomeModule } from './sugestao-nome/sugestao-nome.module';
+import { ComorbidadeModule } from './comorbidade/comorbidade.module';
+import { AlergiaModule } from './alergia/alergia.module';
+import { DeficienciaModule } from './deficiencia/deficiencia.module';
+import { MedicacaoModule } from './medicacao/medicacao.module';
 
 @Module({
   imports: [
@@ -28,6 +32,10 @@ import { SugestaoNomeModule } from './sugestao-nome/sugestao-nome.module';
     ProntuarioModule,
     EnxovalModule,
     SugestaoNomeModule,
+    ComorbidadeModule,
+    AlergiaModule,
+    DeficienciaModule,
+    MedicacaoModule,
   ],
   controllers: [AppController],
   providers: [
