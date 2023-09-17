@@ -128,9 +128,9 @@ export class GestanteService {
     const resultData: [] = await this.prisma.$queryRawUnsafe(query);
 
     if (resultData.length == 0) {
-      return this.insertEndress(id, body)
+      return this.insertEndress(id, body);
     }
-    
+
     const queryGestante = `call procUpdateGestante(
       ${id},
       '${body.nome}', 
@@ -165,7 +165,7 @@ export class GestanteService {
     foto = "${body.foto}"
     where tbl_gestante.id = ${id}`;
 
-    const result = await this.prisma.$queryRawUnsafe(queryGestante);
+    await this.prisma.$queryRawUnsafe(queryGestante);
 
     return true;
   }
@@ -180,7 +180,7 @@ export class GestanteService {
     }
     const saltOrRounds = 10;
     const password = body.senha;
-    const hash = await bcrypt.hash(password, saltOrRounds);
+    await bcrypt.hash(password, saltOrRounds);
 
     const queryGestante = `call procUpdateGestanteEndereco(
         ${id},

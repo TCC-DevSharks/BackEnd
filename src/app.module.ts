@@ -18,6 +18,7 @@ import { ComorbidadeModule } from './comorbidade/comorbidade.module';
 import { AlergiaModule } from './alergia/alergia.module';
 import { DeficienciaModule } from './deficiencia/deficiencia.module';
 import { MedicacaoModule } from './medicacao/medicacao.module';
+import { PagseguroModule } from './pagseguro/pagseguro.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { MedicacaoModule } from './medicacao/medicacao.module';
     AlergiaModule,
     DeficienciaModule,
     MedicacaoModule,
+    PagseguroModule,
   ],
   controllers: [AppController],
   providers: [
