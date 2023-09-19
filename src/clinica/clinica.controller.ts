@@ -40,6 +40,12 @@ export class ClinicaController {
     return result;
   }
 
+  @Get('especialidade/:id')
+  async findSpeciality(@Param('id') id: string) {
+    const result = { clinicas: await this.clinicaService.findSpeciality(+id) };
+    return result;
+  }
+
   @Put(':id')
   async update(
     @Param('id') id: number,

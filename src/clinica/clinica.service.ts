@@ -122,6 +122,24 @@ export class ClinicaService {
     return result;
   }
 
+  findSpeciality(id: number){
+    const sql = `select tbl_clinica.id, tbl_clinica.razao_social, tbl_clinica.foto, tbl_clinica.descricao,tbl_enderecoClinica.cep
+    from tbl_clinica
+      inner join tbl_profissional
+        on tbl_profissional.id_clinica = tbl_clinica.id
+      inner join tbl_profissional_especialidade
+        on tbl_profissional_especialidade.id_profissional = tbl_profissional.id
+      inner join tbl_especialidade
+        on tbl_profissional_especialidade.id_especialidade = tbl_especialidade.id
+      inner join tbl_enderecoClinica
+        on tbl_enderecoClinica.id_clinica = tbl_clinica.id   
+            where tbl_especialidade.id = ${id};`
+
+    const result = this.prisma.$queryRawUnsafe(sql);
+
+    return result;
+  }
+
   async update(id: number, body: UpdateClinicaDto) {
     const valId = await this.validacaoID(id);
 
