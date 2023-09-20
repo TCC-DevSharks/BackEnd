@@ -66,7 +66,7 @@ export class ProfissionalService {
           '${body.cpf}',
           '${body.foto}',
           '${body.nome}',
-          '${body.descricao}',
+          '${body.descricao}', 
           '${body.data_nascimento}',
           '${body.inicio_atendimento}',
           '${body.fim_atendimento}',
