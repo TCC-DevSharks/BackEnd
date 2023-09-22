@@ -11,7 +11,7 @@ export class SugestaoNomeService {
     const query = `select tbl_sugestao_nome.id , tbl_sugestao_nome.nome, tbl_sugestao_nome.checkbox, tbl_sexo.sexo
     from tbl_sugestao_nome
       inner join tbl_sexo
-        on tbl_sexo.id = tbl_sugestao_nome.id_sexo`;
+        on tbl_sexo.id = tbl_sugestao_nome.id_sexo  order by tbl_sugestao_nome.nome asc`;
     const result = await this.prisma.$queryRawUnsafe(query);
 
     return result;
@@ -22,7 +22,7 @@ export class SugestaoNomeService {
     from tbl_sugestao_nome
       inner join tbl_sexo
         on tbl_sexo.id = tbl_sugestao_nome.id_sexo
-    where tbl_sexo.sexo = '${sexo}'`;
+    where tbl_sexo.sexo = '${sexo}' order by tbl_sugestao_nome.nome asc`;
     const result = await this.prisma.$queryRawUnsafe(query);
 
     return result;
