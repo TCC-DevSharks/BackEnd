@@ -54,7 +54,7 @@ export class SugestaoNomeService {
 
   async addFavorite(body: CreateSugestaoNomeDto) {
     const idNome = await this.validationIdNome(body.id_nome);
-    const idGestante = await this.validationIdNome(body.id_gestante);
+    const idGestante = await this.validationIdGestante(body.id_gestante);
 
     if (idGestante == true) {
       if (idNome == true) {

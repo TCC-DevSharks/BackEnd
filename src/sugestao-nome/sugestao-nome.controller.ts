@@ -38,7 +38,7 @@ export class SugestaoNomeController {
   }
 
   @Get('favorito/:id')
-  async getFavorite(id: number) {
+  async getFavorite(@Param('id') id: number) {
     const result = await this.sugestaoNomeService.findFavorite(+id);
     return { favoritos: result };
   }
