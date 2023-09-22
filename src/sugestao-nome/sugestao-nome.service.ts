@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable } from '@nestjs/common';
 import { CreateSugestaoNomeDto } from './dto/create-sugestao-nome.dto';
 import { UpdateSugestaoNomeDto } from './dto/update-sugestao-nome.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,6 +6,30 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class SugestaoNomeService {
   constructor(private prisma: PrismaService) {}
+
+  async validationIdNome(id: number) {
+    const query = `select * from tbl_sugestao_nome where id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(query);
+
+    if (result.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async validationIdGestante(id: number) {
+    const query = `select * from tbl_gestante where id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(query);
+
+    if (result.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   async findAll() {
     const query = `select tbl_sugestao_nome.id , tbl_sugestao_nome.nome, tbl_sugestao_nome.checkbox, tbl_sexo.sexo
@@ -26,5 +50,45 @@ export class SugestaoNomeService {
     const result = await this.prisma.$queryRawUnsafe(query);
 
     return result;
+  }
+
+  async addFavorite(body: CreateSugestaoNomeDto) {
+    const idNome = await this.validationIdNome(body.id_nome);
+    const idGestante = await this.validationIdNome(body.id_gestante);
+
+    if (idGestante == true) {
+      if (idNome == true) {
+        const sql = `insert into tbl_nome_gestante (id_nome, id_gestante)values(${body.id_nome}, ${body.id_gestante});`;
+
+        const getSql = `select tbl_nome_gestante.id, tbl_sugestao_nome.nome as nome, tbl_gestante.nome as gestante 
+      from tbl_nome_gestante
+        inner join tbl_sugestao_nome
+          on tbl_sugestao_nome.id = tbl_nome_gestante.id_nome
+        inner join tbl_gestante
+          on tbl_gestante.id = tbl_nome_gestante.id_gestante
+        order by id desc limit 1;`;
+
+        const result = await this.prisma.$queryRawUnsafe(sql);
+        const getResult = await this.prisma.$queryRawUnsafe(getSql);
+
+        return { favorito: getResult };
+      } else {
+        return 'Id nome invalido';
+      }
+    } else {
+      return 'Id gestante invalido';
+    }
+  }
+  async findFavorite() {
+    const getSql = `select tbl_nome_gestante.id, tbl_sugestao_nome.nome as nome, tbl_gestante.nome as gestante 
+    from tbl_nome_gestante
+      inner join tbl_sugestao_nome
+        on tbl_sugestao_nome.id = tbl_nome_gestante.id_nome
+      inner join tbl_gestante
+        on tbl_gestante.id = tbl_nome_gestante.id_gestante`;
+
+    const getResult = await this.prisma.$queryRawUnsafe(getSql);
+
+    return getResult;
   }
 }
