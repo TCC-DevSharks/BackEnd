@@ -19,6 +19,7 @@ import { AlergiaModule } from './alergia/alergia.module';
 import { DeficienciaModule } from './deficiencia/deficiencia.module';
 import { MedicacaoModule } from './medicacao/medicacao.module';
 import { PagseguroModule } from './pagseguro/pagseguro.module';
+import { MalaMaternidadeModule } from './mala-maternidade/mala-maternidade.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { PagseguroModule } from './pagseguro/pagseguro.module';
     DeficienciaModule,
     MedicacaoModule,
     PagseguroModule,
+    MalaMaternidadeModule,
   ],
   controllers: [AppController],
   providers: [
