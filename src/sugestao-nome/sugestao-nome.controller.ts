@@ -42,4 +42,15 @@ export class SugestaoNomeController {
     const result = await this.sugestaoNomeService.findFavorite(+id);
     return { favoritos: result };
   }
+
+  @Delete('favorito')
+  async removeFavorite(@Body() body: CreateSugestaoNomeDto) {
+    const result = await this.sugestaoNomeService.remove(body);
+
+    if (typeof result !== 'string') {
+      return result;
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
+  }
 }

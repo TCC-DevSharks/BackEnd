@@ -1,34 +1,55 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { MalaMaternidadeService } from './mala-maternidade.service';
 import { CreateMalaMaternidadeDto } from './dto/create-mala-maternidade.dto';
 import { UpdateMalaMaternidadeDto } from './dto/update-mala-maternidade.dto';
 
 @Controller('mala-maternidade')
 export class MalaMaternidadeController {
-  constructor(private readonly malaMaternidadeService: MalaMaternidadeService) {}
-
-  @Post()
-  create(@Body() createMalaMaternidadeDto: CreateMalaMaternidadeDto) {
-    return this.malaMaternidadeService.create(createMalaMaternidadeDto);
-  }
+  constructor(
+    private readonly malaMaternidadeService: MalaMaternidadeService,
+  ) {}
 
   @Get()
   findAll() {
     return this.malaMaternidadeService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.malaMaternidadeService.findOne(+id);
+  @Post('favorito')
+  async addFavorite(@Body() body: CreateMalaMaternidadeDto) {
+    const result = await this.malaMaternidadeService.addFavorite(body);
+
+    if (typeof result !== 'string') {
+      return result;
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMalaMaternidadeDto: UpdateMalaMaternidadeDto) {
-    return this.malaMaternidadeService.update(+id, updateMalaMaternidadeDto);
+  @Get('favorito/:id')
+  async getFavorite(@Param('id') id: number) {
+    const result = await this.malaMaternidadeService.findFavorite(+id);
+    return { favoritos: result };
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.malaMaternidadeService.remove(+id);
+  @Delete('favorito')
+  async removeFavorite(@Body() body: CreateMalaMaternidadeDto) {
+    const result = await this.malaMaternidadeService.remove(body);
+
+    if (typeof result !== 'string') {
+      return result;
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
   }
 }

@@ -86,10 +86,29 @@ export class SugestaoNomeService {
         on tbl_sugestao_nome.id = tbl_nome_gestante.id_nome
       inner join tbl_gestante
         on tbl_gestante.id = tbl_nome_gestante.id_gestante
-        where tbl_gestante.id = ${id} ;`
+        where tbl_gestante.id = ${id} ;`;
 
     const getResult = await this.prisma.$queryRawUnsafe(getSql);
 
     return getResult;
+  }
+
+  async remove(body: CreateSugestaoNomeDto) {
+    const idPlano = await this.validationIdNome(body.id_nome);
+    const idGestante = await this.validationIdGestante(body.id_gestante);
+
+    if (idGestante == true) {
+      if (idPlano == true) {
+        const sql = `delete from tbl_nome_gestante where tbl_nome_gestante.id_plano = ${body.id_nome} and tbl_nome_gestante.id_gestante = ${body.id_gestante}`;
+
+        await this.prisma.$queryRawUnsafe(sql);
+
+        return { message: 'Deletado com sucesso' };
+      } else {
+        return 'Id plano invalido';
+      }
+    } else {
+      return 'Id gestante invalido';
+    }
   }
 }

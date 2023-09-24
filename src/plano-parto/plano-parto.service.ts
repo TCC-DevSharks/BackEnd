@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { CreatePlanoPartoDto } from './dto/create-plano-parto.dto';
+import { UpdatePlanoPartoDto } from './dto/update-plano-parto.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateEnxovalDto } from './dto/create-enxoval.dto';
 
 @Injectable()
-export class EnxovalService {
+export class PlanoPartoService {
   constructor(private prisma: PrismaService) {}
 
-  async validationIdEnxoval(id: number) {
-    const query = `select * from tbl_enxoval where id = ${id}`;
+  async validationIdPlano(id: number) {
+    const query = `select * from tbl_plano_parto where id = ${id}`;
 
     const result: [] = await this.prisma.$queryRawUnsafe(query);
 
@@ -31,40 +32,40 @@ export class EnxovalService {
   }
 
   async findAll() {
-    const query = `select tbl_enxoval.id, tbl_enxoval.item, tbl_enxoval.checkbox, tbl_enxoval.quantidade, tbl_planoCategoria.categoria 
-    from tbl_enxoval
+    const query = `select tbl_plano_parto.id, tbl_plano_parto.item, tbl_plano_parto.checkbox,tbl_planoCategoria.categoria 
+    from tbl_plano_parto
       inner join tbl_planoCategoria
-        on tbl_planoCategoria.id = tbl_enxoval.id_categoria`;
+        on tbl_planoCategoria.id = tbl_plano_parto.id_categoria`;
     const result = await this.prisma.$queryRawUnsafe(query);
 
     return result;
   }
 
   async findOne(categoria: string) {
-    const query = `select tbl_enxoval.id, tbl_enxoval.item, tbl_enxoval.checkbox, tbl_enxoval.quantidade, tbl_planoCategoria.categoria 
-    from tbl_enxoval
+    const query = `select tbl_plano_parto.id, tbl_plano_parto.item, tbl_plano_parto.checkbox, tbl_planoCategoria.categoria 
+    from tbl_plano_parto
       inner join tbl_planoCategoria
-        on tbl_planoCategoria.id = tbl_enxoval.id_categoria
+        on tbl_planoCategoria.id = tbl_plano_parto.id_categoria
     where tbl_planoCategoria.categoria = '${categoria}'`;
     const result = await this.prisma.$queryRawUnsafe(query);
 
     return result;
   }
 
-  async addFavorite(body: CreateEnxovalDto) {
-    const idEnxoval = await this.validationIdEnxoval(body.id_enxoval);
+  async addFavorite(body: CreatePlanoPartoDto) {
+    const idPlano = await this.validationIdPlano(body.id_plano);
     const idGestante = await this.validationIdGestante(body.id_gestante);
 
     if (idGestante == true) {
-      if (idEnxoval == true) {
-        const sql = `insert into tbl_enxoval_gestante (id_enxoval, id_gestante)values(${body.id_enxoval}, ${body.id_gestante});`;
+      if (idPlano == true) {
+        const sql = `insert into tbl_plano_gestante (id_plano, id_gestante)values(${body.id_plano}, ${body.id_gestante});`;
 
-        const getSql = `select tbl_enxoval_gestante.id, tbl_enxoval.item as item, tbl_gestante.nome as gestante 
-      from tbl_enxoval_gestante
-        inner join tbl_enxoval
-          on tbl_enxoval.id = tbl_enxoval_gestante.id_enxoval
+        const getSql = `select tbl_plano_gestante.id, tbl_plano_parto.item as item, tbl_gestante.nome as gestante 
+      from tbl_plano_gestante
+        inner join tbl_plano_parto
+          on tbl_plano_parto.id = tbl_plano_gestante.id_plano
         inner join tbl_gestante
-          on tbl_gestante.id = tbl_enxoval_gestante.id_gestante
+          on tbl_gestante.id = tbl_plano_gestante.id_gestante
         order by id desc limit 1;`;
 
         await this.prisma.$queryRawUnsafe(sql);
@@ -79,14 +80,14 @@ export class EnxovalService {
     }
   }
   async findFavorite(id: number) {
-    const getSql = `select tbl_enxoval_gestante.id, tbl_enxoval.item as item, tbl_gestante.nome as gestante, tbl_enxoval.quantidade as quantidade, tbl_planoCategoria.categoria as categoria 
-    from tbl_enxoval_gestante
-      inner join tbl_enxoval
-        on tbl_enxoval.id = tbl_enxoval_gestante.id_enxoval
+    const getSql = `select tbl_plano_gestante.id, tbl_plano_parto.item as item, tbl_gestante.nome as gestante, tbl_planoCategoria.categoria as categoria 
+    from tbl_plano_gestante
+      inner join tbl_plano_parto
+        on tbl_plano_parto.id = tbl_plano_gestante.id_plano
       inner join tbl_gestante
-        on tbl_gestante.id = tbl_enxoval_gestante.id_gestante
+        on tbl_gestante.id = tbl_plano_gestante.id_gestante
       inner join tbl_planoCategoria
-        on tbl_planoCategoria.id = tbl_enxoval.id_categoria
+        on tbl_planoCategoria.id = tbl_plano_parto.id_categoria
         where tbl_gestante.id = ${id} ;`;
 
     const getResult = await this.prisma.$queryRawUnsafe(getSql);
@@ -94,13 +95,13 @@ export class EnxovalService {
     return getResult;
   }
 
-  async remove(body: CreateEnxovalDto) {
-    const idPlano = await this.validationIdEnxoval(body.id_enxoval);
+  async remove(body: CreatePlanoPartoDto) {
+    const idPlano = await this.validationIdPlano(body.id_plano);
     const idGestante = await this.validationIdGestante(body.id_gestante);
 
     if (idGestante == true) {
       if (idPlano == true) {
-        const sql = `delete from tbl_enxoval_gestante where tbl_enxoval_gestante.id_plano = ${body.id_enxoval} and tbl_enxoval_gestante.id_gestante = ${body.id_gestante}`;
+        const sql = `delete from tbl_plano_gestante where tbl_plano_gestante.id_plano = ${body.id_plano} and tbl_plano_gestante.id_gestante = ${body.id_gestante}`;
 
         await this.prisma.$queryRawUnsafe(sql);
 

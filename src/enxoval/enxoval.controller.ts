@@ -3,16 +3,14 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
-  Delete,
   Query,
   HttpStatus,
   HttpException,
+  Delete,
 } from '@nestjs/common';
 import { EnxovalService } from './enxoval.service';
 import { CreateEnxovalDto } from './dto/create-enxoval.dto';
-import { UpdateEnxovalDto } from './dto/update-enxoval.dto';
 
 @Controller('enxoval')
 export class EnxovalController {
@@ -25,7 +23,7 @@ export class EnxovalController {
 
   @Get('categoria')
   async findOne(@Query('categoria') categoria: string) {
-    return { exoval: await this.enxovalService.findOne(categoria) };
+    return { enxoval: await this.enxovalService.findOne(categoria) };
   }
 
   @Post('favorito')
@@ -43,5 +41,16 @@ export class EnxovalController {
   async getFavorite(@Param('id') id: number) {
     const result = await this.enxovalService.findFavorite(+id);
     return { favoritos: result };
+  }
+
+  @Delete('favorito')
+  async removeFavorite(@Body() body: CreateEnxovalDto) {
+    const result = await this.enxovalService.remove(body);
+
+    if (typeof result !== 'string') {
+      return result;
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
   }
 }

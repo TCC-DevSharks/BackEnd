@@ -1,26 +1,92 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMalaMaternidadeDto } from './dto/create-mala-maternidade.dto';
 import { UpdateMalaMaternidadeDto } from './dto/update-mala-maternidade.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class MalaMaternidadeService {
-  create(createMalaMaternidadeDto: CreateMalaMaternidadeDto) {
-    return 'This action adds a new malaMaternidade';
+  constructor(private prisma: PrismaService) {}
+
+  async validationIdMala(id: number) {
+    const query = `select * from tbl_malaMaternidade where id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(query);
+
+    if (result.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
-  findAll() {
-    return `This action returns all malaMaternidade`;
+  async validationIdGestante(id: number) {
+    const query = `select * from tbl_gestante where id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(query);
+
+    if (result.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} malaMaternidade`;
+  async findAll() {
+    const query = `select tbl_malaMaternidade.id, tbl_malaMaternidade.item, tbl_malaMaternidade.checkbox, tbl_malaMaternidade.descricao 
+    from tbl_malaMaternidade`;
+    const result = await this.prisma.$queryRawUnsafe(query);
+
+    return result;
   }
 
-  update(id: number, updateMalaMaternidadeDto: UpdateMalaMaternidadeDto) {
-    return `This action updates a #${id} malaMaternidade`;
+  async addFavorite(body: CreateMalaMaternidadeDto) {
+    const idEnxoval = await this.validationIdMala(body.id_mala);
+    const idGestante = await this.validationIdGestante(body.id_gestante);
+
+    if (idGestante == true) {
+      if (idEnxoval == true) {
+        const sql = `insert into tbl_mala_gestante (id_mala, id_gestante)values(${body.id_mala}, ${body.id_gestante});`;
+
+        await this.prisma.$queryRawUnsafe(sql);
+
+        return { favorito: 'Favorito adicionado com sucesso' };
+      } else {
+        return 'Id nome invalido';
+      }
+    } else {
+      return 'Id gestante invalido';
+    }
+  }
+  async findFavorite(id: number) {
+    const getSql = `select tbl_mala_gestante.id, tbl_malaMaternidade.item as item, tbl_gestante.nome as gestante, tbl_malaMaternidade.descricao as descricao 
+    from tbl_mala_gestante
+      inner join tbl_malaMaternidade
+        on tbl_malaMaternidade.id = tbl_mala_gestante.id_mala
+      inner join tbl_gestante
+        on tbl_gestante.id = tbl_mala_gestante.id_gestante
+        where tbl_gestante.id = ${id} ;`;
+
+    const getResult = await this.prisma.$queryRawUnsafe(getSql);
+
+    return getResult;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} malaMaternidade`;
+  async remove(body: CreateMalaMaternidadeDto) {
+    const idPlano = await this.validationIdMala(body.id_mala);
+    const idGestante = await this.validationIdGestante(body.id_gestante);
+
+    if (idGestante == true) {
+      if (idPlano == true) {
+        const sql = `delete from tbl_mala_gestante where tbl_mala_gestante.id_plano = ${body.id_mala} and tbl_mala_gestante.id_gestante = ${body.id_gestante}`;
+
+        await this.prisma.$queryRawUnsafe(sql);
+
+        return { message: 'Deletado com sucesso' };
+      } else {
+        return 'Id plano invalido';
+      }
+    } else {
+      return 'Id gestante invalido';
+    }
   }
 }
