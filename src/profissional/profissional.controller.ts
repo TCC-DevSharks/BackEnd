@@ -46,7 +46,7 @@ export class ProfissionalController {
   @Get('especialidade/:id')
   async findSpeciality(@Param('id') id: string) {
     const result = {
-      clinicas: await this.profissionalService.findSpeciality(+id),
+      profissionais: await this.profissionalService.findSpeciality(+id),
     };
     return result;
   }
