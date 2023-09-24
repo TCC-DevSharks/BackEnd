@@ -122,7 +122,7 @@ export class ClinicaService {
     return result;
   }
 
-  findSpeciality(id: number){
+  findSpeciality(id: number) {
     const sql = `select tbl_clinica.id, tbl_clinica.razao_social, tbl_clinica.foto, tbl_clinica.descricao,tbl_enderecoClinica.cep
     from tbl_clinica
       inner join tbl_profissional
@@ -133,7 +133,7 @@ export class ClinicaService {
         on tbl_profissional_especialidade.id_especialidade = tbl_especialidade.id
       inner join tbl_enderecoClinica
         on tbl_enderecoClinica.id_clinica = tbl_clinica.id   
-            where tbl_especialidade.id = ${id};`
+            where tbl_especialidade.id = ${id};`;
 
     const result = this.prisma.$queryRawUnsafe(sql);
 

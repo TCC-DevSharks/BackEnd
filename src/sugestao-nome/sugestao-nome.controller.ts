@@ -38,8 +38,8 @@ export class SugestaoNomeController {
   }
 
   @Get('favorito/:id')
-  async getFavorite(@Param('id') id: number) {
-    const result = await this.sugestaoNomeService.findFavorite(+id);
+  async getFavorite(@Param('id') id: number, @Query('sexo') sexo: string) {
+    const result = await this.sugestaoNomeService.findFavorite(+id, sexo);
     return { favoritos: result };
   }
 

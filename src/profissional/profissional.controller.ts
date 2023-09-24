@@ -43,6 +43,14 @@ export class ProfissionalController {
     return result;
   }
 
+  @Get('especialidade/:id')
+  async findSpeciality(@Param('id') id: string) {
+    const result = {
+      clinicas: await this.profissionalService.findSpeciality(+id),
+    };
+    return result;
+  }
+
   @Put(':id')
   async update(@Param('id') id: number, @Body() body: UpdateProfissionalDto) {
     const result = await this.profissionalService.update(id, body);

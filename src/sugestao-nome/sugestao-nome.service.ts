@@ -79,14 +79,16 @@ export class SugestaoNomeService {
       return 'Id gestante invalido';
     }
   }
-  async findFavorite(id: number) {
-    const getSql = `select tbl_nome_gestante.id, tbl_sugestao_nome.nome as nome, tbl_gestante.nome as gestante 
+  async findFavorite(id: number, sexo: string){
+    const getSql = `select tbl_nome_gestante.id, tbl_sugestao_nome.nome as nome, tbl_gestante.nome as gestante, tbl_sexo.sexo
     from tbl_nome_gestante
       inner join tbl_sugestao_nome
         on tbl_sugestao_nome.id = tbl_nome_gestante.id_nome
       inner join tbl_gestante
         on tbl_gestante.id = tbl_nome_gestante.id_gestante
-        where tbl_gestante.id = ${id} ;`;
+      inner join tbl_sexo
+      on tbl_sexo.id = tbl_sugestao_nome.id_sexo
+        where tbl_gestante.id = ${id} and tbl_sexo.sexo = "${sexo}" ;`;
 
     const getResult = await this.prisma.$queryRawUnsafe(getSql);
 
