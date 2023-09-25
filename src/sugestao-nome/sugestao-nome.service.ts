@@ -88,7 +88,7 @@ export class SugestaoNomeService {
         on tbl_gestante.id = tbl_nome_gestante.id_gestante
       inner join tbl_sexo
       on tbl_sexo.id = tbl_sugestao_nome.id_sexo
-        where tbl_gestante.id = ${id} and tbl_sexo.sexo = "${sexo}" ;`;
+        where tbl_gestante.id = ${id} and tbl_sexo.sexo = "${sexo}"  order by tbl_sugestao_nome.nome asc ;`;
 
     const getResult = await this.prisma.$queryRawUnsafe(getSql);
 
