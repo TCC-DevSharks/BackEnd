@@ -101,13 +101,13 @@ export class SugestaoNomeService {
 
     if (idGestante == true) {
       if (idPlano == true) {
-        const sql = `delete from tbl_nome_gestante where tbl_nome_gestante.id_plano = ${body.id_nome} and tbl_nome_gestante.id_gestante = ${body.id_gestante}`;
+        const sql = `delete from tbl_nome_gestante where tbl_nome_gestante.id_nome = ${body.id_nome} and tbl_nome_gestante.id_gestante = ${body.id_gestante}`;
 
         await this.prisma.$queryRawUnsafe(sql);
 
         return { message: 'Deletado com sucesso' };
       } else {
-        return 'Id plano invalido';
+        return 'Id nome invalido';
       }
     } else {
       return 'Id gestante invalido';
