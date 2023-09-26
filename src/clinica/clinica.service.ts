@@ -84,7 +84,7 @@ export class ClinicaService {
 
   async findAll() {
     const sql = `select tbl_clinica.id as id, tbl_clinica.cnpj as cnpj, tbl_clinica.razao_social as razao_social, tbl_clinica.descricao as descricao, tbl_clinica.email as email, tbl_clinica.senha as senha, tbl_clinica.foto as foto,
-    tbl_telefone.numero as telefone, tbl_telefone.id as idTelefone, tbl_tipo_telefone.tipo as tipo_telefone, tbl_enderecoClinica.id as idEndereco, tbl_enderecoClinica.numero as numero,
+    tbl_telefone.numero as telefone, tbl_telefone.id as idTelefone, tbl_tipo_telefone.tipo as tipo_telefone, tbl_enderecoClinica.id as idEndereco, tbl_enderecoClinica.numero as numero, tbl_enderecoCLinica.complemento as complemento,
     tbl_enderecoClinica.cep as cep
     from tbl_clinica
       inner join tbl_clinica_telefone
@@ -104,7 +104,7 @@ export class ClinicaService {
 
   async findOne(id: number) {
     const sql = `select tbl_clinica.id as id, tbl_clinica.cnpj as cnpj, tbl_clinica.razao_social as razao_social, tbl_clinica.descricao as descricao, tbl_clinica.email as email, tbl_clinica.senha as senha, tbl_clinica.foto as foto,
-    tbl_telefone.numero as telefone, tbl_telefone.id as idTelefone, tbl_tipo_telefone.tipo as tipo_telefone, tbl_enderecoClinica.id as idEndereco, tbl_enderecoClinica.numero as numero,
+    tbl_telefone.numero as telefone, tbl_telefone.id as idTelefone, tbl_tipo_telefone.tipo as tipo_telefone, tbl_enderecoClinica.id as idEndereco, tbl_enderecoClinica.numero as numero, tbl_enderecoCLinica.complemento as complemento,
     tbl_enderecoClinica.cep as cep
     from tbl_clinica
       inner join tbl_clinica_telefone

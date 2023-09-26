@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateConsultaDto } from './dto/create-consulta.dto';
 import { UpdateConsultaDto } from './dto/update-consulta.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import e from 'express';
 
 @Injectable()
 export class ConsultaService {
@@ -20,18 +21,55 @@ export class ConsultaService {
     }
   }
 
+  async validationIdProfissional(id: number) {
+    const query = `select * from tbl_profissional where id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(query);
+
+    if (result.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async validationIdGestante(id: number) {
+    const query = `select * from tbl_profissional where id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(query);
+
+    if (result.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   async create(body: CreateConsultaDto) {
-    const sql = `insert into tbl_consulta(dia, hora, id_profissional, id_gestante) values (
-      '${body.dia}', '${body.hora}',${body.id_profissional}, ${body.id_gestante}
-    );`;
+    const idGestante = await this.validationIdGestante(body.id_gestante);
+    const idProfissional = await this.validationIdProfissional(body.id_profissional);
 
-    await this.prisma.$queryRawUnsafe(sql);
+    if(idGestante == true){
+      if(idProfissional == true){
 
-    const id = `select id from tbl_consulta order by id desc limit 1;`;
+        const sql = `insert into tbl_consulta(dia, hora, id_profissional, id_gestante) values (
+          '${body.dia}', '${body.hora}',${body.id_profissional}, ${body.id_gestante}
+        );`;
+    
+        await this.prisma.$queryRawUnsafe(sql);
+    
+        const id = `select id from tbl_consulta order by id desc limit 1;`;
+    
+        const result = await this.prisma.$queryRawUnsafe(id);
+    
+        return result[0].id;
+      }else{
+        return 'Id Profissional invalido'
+      }
 
-    const result = await this.prisma.$queryRawUnsafe(id);
-
-    return result[0].id;
+    }else{
+      return 'Id Gestante invalido';
+    }
   }
 
   async findAll() {
