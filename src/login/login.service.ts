@@ -38,14 +38,14 @@ export class LoginService {
     const resultId = await this.prisma.$queryRawUnsafe(sql);
 
     if (result.length === 0) {
-      const array = [{ mensagem: 'A senha ou o email esta errada' }];
+      const array = 'A senha ou o email esta errada';
       return array;
     } else {
       const password = body.senha;
       const isMatch = await bcrypt.compare(password, resultId[0].senha);
 
       if (isMatch === false) {
-        const array = [{ mensagem: 'A senha ou o email está errada' }];
+        const array = 'A senha ou o email está errada';
         return array;
       }
       return [{ id: resultId[0].id }];

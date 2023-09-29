@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CreateLoginDto } from './dto/create-login.dto';
 import { Login } from './entities/login.entity';
@@ -31,7 +33,11 @@ export class LoginController {
   ) {
     const login = await this.loginService.findClinica(body);
 
-    return login;
+    if (typeof login !== 'string') {
+      return { id: login};
+    } else {
+      throw new HttpException(`${login}`, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Post('profissional')
