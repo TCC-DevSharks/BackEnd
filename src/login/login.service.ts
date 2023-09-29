@@ -8,6 +8,9 @@ export class LoginService {
   constructor(private prisma: PrismaService) {}
 
   async findGestante(body: CreateLoginDto) {
+
+    console.log(body);
+    
     const sql = `select senha, id from tbl_gestante where email = '${body.email}'`;
 
     const result: [] = await this.prisma.$queryRawUnsafe(sql);

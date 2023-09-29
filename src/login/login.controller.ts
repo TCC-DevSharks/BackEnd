@@ -17,26 +17,26 @@ export class LoginController {
   constructor(private readonly loginService: LoginService) {}
 
   @Post('gestante')
-  async findGestante(
-    body: CreateLoginDto
-  ) {
+  async findGestante( @Body() body: CreateLoginDto) {
+    console.log(body);
+    
     const login = await this.loginService.findGestante(body);
 
     return { login: login };
   }
 
-  @Get('clinica')
+  @Post('clinica')
   async findClinica(
-    body: CreateLoginDto
+    @Body() body: CreateLoginDto
   ) {
     const login = await this.loginService.findClinica(body);
 
     return login;
   }
 
-  @Get('profissional')
+  @Post('profissional')
   async findProfissional(
-    body: CreateLoginDto
+    @Body() body: CreateLoginDto
   ) {
     const login = await this.loginService.findProfissional(body);
 
