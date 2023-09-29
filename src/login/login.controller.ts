@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
+import { CreateLoginDto } from './dto/create-login.dto';
 import { Login } from './entities/login.entity';
 import { LoginService } from './login.service';
 
@@ -15,32 +16,29 @@ import { LoginService } from './login.service';
 export class LoginController {
   constructor(private readonly loginService: LoginService) {}
 
-  @Get('gestante')
+  @Post('gestante')
   async findGestante(
-    @Query('email') email: string,
-    @Query('senha') senha: string,
+    body: CreateLoginDto
   ) {
-    const login = await this.loginService.findGestante(email, senha);
+    const login = await this.loginService.findGestante(body);
 
     return { login: login };
   }
 
   @Get('clinica')
   async findClinica(
-    @Query('email') email: string,
-    @Query('senha') senha: string,
+    body: CreateLoginDto
   ) {
-    const login = await this.loginService.findClinica(email, senha);
+    const login = await this.loginService.findClinica(body);
 
     return login;
   }
 
   @Get('profissional')
   async findProfissional(
-    @Query('email') email: string,
-    @Query('senha') senha: string,
+    body: CreateLoginDto
   ) {
-    const login = await this.loginService.findProfissional(email, senha);
+    const login = await this.loginService.findProfissional(body);
 
     return login;
   }
