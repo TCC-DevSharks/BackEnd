@@ -34,82 +34,76 @@ export class MedicacaoService {
   }
 
   async create(body: CreateMedicacaoDto) {
-    const query = `insert into tbl_medicacao(medicacao, id_gestante) values ("${body.medicacao}", ${body.id_gestante})`
+    const query = `insert into tbl_medicacao(medicacao, id_gestante) values ("${body.medicacao}", ${body.id_gestante})`;
 
     const result = await this.prisma.$queryRawUnsafe(query);
 
-    return result
-    
+    return result;
   }
 
   async findAll() {
-    const query = `select * from tbl_medicacao`
+    const query = `select * from tbl_medicacao`;
 
-    const result = await this.prisma.$queryRawUnsafe(query)
+    const result = await this.prisma.$queryRawUnsafe(query);
 
-    return result
+    return result;
   }
 
   async findGestante(id: number) {
-
     const valId = await this.validacaoIDGestante(id);
 
     if (valId == false) {
-
-      return 'Id Invalid'
+      return 'Id Invalid';
     }
 
-    const query = `select * from tbl_medicacao where id_gestante = ${id}`
+    const query = `select * from tbl_medicacao where id_gestante = ${id}`;
 
-    const result = await this.prisma.$queryRawUnsafe(query)
+    const result = await this.prisma.$queryRawUnsafe(query);
 
-    return result
+    return result;
   }
 
   async findOne(id: number) {
-
     const valId = await this.validacaoID(id);
 
     if (valId == false) {
-      return "Id Invalid"
+      return 'Id Invalid';
     }
 
-    const query = `select * from tbl_medicacao where id = ${id}`
+    const query = `select * from tbl_medicacao where id = ${id}`;
 
-    const result = await this.prisma.$queryRawUnsafe(query)
+    const result = await this.prisma.$queryRawUnsafe(query);
 
-    return result
+    return result;
   }
 
   async update(id: number, body: UpdateMedicacaoDto) {
-
     const valId = await this.validacaoIDGestante(id);
 
     if (valId == false) {
-
-      return 'Id Invalid'
+      return 'Id Invalid';
     }
 
     const query = `update tbl_medicacao set
     medicacao = "${body.medicacao}"
-    where id_gestante = ${id}`
+    where id_gestante = ${id}`;
 
     const result = await this.prisma.$queryRawUnsafe(query);
 
-    return result
+    return result;
   }
 
   async remove(id: number) {
     const valId = await this.validacaoIDGestante(id);
 
     if (valId == false) {
-      return "Id Invalid"
+      return 'Id Invalid';
     }
 
-    const query = `delete from tbl_medicacao where tbl_medicacao.id_gestante = ${id}`
+    const query = `delete from tbl_medicacao where tbl_medicacao.id_gestante = ${id}`;
 
-    const result = await this.prisma.$queryRawUnsafe(query)
+    const result = await this.prisma.$queryRawUnsafe(query);
 
-    return result
+    return result;
   }
 }

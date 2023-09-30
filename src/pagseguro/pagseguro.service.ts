@@ -1,14 +1,60 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePagseguroDto, getPag } from './dto/create-pagseguro.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { log } from 'console';
 
 @Injectable()
 export class PagseguroService {
+  constructor(private prisma: PrismaService) {}
+
+  async validacaoIDGestante(id: number) {
+    const sqlValidacaoId = `select * from tbl_gestante where id =${id};`;
+    const resultValidacaoId: [] = await this.prisma.$queryRawUnsafe(
+      sqlValidacaoId,
+    );
+
+    if (resultValidacaoId.length !== 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  async validacaoIDClinica(id: number) {
+    const sqlValidacaoId = `select * from tbl_clinica where id =${id};`;
+    const resultValidacaoId: [] = await this.prisma.$queryRawUnsafe(
+      sqlValidacaoId,
+    );
+
+    if (resultValidacaoId.length !== 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   async create(body: CreatePagseguroDto) {
+    const valIdGestante = await this.validacaoIDGestante(body.id_gestante);
+    const valIdClinica = await this.validacaoIDClinica(body.id_clinica);
+
+    //Valida se o Id passado é válido
+    if (valIdClinica == false) {
+      return {
+        message: 'Id Clinica Invalido',
+      };
+    }
+
+    //Valida se o Id passado é válido
+    if (valIdGestante == false) {
+      return {
+        message: 'Id Gestante Invalido',
+      };
+    }
+
     const reqs = await fetch('https://sandbox.api.pagseguro.com/orders', {
       method: 'POST',
       headers: {
-        Authorization: body.token,
+        Authorization: '0CF19CC6A6F74BF1988A099C7129AB6C',
         'Content-Type': 'application/json',
       },
 
@@ -77,23 +123,47 @@ export class PagseguroService {
     });
 
     const ress = await reqs.json();
-    console.log(ress.id);
-    return ress;
+
+    const result = {
+      ordem: ress.id,
+      horario: ress.created_at,
+      valor: ress.charges[0].amount.value,
+      operacao: ress.charges[0].payment_response,
+      cartao: ress.charges[0].payment_method,
+    };
+
+    const sql = `insert into tbl_transacao(id_gestante,id_clinica,ordem, dia)values(${body.id_gestante}, ${body.id_clinica}, "${ress.id}", "${ress.created_at}" )`;
+
+    await this.prisma.$queryRawUnsafe(sql);
+    return result;
   }
 
-  async findAll(body: getPag) {
+  async findOne(body: getPag) {
     const reqs = await fetch(
       `https://sandbox.api.pagseguro.com/orders/${body.order}`,
       {
         headers: {
-          Authorization: body.token,
+          Authorization: '0CF19CC6A6F74BF1988A099C7129AB6C',
           accept: 'application/json',
         },
       },
     );
 
     const res = await reqs.json();
-    console.log(res);
     return res;
+  }
+
+  async findAll(id_clinica: number, id_gestante: number) {
+    const sql = `select tbl_transacao.ordem as ordem, tbl_clinica.razao_social as clinica, tbl_gestante.nome as gestante, tbl_transacao.dia as data
+      from tbl_transacao
+        inner join tbl_gestante
+          on tbl_transacao.id_gestante = tbl_gestante.id
+        inner join tbl_clinica
+          on tbl_transacao.id_clinica = tbl_clinica.id
+          where tbl_clinica.id = ${id_clinica} and tbl_gestante.id = ${id_gestante}`;
+
+    const result = await this.prisma.$queryRawUnsafe(sql);
+
+    return result;
   }
 }

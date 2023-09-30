@@ -6,6 +6,14 @@ export class CreatePagseguroDto {
   token: string;
 
   @IsNotEmpty()
+  @IsNumber()
+  id_clinica: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_gestante: number;
+
+  @IsNotEmpty()
   @IsString()
   nome: string;
 

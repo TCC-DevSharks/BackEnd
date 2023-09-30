@@ -8,13 +8,20 @@ export class PagseguroController {
 
   @Post()
   async create(@Body() body: CreatePagseguroDto) {
-    console.log(body);
-
     return await this.pagseguroService.create(body);
   }
 
+  @Post('dados')
+  async findOne(@Body() body: getPag) {
+    return await this.pagseguroService.findOne(body);
+  }
+
   @Get()
-  async findAll(@Body() body: getPag) {
-    return await this.pagseguroService.findAll(body);
+  async findAll(
+    @Query('idClinica') idClinica: number,
+    @Query('idGestante') idGestante: number,
+  ) {
+
+    return await this.pagseguroService.findAll(idClinica, idGestante);
   }
 }
