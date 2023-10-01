@@ -44,8 +44,11 @@ export class SugestaoNomeController {
   }
 
   @Delete('favorito')
-  async removeFavorite(@Body() body: CreateSugestaoNomeDto) {
-    const result = await this.sugestaoNomeService.remove(body);
+  async removeFavorite(
+    @Query('idNome') idNome: number,
+    @Query('idGestante') idGestante: number,
+  ) {
+    const result = await this.sugestaoNomeService.remove(idNome,idGestante);
 
     if (typeof result !== 'string') {
       return result;

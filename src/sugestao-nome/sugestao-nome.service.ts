@@ -95,13 +95,13 @@ export class SugestaoNomeService {
     return getResult;
   }
 
-  async remove(body: CreateSugestaoNomeDto) {
-    const idPlano = await this.validationIdNome(body.id_nome);
-    const idGestante = await this.validationIdGestante(body.id_gestante);
+  async remove(idNome: number, idGestante: number) {
+    const idPlano = await this.validationIdNome(idNome);
+    const Gestante = await this.validationIdGestante(idGestante);
 
-    if (idGestante == true) {
+    if (Gestante == true) {
       if (idPlano == true) {
-        const sql = `delete from tbl_nome_gestante where tbl_nome_gestante.id_nome = ${body.id_nome} and tbl_nome_gestante.id_gestante = ${body.id_gestante}`;
+        const sql = `delete from tbl_nome_gestante where tbl_nome_gestante.id_nome = ${idNome} and tbl_nome_gestante.id_gestante = ${idGestante}`;
 
         await this.prisma.$queryRawUnsafe(sql);
 

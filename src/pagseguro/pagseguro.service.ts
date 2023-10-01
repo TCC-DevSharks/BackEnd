@@ -50,6 +50,7 @@ export class PagseguroService {
         message: 'Id Gestante Invalido',
       };
     }
+    console.log(body.telefone);
 
     const reqs = await fetch('https://sandbox.api.pagseguro.com/orders', {
       method: 'POST',
@@ -124,18 +125,21 @@ export class PagseguroService {
 
     const ress = await reqs.json();
 
-    const result = {
-      ordem: ress.id,
-      horario: ress.created_at,
-      valor: ress.charges[0].amount.value,
-      operacao: ress.charges[0].payment_response,
-      cartao: ress.charges[0].payment_method,
-    };
+    console.log(ress);
+    
+
+    // const result = {
+    //   ordem: ress.id,
+    //   horario: ress.created_at,
+    //   valor: ress.charges[0].amount.value,
+    //   operacao: ress.charges[0].payment_response,
+    //   cartao: ress.charges[0].payment_method,
+    // };
 
     const sql = `insert into tbl_transacao(id_gestante,id_clinica,ordem, dia)values(${body.id_gestante}, ${body.id_clinica}, "${ress.id}", "${ress.created_at}" )`;
 
     await this.prisma.$queryRawUnsafe(sql);
-    return result;
+    return ress;
   }
 
   async findOne(body: getPag) {
@@ -153,14 +157,14 @@ export class PagseguroService {
     return res;
   }
 
-  async findAll(id_clinica: number, id_gestante: number) {
+  async findAll( id_gestante: number) {
     const sql = `select tbl_transacao.ordem as ordem, tbl_clinica.razao_social as clinica, tbl_gestante.nome as gestante, tbl_transacao.dia as data
       from tbl_transacao
         inner join tbl_gestante
           on tbl_transacao.id_gestante = tbl_gestante.id
         inner join tbl_clinica
           on tbl_transacao.id_clinica = tbl_clinica.id
-          where tbl_clinica.id = ${id_clinica} and tbl_gestante.id = ${id_gestante}`;
+          where tbl_gestante.id = ${id_gestante}`;
 
     const result = await this.prisma.$queryRawUnsafe(sql);
 

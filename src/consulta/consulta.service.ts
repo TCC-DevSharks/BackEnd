@@ -34,7 +34,7 @@ export class ConsultaService {
   }
 
   async validationIdGestante(id: number) {
-    const query = `select * from tbl_profissional where id = ${id}`;
+    const query = `select * from tbl_gestante where id = ${id}`;
 
     const result: [] = await this.prisma.$queryRawUnsafe(query);
 
@@ -47,27 +47,23 @@ export class ConsultaService {
 
   async create(body: CreateConsultaDto) {
     const idGestante = await this.validationIdGestante(body.id_gestante);
-    const idProfissional = await this.validationIdProfissional(body.id_profissional);
+    const idProfissional = await this.validationIdProfissional(
+      body.id_profissional,
+    );
 
-    if(idGestante == true){
-      if(idProfissional == true){
-
+    if (idGestante == true) {
+      if (idProfissional == true) {
         const sql = `insert into tbl_consulta(dia, hora, id_profissional, id_gestante) values (
           '${body.dia}', '${body.hora}',${body.id_profissional}, ${body.id_gestante}
         );`;
-    
-        await this.prisma.$queryRawUnsafe(sql);
-    
-        const id = `select id from tbl_consulta order by id desc limit 1;`;
-    
-        const result = await this.prisma.$queryRawUnsafe(id);
-    
-        return result[0].id;
-      }else{
-        return 'Id Profissional invalido'
-      }
 
-    }else{
+        const result = await this.prisma.$queryRawUnsafe(sql);
+
+        return result;
+      } else {
+        return 'Id Profissional invalido';
+      }
+    } else {
       return 'Id Gestante invalido';
     }
   }

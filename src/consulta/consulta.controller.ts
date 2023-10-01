@@ -21,11 +21,11 @@ export class ConsultaController {
   async create(@Body() body: CreateConsultaDto) {
     const result = await this.consultaService.create(body);
 
-    return {
-      message: 'Consulta criada com sucesso',
-      id: result,
-      dados: body,
-    };
+    if (typeof result !== 'string') {
+      return result;
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
   }
 
   @Get()

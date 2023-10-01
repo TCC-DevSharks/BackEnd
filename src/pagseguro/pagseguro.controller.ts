@@ -17,10 +17,7 @@ export class PagseguroController {
   }
 
   @Get()
-  async findAll(
-    @Query('idClinica') idClinica: number,
-    @Query('idGestante') idGestante: number,
-  ) {
-    return await this.pagseguroService.findAll(idClinica, idGestante);
+  async findAll(@Query('idGestante') idGestante: number) {
+    return await this.pagseguroService.findAll(idGestante);
   }
 }
