@@ -21,7 +21,6 @@ export class PagseguroController {
     @Query('idClinica') idClinica: number,
     @Query('idGestante') idGestante: number,
   ) {
-
     return await this.pagseguroService.findAll(idClinica, idGestante);
   }
 }

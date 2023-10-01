@@ -39,10 +39,6 @@ export class CreatePagseguroDto {
 
   @IsNotEmpty()
   @IsString()
-  referenciaItem: string;
-
-  @IsNotEmpty()
-  @IsString()
   nomeItem: string;
 
   @IsNotEmpty()
@@ -86,19 +82,15 @@ export class CreatePagseguroDto {
 
   @IsNotEmpty()
   @IsString()
-  referenciaCobrança: string;
+  referenciaCobranca: string;
 
   @IsNotEmpty()
   @IsString()
-  descricaoCobrança: string;
+  descricaoCobranca: string;
 
   @IsNotEmpty()
   @IsString()
   tipoCartao: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  quantidadeParcelas: number;
 
   @IsNotEmpty()
   @IsString()

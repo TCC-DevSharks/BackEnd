@@ -75,7 +75,7 @@ export class PagseguroService {
         },
         items: [
           {
-            reference_id: body.referenciaItem,
+            reference_id: 'Item',
             name: body.nomeItem,
             quantity: body.quantidadeItem,
             unit_amount: body.valorUnitarioItem,
@@ -96,15 +96,15 @@ export class PagseguroService {
         notification_urls: ['https://meusite.com/notificacoes'],
         charges: [
           {
-            reference_id: body.referenciaCobrança,
-            description: body.descricaoCobrança,
+            reference_id: body.referenciaCobranca,
+            description: body.descricaoCobranca,
             amount: {
               value: body.quantidadeItem * body.valorUnitarioItem,
               currency: 'BRL',
             },
             payment_method: {
               type: body.tipoCartao,
-              installments: body.quantidadeParcelas,
+              installments: 1,
               capture: true,
               card: {
                 number: body.numeroCartao,
