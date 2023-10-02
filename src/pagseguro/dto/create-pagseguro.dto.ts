@@ -110,6 +110,6 @@ export class getPag {
   @IsString()
   order: string;
 
-  @IsString()
-  token: string;
+  // @IsString()
+  // token: string;
 }
