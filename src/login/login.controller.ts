@@ -1,17 +1,11 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
 import { CreateLoginDto } from './dto/create-login.dto';
-import { Login } from './entities/login.entity';
 import { LoginService } from './login.service';
 
 @Controller('login')

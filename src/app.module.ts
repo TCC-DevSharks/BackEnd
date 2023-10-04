@@ -21,6 +21,7 @@ import { MedicacaoModule } from './medicacao/medicacao.module';
 import { PagseguroModule } from './pagseguro/pagseguro.module';
 import { MalaMaternidadeModule } from './mala-maternidade/mala-maternidade.module';
 import { PlanoPartoModule } from './plano-parto/plano-parto.module';
+import { DietaModule } from './dieta/dieta.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { PlanoPartoModule } from './plano-parto/plano-parto.module';
     PagseguroModule,
     MalaMaternidadeModule,
     PlanoPartoModule,
+    DietaModule,
   ],
   controllers: [AppController],
   providers: [
