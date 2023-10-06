@@ -1,24 +1,11 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateMealDto {
+export class CreateDietaDto {
 
-    @IsString()
+
     @IsNotEmpty()
-    nome: string;
-
     @IsNumber()
-    @IsNotEmpty()
-    id_profissional: number;
+  id_consulta: number;
 }
 
 
-export class CreateFoodToMealDto {
-
-    @IsNumber()
-    @IsNotEmpty()
-    id_alimento: number;
-
-    @IsNumber()
-    @IsNotEmpty()
-    id_refeicao: number;
-}
