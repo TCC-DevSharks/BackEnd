@@ -94,13 +94,13 @@ export class EnxovalService {
     return getResult;
   }
 
-  async remove(body: CreateEnxovalDto) {
-    const idEnxoval = await this.validationIdEnxoval(body.id_enxoval);
-    const idGestante = await this.validationIdGestante(body.id_gestante);
+  async remove(id_enxoval: number,id_gestante: number) {
+    const idEnxoval = await this.validationIdEnxoval(id_enxoval);
+    const idGestante = await this.validationIdGestante(id_gestante);
 
     if (idGestante == true) {
       if (idEnxoval == true) {
-        const sql = `delete from tbl_enxoval_gestante where tbl_enxoval_gestante.id_enxoval = ${body.id_enxoval} and tbl_enxoval_gestante.id_gestante = ${body.id_gestante}`;
+        const sql = `delete from tbl_enxoval_gestante where tbl_enxoval_gestante.id_enxoval = ${id_enxoval} and tbl_enxoval_gestante.id_gestante = ${id_gestante}`;
 
         await this.prisma.$queryRawUnsafe(sql);
 
