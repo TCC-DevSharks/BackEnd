@@ -95,13 +95,13 @@ export class PlanoPartoService {
     return getResult;
   }
 
-  async remove(body: CreatePlanoPartoDto) {
-    const idPlano = await this.validationIdPlano(body.id_plano);
-    const idGestante = await this.validationIdGestante(body.id_gestante);
+  async remove(id_plano: number, id_gestante: number) {
+    const idPlano = await this.validationIdPlano(id_plano);
+    const idGestante = await this.validationIdGestante(id_gestante);
 
     if (idGestante == true) {
       if (idPlano == true) {
-        const sql = `delete from tbl_plano_gestante where tbl_plano_gestante.id_plano = ${body.id_plano} and tbl_plano_gestante.id_gestante = ${body.id_gestante}`;
+        const sql = `delete from tbl_plano_gestante where tbl_plano_gestante.id_plano = ${id_plano} and tbl_plano_gestante.id_gestante = ${id_gestante}`;
 
         await this.prisma.$queryRawUnsafe(sql);
 

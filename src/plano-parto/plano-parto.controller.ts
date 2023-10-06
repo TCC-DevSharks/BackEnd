@@ -46,8 +46,10 @@ export class PlanoPartoController {
   }
 
   @Delete('favorito')
-  async removeFavorite(@Body() body: CreatePlanoPartoDto) {
-    const result = await this.planoPartoService.remove(body);
+  async removeFavorite(
+    @Query('idPlano') idPlano: number,
+  @Query('idGestante') idGestante: number) {
+    const result = await this.planoPartoService.remove(idPlano,idGestante);
 
     if (typeof result !== 'string') {
       return result;

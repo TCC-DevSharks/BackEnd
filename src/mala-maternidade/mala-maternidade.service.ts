@@ -71,13 +71,13 @@ export class MalaMaternidadeService {
     return getResult;
   }
 
-  async remove(body: CreateMalaMaternidadeDto) {
-    const idPlano = await this.validationIdMala(body.id_mala);
-    const idGestante = await this.validationIdGestante(body.id_gestante);
+  async remove(id_mala: number, id_gestante: number) {
+    const idPlano = await this.validationIdMala(id_mala);
+    const idGestante = await this.validationIdGestante(id_gestante);
 
     if (idGestante == true) {
       if (idPlano == true) {
-        const sql = `delete from tbl_mala_gestante where tbl_mala_gestante.id_plano = ${body.id_mala} and tbl_mala_gestante.id_gestante = ${body.id_gestante}`;
+        const sql = `delete from tbl_mala_gestante where tbl_mala_gestante.id_plano = ${id_mala} and tbl_mala_gestante.id_gestante = ${id_gestante}`;
 
         await this.prisma.$queryRawUnsafe(sql);
 

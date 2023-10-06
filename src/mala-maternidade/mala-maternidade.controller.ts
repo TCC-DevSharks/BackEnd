@@ -43,8 +43,10 @@ export class MalaMaternidadeController {
   }
 
   @Delete('favorito')
-  async removeFavorite(@Body() body: CreateMalaMaternidadeDto) {
-    const result = await this.malaMaternidadeService.remove(body);
+  async removeFavorite( 
+    @Query('idMala') idMala: number,
+  @Query('idGestante') idGestante: number) {
+    const result = await this.malaMaternidadeService.remove(idMala,idGestante);
 
     if (typeof result !== 'string') {
       return result;

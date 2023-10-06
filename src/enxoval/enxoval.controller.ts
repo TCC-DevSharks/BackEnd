@@ -45,8 +45,8 @@ export class EnxovalController {
 
   @Delete('favorito')
   async removeFavorite(
-    @Query('idNome') idEnxoval: number,
-  @Query('idGestante') idGestante: number,) {
+  @Query('idEnxoval') idEnxoval: number,
+  @Query('idGestante') idGestante: number) {
     const result = await this.enxovalService.remove(idEnxoval,idGestante);
 
     if (typeof result !== 'string') {
