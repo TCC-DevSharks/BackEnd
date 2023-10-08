@@ -1,6 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { RefeicaoService } from './refeicao.service';
-import { CreateFoodToMealDto, CreateRefeicaoDto } from './dto/create-refeicao.dto';
+import {
+  CreateFoodToMealDto,
+  CreateRefeicaoDto,
+} from './dto/create-refeicao.dto';
 import { UpdateRefeicaoDto } from './dto/update-refeicao.dto';
 
 @Controller('refeicao')
@@ -12,20 +25,20 @@ export class RefeicaoController {
     const result = await this.refeicaoService.createMeal(body);
 
     if (typeof result !== 'string') {
-      return {message:'Refeição criada com sucesso'};
+      return { message: 'Refeição criada com sucesso' };
     } else {
       throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
     }
   }
 
   @Get('profissional/:id')
- async findAll(@Param('id') id: number) {
-    return{refeição: await this.refeicaoService.findAllMeal(id)} 
+  async findAll(@Param('id') id: number) {
+    return { refeição: await this.refeicaoService.findAllMeal(id) };
   }
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    return{refeição: await this.refeicaoService.findOneMeal(+id)} 
+    return { refeição: await this.refeicaoService.findOneMeal(+id) };
   }
 
   @Patch(':id')
@@ -59,7 +72,7 @@ export class RefeicaoController {
     const result = await this.refeicaoService.createFoodToMeal(body);
 
     if (typeof result !== 'string') {
-      return {message:'Alimento adicionado com sucesso'};
+      return { message: 'Alimento adicionado com sucesso' };
     } else {
       throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
     }
@@ -67,11 +80,14 @@ export class RefeicaoController {
 
   @Get('alimento/:id')
   async findAllFoodMeal(@Param('id') id: number) {
-    return{alimentos: await this.refeicaoService.findAllFoodMeal(+id)} 
+    return { alimentos: await this.refeicaoService.findAllFoodMeal(+id) };
   }
 
   @Delete(':idRefeicao/alimento/:idAlimento')
-  async removeFoodToMeal(@Param('idRefeicao') id: number, @Param('idAlimento') idAlimento: number) {
+  async removeFoodToMeal(
+    @Param('idRefeicao') id: number,
+    @Param('idAlimento') idAlimento: number,
+  ) {
     const result = await this.refeicaoService.removeFoodToMeal(id, idAlimento);
 
     if (typeof result !== 'string') {
@@ -84,6 +100,6 @@ export class RefeicaoController {
   }
   @Get('lista/alimento')
   async findFood() {
-    return{alimentos: await this.refeicaoService.findFood()} 
+    return { alimentos: await this.refeicaoService.findFood() };
   }
 }

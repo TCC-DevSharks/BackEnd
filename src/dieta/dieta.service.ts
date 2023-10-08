@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateDietaDto } from './dto/create-dieta.dto';
+import { CreateDietaDto, CreateMealDto } from './dto/create-dieta.dto';
 import { UpdateDietaDto } from './dto/update-dieta.dto';
 
 @Injectable()
 export class DietaService {
-
   constructor(private prisma: PrismaService) {}
 
   async validacaoID(id: number) {
@@ -21,21 +20,46 @@ export class DietaService {
     }
   }
 
-  async createDieta(body: CreateDietaDto){
-    const valId = await this.validacaoID(body.id_consulta)
+  async validationIdMeal(id: number) {
+    const query = `select * from tbl_refeicao where id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(query);
+
+    if (result.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async validationIdDieta(id: number) {
+    const query = `select * from tbl_dieta where id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(query);
+
+    if (result.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async createDieta(body: CreateDietaDto) {
+    const valId = await this.validacaoID(body.id_consulta);
 
     if (valId == false) {
-      return 'Id da consulta inválido'
+      return 'Id da consulta inválido';
     }
-    const sql = `insert into tbl_dieta(id_consulta)values(${body.id_consulta})`
+    const sql = `insert into tbl_dieta(id_consulta)values(${body.id_consulta})`;
 
-    const result = await this.prisma.$queryRawUnsafe(sql)
+    const result = await this.prisma.$queryRawUnsafe(sql);
 
     return result;
   }
-  
-  async findDieta(id : number){
-    const sql = `select tbl_dieta.id as idDieta, tbl_profissional.nome as profissional, tbl_gestante.nome as gestante
+
+  async findDieta(id: number) {
+    const sql = `select tbl_dieta.id as idDieta, tbl_profissional.nome as profissional, tbl_gestante.nome as gestante,
+    tbl_dieta.id as idDieta, tbl_refeicao.nome as refeicao, tbl_refeicao.id as idRefeicao
     from tbl_dieta
       inner join tbl_consulta
         on tbl_dieta.id_consulta = tbl_consulta.id
@@ -43,9 +67,46 @@ export class DietaService {
         on tbl_consulta.id_profissional = tbl_profissional.id
       inner join tbl_gestante
         on tbl_gestante.id = tbl_consulta.id_gestante
-    where tbl_consulta.id_gestante = ${id}`
+      inner join tbl_dieta_refeicao
+        on tbl_dieta_refeicao.id_dieta = tbl_dieta.id
+      inner join tbl_refeicao
+        on tbl_dieta_refeicao.id_refeicao = tbl_refeicao.id
+    where tbl_consulta.id_gestante = ${id}`;
 
-    const result = await this.prisma.$queryRawUnsafe(sql)
+    const result = await this.prisma.$queryRawUnsafe(sql);
+
+    return result;
+  }
+
+  async createMealToDieta(body: CreateMealDto) {
+    const valMeal = await this.validationIdMeal(body.id_refeicao);
+    const valDieta = await this.validationIdDieta(body.id_dieta);
+
+    if (valMeal == false) {
+      return 'Id refeição Invalido';
+    }
+
+    if (valDieta == false) {
+      return 'Id refeição Invalido';
+    }
+
+    const sql = `insert into tbl_dieta_refeicao(id_dieta,id_refeicao)values(${body.id_dieta},${body.id_refeicao})`;
+
+    const result = await this.prisma.$queryRawUnsafe(sql);
+
+    return result;
+  }
+
+  async findMeal(id: number) {
+    const sql = `select tbl_dieta.id as idDieta, tbl_refeicao.nome as refeicao, tbl_refeicao.id as idRefeicao from
+    tbl_refeicao
+      inner join tbl_dieta_refeicao
+        on tbl_dieta_refeicao.id_refeicao = tbl_refeicao.id
+      inner join tbl_dieta
+        on tbl_dieta_refeicao.id_dieta = tbl_dieta.id 
+    where tbl_dieta_refeicao.id_dieta = ${id}`;
+
+    const result = await this.prisma.$queryRawUnsafe(sql);
 
     return result;
   }

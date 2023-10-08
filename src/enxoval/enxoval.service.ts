@@ -94,7 +94,7 @@ export class EnxovalService {
     return getResult;
   }
 
-  async remove(id_enxoval: number,id_gestante: number) {
+  async remove(id_enxoval: number, id_gestante: number) {
     const idEnxoval = await this.validationIdEnxoval(id_enxoval);
     const idGestante = await this.validationIdGestante(id_gestante);
 
