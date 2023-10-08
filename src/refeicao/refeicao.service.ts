@@ -121,7 +121,14 @@ export class RefeicaoService {
   }
 
   async findAllFoodMeal(id: number) {
-    const sql = `select tbl_alimento.nome as nome, tbl_alimento.id as idAlimento, tbl_alimento.imagem as imagem, tbl_alimento.peso as peso, tbl_categoriaAlimento.nome as categoria, tbl_refeicao.nome as refeicao, tbl_refeicao.id as id 
+    const sql = `select   tbl_refeicao.id as id,
+    tbl_alimento.nome as nome,
+    tbl_alimento.id as idAlimento,
+    tbl_alimento.imagem as imagem,
+    tbl_alimento.peso as peso,
+    tbl_categoriaAlimento.nome as categoria,
+    tbl_refeicao.nome as refeicao,
+    tbl_categoriaAlimento.id as idCategoria
     from tbl_refeicao
       inner join tbl_alimento_refeicao
         on tbl_alimento_refeicao.id_refeicao = tbl_refeicao.id
@@ -151,7 +158,7 @@ export class RefeicaoService {
   }
 
   async findFood() {
-    const sql = `select tbl_alimento.id as id,tbl_alimento.nome as nome, tbl_alimento.imagem as imagem, tbl_alimento.peso as peso, tbl_categoriaAlimento.nome as categoria 
+    const sql = `select tbl_alimento.id as id,tbl_alimento.nome as nome, tbl_alimento.imagem as imagem, tbl_alimento.peso as peso, tbl_categoriaAlimento.nome as categoria, tbl_categoriaAlimento.id as idCategoria
     from tbl_alimento
       inner join tbl_categoriaAlimento
         on tbl_categoriaAlimento.id = tbl_alimento.id_categoria`;

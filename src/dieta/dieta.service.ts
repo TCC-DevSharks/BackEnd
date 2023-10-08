@@ -59,7 +59,7 @@ export class DietaService {
 
   async findDieta(id: number) {
     const sql = `select tbl_dieta.id as idDieta, tbl_profissional.nome as profissional, tbl_gestante.nome as gestante,
-    tbl_dieta.id as idDieta, tbl_refeicao.nome as refeicao, tbl_refeicao.id as idRefeicao
+    tbl_dieta.id as idDieta, tbl_refeicao.nome as refeicao, tbl_refeicao.id as idRefeicao, time_format(tbl_dieta_refeicao.horario,'%H:%i:0%s') as horario
     from tbl_dieta
       inner join tbl_consulta
         on tbl_dieta.id_consulta = tbl_consulta.id
@@ -90,21 +90,23 @@ export class DietaService {
       return 'Id refeição Invalido';
     }
 
-    const sql = `insert into tbl_dieta_refeicao(id_dieta,id_refeicao)values(${body.id_dieta},${body.id_refeicao})`;
+    const sql = `insert into tbl_dieta_refeicao(id_dieta,id_refeicao,horario)values(${body.id_dieta},${body.id_refeicao}, "${body.horario}")`;
 
     const result = await this.prisma.$queryRawUnsafe(sql);
 
     return result;
   }
 
-  async findMeal(id: number) {
-    const sql = `select tbl_dieta.id as idDieta, tbl_refeicao.nome as refeicao, tbl_refeicao.id as idRefeicao from
-    tbl_refeicao
-      inner join tbl_dieta_refeicao
-        on tbl_dieta_refeicao.id_refeicao = tbl_refeicao.id
-      inner join tbl_dieta
-        on tbl_dieta_refeicao.id_dieta = tbl_dieta.id 
-    where tbl_dieta_refeicao.id_dieta = ${id}`;
+  async findMealCategory(id: number) {
+    const sql = `select tbl_alimento.id as id,
+    tbl_alimento.nome as nome,
+    tbl_alimento.imagem as imagem,
+    tbl_alimento.peso as peso,
+    tbl_categoriaAlimento.nome as categoria
+    from tbl_alimento
+      inner join tbl_categoriaAlimento
+        on tbl_alimento.id_categoria = tbl_categoriaAlimento.id
+        where tbl_categoriaAlimento.id = ${id}`;
 
     const result = await this.prisma.$queryRawUnsafe(sql);
 

@@ -42,4 +42,9 @@ export class DietaController {
       throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
     }
   }
+
+  @Get('categoria/:id')
+  async findMealCategory(@Param('id') id: number) {
+    return { categoria: await this.dietaService.findMealCategory(+id) };
+  }
 }
