@@ -28,8 +28,26 @@ export class GestanteService {
     const query = `select id from tbl_gestante where email = '${body.email}'`;
 
     const result: [] = await this.prisma.$queryRawUnsafe(query);
-
+    console.log(result);
+    
     return result;
+  }
+
+  async findEmail(email: string){
+    const query = `select * from tbl_gestante where email = '${email}'`
+    const resultQuery = await this.prisma.$queryRawUnsafe(query);
+    let result = {}
+
+    
+    if(resultQuery){
+      
+        return resultQuery[0]
+      } else{
+        result = {
+          message: 'Gestante não encontrada',
+          status: HttpStatus.INTERNAL_SERVER_ERROR
+      }
+    }      
   }
 
   async validacaoCpf(body: CreateGestanteParams) {
