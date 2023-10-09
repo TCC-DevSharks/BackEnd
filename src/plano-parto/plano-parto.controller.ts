@@ -19,8 +19,8 @@ export class PlanoPartoController {
   constructor(private readonly planoPartoService: PlanoPartoService) {}
 
   @Get()
-  findAll() {
-    return {planos: this.planoPartoService.findAll()};
+  async findAll() {
+    return {planos: await this.planoPartoService.findAll()};
   }
 
   @Get('categoria')
