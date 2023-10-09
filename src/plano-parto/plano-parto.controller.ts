@@ -20,7 +20,7 @@ export class PlanoPartoController {
 
   @Get()
   findAll() {
-    return this.planoPartoService.findAll();
+    return {planos: this.planoPartoService.findAll()};
   }
 
   @Get('categoria')
