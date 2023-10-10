@@ -79,7 +79,7 @@ export class SugestaoNomeService {
       return 'Id gestante invalido';
     }
   }
-  async findFavorite(id: number, sexo: string){
+  async findFavorite(id: number, sexo: string) {
     const getSql = `select tbl_nome_gestante.id, tbl_sugestao_nome.nome as nome, tbl_gestante.nome as gestante, tbl_sexo.sexo
     from tbl_nome_gestante
       inner join tbl_sugestao_nome
