@@ -21,8 +21,8 @@ export class MalaMaternidadeController {
   ) {}
 
   @Get()
-  findAll() {
-    return this.malaMaternidadeService.findAll();
+  async findAll() {
+    return {mala: await this.malaMaternidadeService.findAll(), }
   }
 
   @Post('favorito')
