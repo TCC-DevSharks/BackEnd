@@ -23,6 +23,7 @@ import { MalaMaternidadeModule } from './mala-maternidade/mala-maternidade.modul
 import { PlanoPartoModule } from './plano-parto/plano-parto.module';
 import { DietaModule } from './dieta/dieta.module';
 import { RefeicaoModule } from './refeicao/refeicao.module';
+import { RedefinirSenhaModule } from './redefinir-senha/redefinir-senha.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { RefeicaoModule } from './refeicao/refeicao.module';
     PlanoPartoModule,
     DietaModule,
     RefeicaoModule,
+    RedefinirSenhaModule,
   ],
   controllers: [AppController],
   providers: [
