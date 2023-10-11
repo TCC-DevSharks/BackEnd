@@ -19,15 +19,10 @@ export class RedefinirSenhaController {
 
     if (result) {
       message = {
-        message: 'Sua senha foi redefinida com sucesso:',
+        message: await result,
         status: HttpStatus.OK,
       };
-    } else {
-      message = {
-        message: 'Não foi possível redefinir sua senha:',
-        status: HttpStatus.NOT_FOUND,
-      };
-    }
+    } 
     return {
       message,
     };
@@ -43,15 +38,9 @@ export class RedefinirSenhaController {
 
     if (result) {
       message = {
-        message:
-          'Um E-mail foi enviado para você, para que possamos redefinir sua senha:',
+        result:
+          await result,
         status: HttpStatus.OK,
-      };
-    } else {
-      message = {
-        message:
-          'Não conseguimos enviar um E-mail para você, por favor verifique seu E-mail',
-        status: HttpStatus.NOT_FOUND,
       };
     }
     return {
@@ -77,7 +66,7 @@ export class RedefinirSenhaController {
     } else {
       message = {
         message:
-          'Não conseguimos enviar um E-mail para você, por favor verifique seu E-mail',
+          result,
         status: HttpStatus.NOT_FOUND,
       };
     }
@@ -100,12 +89,12 @@ export class RedefinirSenhaController {
 
     if (result) {
       message = {
-        message: 'Sua senha foi redefinida com sucesso:',
+        result: await result,
         status: HttpStatus.OK,
       };
     } else {
       message = {
-        message: 'Não foi possível redefinir sua senha:',
+        result: await result,
         status: HttpStatus.NOT_FOUND,
       };
     }

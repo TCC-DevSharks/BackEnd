@@ -15,6 +15,15 @@ interface Gestante {
   senha: string;
   idGenero: number;
 }
+interface Clinica {
+  id: number;
+  nome: string;
+  cpf: string;
+  dataNascimento: string;
+  foto: string;
+  email: string;
+  senha: string;
+}
 
 @Injectable()
 export class RedefinirSenhaService {
@@ -22,9 +31,9 @@ export class RedefinirSenhaService {
     private readonly prismaService: PrismaService,
     private readonly gestanteService: GestanteService,
     private readonly clinicaService: ClinicaService
-  ) {}
+  ) { }
   private tokenCache: { token: number };
-  
+
 
   gerarNumeroAleatorio() {
     const token = Math.floor(Math.random() * 9000) + 1000;
@@ -35,6 +44,7 @@ export class RedefinirSenhaService {
   }
 
   async enviarTokenPorEmailGestante(email: string): Promise<{}> {
+    let message = {}
     const gestanteValidation = await this.gestanteService.findEmail(email);
 
     if (gestanteValidation) {
@@ -133,27 +143,32 @@ export class RedefinirSenhaService {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log('enviou');
 
-      return email;
+      message = {
+        result: 'E-mail enviado com sucesso'
+      }
+
+
     } else {
-      console.log('não foi');
+      message = {
+        result: 'Não foi possível enviar o E-mail'
+      }
     }
+    return message
   }
+
 
   async validarTokenGestante(email: string, token: number) {
     const user = await this.gestanteService.findEmail(email);
+    let message = false
     if (user) {
-      if (token == 1) {
-        return {
-          HttpCode: HttpStatus.OK,
-        };
-      } else {
-        return {
-          HttpCode: HttpStatus.CONFLICT,
-        };
+      if (token == this.tokenCache.token) {
+        message = true
       }
+    } else {
+      return message
     }
+    return message
   }
 
   async redefinirSenhaGestante(
@@ -161,8 +176,9 @@ export class RedefinirSenhaService {
     token: number,
     novaSenha: string,
   ): Promise<{}> {
-    this.validarTokenGestante(email, token);
-    if (this.validarTokenGestante) {
+    const validaToken = await this.validarTokenGestante(email, token);
+    let message = {}
+    if (validaToken === true) {
       const queryUser = `select * from tbl_gestante where email = '${email}'`;
 
       const result: Gestante = await this.prismaService.$queryRawUnsafe(
@@ -171,11 +187,7 @@ export class RedefinirSenhaService {
 
       if (result[0]) {
         const idUser = result[0].id;
-
-        console.log();
-
         const novaSenhaa = await bcrypt.hash(novaSenha, 10);
-        console.log(novaSenhaa);
 
         const queryResetPassword = `update tbl_gestante set senha = '${novaSenhaa}' where id = ${idUser};`;
 
@@ -183,21 +195,36 @@ export class RedefinirSenhaService {
           queryResetPassword,
         );
         if (resultRedefine) {
-          console.log('foi');
+          console.log('aqui');
+          message = {
+            message: 'Sua senha foi redefinida com sucesso;'
+          }
         }
       } else {
-        return {
-          message: `Não foi possível redefinir a senha do usuario: ${email}`,
-        };
+        message = {
+          message: 'Não foi possível redefinir sua senha:;'
+        }
       }
-
       delete this.tokenCache[email];
+
+    } else {
+      message = {
+        message: 'Token inválido;'
+      }
     }
+    return message
   }
+
+
+
+
+
+
 
 
   async enviarTokenPorEmailClinica(email: string): Promise<{}> {
     const clinicaValidation = await this.clinicaService.findEmail(email);
+    let message = {}
 
     if (clinicaValidation) {
       const token = this.gerarNumeroAleatorio();
@@ -295,27 +322,30 @@ export class RedefinirSenhaService {
       };
 
       await transporter.sendMail(mailOptions);
-      console.log('enviou');
 
-      return email;
+      message = {
+        result: 'E-mail enviado com sucesso'
+      }
+
     } else {
-      console.log('não foi');
-    }
-  }
-
-  async validarTokenClina(email: string, token: number) {
-    const user = await this.clinicaService.findEmail(email);
-    if (user) {
-      if (token == 1) {
-        return {
-          HttpCode: HttpStatus.OK,
-        };
-      } else {
-        return {
-          HttpCode: HttpStatus.CONFLICT,
-        };
+      message = {
+        result: 'Não foi possivel enviar o E-mail:'
       }
     }
+    return message
+  }
+
+  async validarTokenClinica(email: string, token: number) {
+    const user = await this.clinicaService.findEmail(email);
+    let message = false
+    if (user) {
+      if (token == this.tokenCache.token) {
+        message = true
+      }
+    } else {
+      return message
+    }
+    return message
   }
 
   async redefinirSenhaClinica(
@@ -323,21 +353,21 @@ export class RedefinirSenhaService {
     token: number,
     novaSenha: string,
   ): Promise<{}> {
-    this.validarTokenGestante(email, token);
-    if (this.validarTokenGestante) {
+
+    const validaToken = await this.validarTokenClinica(email, token);
+
+
+    let message = {}
+    if (validaToken === true) {
       const queryUser = `select * from tbl_clinica where email = '${email}'`;
 
-      const result: Gestante = await this.prismaService.$queryRawUnsafe(
+      const result: Clinica = await this.prismaService.$queryRawUnsafe(
         queryUser,
       );
 
       if (result[0]) {
         const idUser = result[0].id;
-
-        console.log();
-
         const novaSenhaa = await bcrypt.hash(novaSenha, 10);
-        console.log(novaSenhaa);
 
         const queryResetPassword = `update tbl_clinica set senha = '${novaSenhaa}' where id = ${idUser};`;
 
@@ -345,16 +375,23 @@ export class RedefinirSenhaService {
           queryResetPassword,
         );
         if (resultRedefine) {
-          console.log('foi');
+          message = {
+            message: 'Sua senha foi redefinida com sucesso;'
+          }
         }
       } else {
-        return {
-          message: `Não foi possível redefinir a senha da Clinica: ${email}`,
-        };
+        message = {
+          message: 'Não foi possível redefinir sua senha:;'
+        }
       }
-
       delete this.tokenCache[email];
+
+    } else {
+      message = {
+        message: 'Token inválido;'
+      }
     }
+    return message
   }
 
 }
