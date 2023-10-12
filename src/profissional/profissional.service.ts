@@ -239,4 +239,25 @@ export class ProfissionalService {
     const result = this.prisma.$queryRawUnsafe(query);
     return result;
   }
+
+  async findPregnants(id: number){
+
+    const valId = await this.validacaoID(id);
+
+    if (valId == false) {
+      return 'Id Invalid';
+    }
+    
+    const sql = `select tbl_gestante.nome, tbl_gestante.semana_gestacao, tbl_gestante.foto
+    from tbl_gestante
+      inner join tbl_consulta
+        on tbl_consulta.id_gestante = tbl_gestante.id
+      inner join tbl_profissional
+        on tbl_profissional.id = tbl_consulta.id_profissional
+    where tbl_profissional.id = ${id}`
+
+    const result = await this.prisma.$queryRawUnsafe(sql);
+
+    return result
+  }
 }
