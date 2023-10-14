@@ -7,7 +7,7 @@ import { GestanteService } from 'src/gestante/gestante.service';
 import { ProfissionalService } from 'src/profissional/profissional.service';
 
 interface  Clinica {
-  nome : string,
+  clinica : string,
   telefone : string,
   endereco : string
 }
@@ -18,7 +18,17 @@ interface Profissional {
 }
 
 interface Gestante{
-  email : string
+  nome: string,
+  data_nascimento : string,
+  email : string,
+  senha : string,
+  cpf : string,
+  peso : number,
+  altura : number,
+  data_parto: string,
+  foto: string,
+  semana_gestacao: number,
+  telefone: string
 }
 
 @Injectable()
@@ -86,8 +96,7 @@ export class ConsultaService {
 
         const result = await this.prisma.$queryRawUnsafe(sql);
         
-        const enviar = await this.enviarEmailConsulta(gestante.email,clinica,body.hora,body.dia,profissional)
-        
+        const enviar = await this.enviarEmailConsulta(gestante,clinica,body.hora,body.dia,profissional)
         return result;
       } else {
         return 'Id Profissional invalido';
@@ -161,9 +170,9 @@ export class ConsultaService {
     return await this.prisma.$queryRawUnsafe(sql);
   }
 
-  async enviarEmailConsulta(email : string, clinica: Clinica, hora: string, dia: string, medico: Profissional): Promise<{}>{
+  async enviarEmailConsulta(gestante : Gestante, clinica: Clinica, hora: string, dia: string, medico: Profissional): Promise<{}>{
     
-    const gestanteValidation = await this.gestanteService.findEmail(email)
+    const gestanteValidation = await this.gestanteService.findEmail(gestante.email)
     let message = {}
     if(gestanteValidation){
       let htmlEmail = `
@@ -174,7 +183,7 @@ export class ConsultaService {
     <meta charset="UTF-8">
     <title>E-mail de Redefinição de Senha</title>
 </head>
-<body style="height: 100vh; margin: 0; padding: 0;  font-family: Arial, sans-serif; background-color: #f3f3f3;">
+<body style="height: auto; margin: 0;  padding: 50px !important;  font-family: Arial, sans-serif; background-color: #f3f3f3;">
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
             <td style="text-align: center;">
@@ -209,23 +218,20 @@ export class ConsultaService {
                                         <td align="left">
                                             <div style="padding-left: 5%; padding-top:2%; height: 100%; padding-bottom:5%;">
                                                 <h2 style="font-size: 1rem; color: #464444; width: 100%;">
-                                                    Olá!
+                                                    Olá mamãe, ${gestante.nome}
                                                 </h2>
                                                 <p style="font-size: 0.9rem; color: #464444; width: 80%;">
-                                                  Estamos felizes em informar que sua consulta na ${clinica.nome} foi 
+                                                  Estamos felizes em informar que sua consulta na ${clinica.clinica} foi 
                                                   marcada com sucesso! Aqui estão os detalhes da sua consulta:
                                                 </p>
-                                                <h3 style="font-size: 1.3rem; color: #b6b6f6;">
-                                                  Data e Hora: ${dia} e ${hora}
+                                                <h3 style="font-size: 1rem; color: #b6b6f6;">
+                                                  Data e Hora: ${dia.split('$$$$-')} as ${hora}
                                                 </h3>
-                                                <h3 style="font-size: 1.3rem; color: #b6b6f6;">
+                                                <h3 style="font-size: 1rem; color: #b6b6f6;">
                                                   Especialidade: ${medico.especialidade}
                                                 </h3>
-                                                <h3 style="font-size: 1.3rem; color: #b6b6f6;">
+                                                <h3 style="font-size: 1rem; color: #b6b6f6;">
                                                   Médico: ${medico.nome}
-                                                </h3>
-                                                <h3 style="font-size: 1.3rem; color: #b6b6f6;">
-                                                  Endereço da Clínica: ${clinica.endereco}
                                                 </h3>
                                                 <p style="font-size: 0.9rem; color: #464444; width:80%">
                                                   Lembramos que a pontualidade é essencial. 
@@ -235,11 +241,11 @@ export class ConsultaService {
                                                 <p style="font-size: 0.9rem; color: #464444; width:80%">
                                                       Se você precisar cancelar ou reagendar a consulta, por favor, entre em contato conosco o mais rápido possível pelo telefone: <h2 style="color: #464444; font-size: 1rem;" >${clinica.telefone}</h2> 
                                                 </p>
-                                                <h3 style="font-size: 1rem; color: #464444;">
+                                                <h3 style="font-size: 0.9rem; color: #464444;">
                                                   Desejamos que a sua consulta seja produtiva e tranquila.
                                                 </h3>
                                                 <h3 style="font-size:1.2rem; color: #b6b6f6;">
-                                                  Atenciosamente, ${clinica.nome}
+                                                  Atenciosamente, ${clinica.clinica}
                                                 </h3>
                                             </div>
                                         </td>
@@ -265,9 +271,9 @@ export class ConsultaService {
         });
       const mailOptions = {
         from: 'kaue.lima@uxgroup.com.br',
-        to: email,
+        to: gestante.email,
         subject: 'Consulta Marcada - Conta Bebê-Vindo',
-        text: `Agendamento de Consulta: ${clinica.nome}`,
+        text: `Agendamento de Consulta: ${clinica.clinica}`,
         html: `${htmlEmail}`
       };
       await transporter.sendMail(mailOptions);

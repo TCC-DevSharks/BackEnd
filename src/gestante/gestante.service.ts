@@ -119,7 +119,8 @@ export class GestanteService {
     return result;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
+    
     const query = `select tbl_gestante.id, tbl_gestante.nome as nome, date_format(tbl_gestante.data_nascimento, '%d/%m/%Y') as data_nascimento,
     tbl_gestante.email as email,tbl_gestante.senha as senha, tbl_gestante.cpf as cpf, tbl_gestante.peso as peso, tbl_gestante.altura as altura,
     date_format(tbl_gestante.data_parto, '%d/%m/%Y') as data_parto, tbl_gestante.foto as foto, tbl_gestante.semana_gestacao,
@@ -128,7 +129,9 @@ export class GestanteService {
     where tbl_gestante.id = ${id}
     order by tbl_gestante.id asc`;
 
-    const result = this.prisma.$queryRawUnsafe(query);
+    const result = await this.prisma.$queryRawUnsafe(query);
+    console.log(result);
+    
     return result;
   }
 

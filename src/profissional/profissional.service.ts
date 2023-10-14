@@ -126,7 +126,7 @@ export class ProfissionalService {
     return result;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     const sql = `select tbl_profissional.id as id, tbl_profissional.nome as nome, tbl_profissional.cpf as cpf, tbl_profissional.crm as crm, date_format(tbl_profissional.data_nascimento, '%d/%m/%Y') as data_nascimento,
     tbl_profissional.foto as foto, time_format(tbl_profissional.inicio_atendimento,'%H:%i:0%s') as inicio_atendimento, time_format(tbl_profissional.fim_atendimento,'%H:%i:0%s') as fim_atendimento, tbl_profissional.email as email, tbl_profissional.senha as senha,
     tbl_sexo.sexo as sexo, tbl_clinica.razao_social as clinica, tbl_telefone.numero as clinica_telefone, tbl_enderecoClinica.cep  as clinica_endereco, tbl_enderecoClinica.numero as clinica_numero, tbl_enderecoCLinica.complemento as clinica_complemento,
@@ -157,7 +157,7 @@ export class ProfissionalService {
       where tbl_profissional.id = ${id}
       order by tbl_profissional.id asc;`;
 
-    const result = this.prisma.$queryRawUnsafe(sql);
+    const result = await this.prisma.$queryRawUnsafe(sql);
 
     return result;
   }
