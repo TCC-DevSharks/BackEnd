@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, HttpException } from '@nestjs/common';
 import { RedefinirSenhaService } from './redefinir-senha.service';
 
 @Controller('redefinir-senha')
@@ -18,14 +18,13 @@ export class RedefinirSenhaController {
     );
 
     if (result) {
-      message = {
-        message: await result,
-        status: HttpStatus.OK,
-      };
+      message = await result
     } 
-    return {
-      message,
-    };
+    if(typeof message == 'string'){
+      throw new HttpException(`${message}`, HttpStatus.NOT_FOUND);
+    }else{
+      return {message};
+    }
   }
 
   @Post('gestante/solicitar')

@@ -208,20 +208,11 @@ export class RedefinirSenhaService {
       delete this.tokenCache[email];
 
     } else {
-      message = {
-        message: 'Token inválido;'
-      }
+      message = 'Token inválido;'
+      
     }
     return message
   }
-
-
-
-
-
-
-
-
   async enviarTokenPorEmailClinica(email: string): Promise<{}> {
     const clinicaValidation = await this.clinicaService.findEmail(email);
     let message = {}
