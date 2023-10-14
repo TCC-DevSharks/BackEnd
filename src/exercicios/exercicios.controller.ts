@@ -26,7 +26,14 @@ export class ExerciciosController {
     }
   }
 
-  @Get('categorias/todos')
+  @Get('categorias/:id')
+  async findOneCategoria(@Param('id')id: number) {
+    return {
+      exercicios: await this.exerciciosService.findOneCategories(id),
+    }
+  }
+
+  @Get('categoria/todos')
   async findCategoria() {
     return {
       categorias: await this.exerciciosService.findCategories(),
