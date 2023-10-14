@@ -12,7 +12,7 @@ export class ExerciciosService {
 
   async findAll() {
     const sql = `
-    select tbl_exercicio.nome as nome, tbl_exercicio.descricao, tbl_exercicio.video, tbl_categoria.nome as categoria
+    select tbl_exercicio.id as id, tbl_exercicio.nome as nome, tbl_exercicio.descricao, tbl_exercicio.video, tbl_categoria.nome as categoria
       from tbl_exercicio
         inner join tbl_categoria
           on tbl_categoria.id = tbl_exercicio.id_categoria;`;
@@ -24,7 +24,7 @@ export class ExerciciosService {
 
   async findOne(id: number) {
     const sql = `
-    select tbl_exercicio.nome as nome, tbl_exercicio.descricao, tbl_exercicio.video, tbl_categoria.nome as categoria
+    select tbl_exercicio.id as id, tbl_exercicio.nome as nome, tbl_exercicio.descricao, tbl_exercicio.video, tbl_categoria.nome as categoria
       from tbl_exercicio
         inner join tbl_categoria
           on tbl_categoria.id = tbl_exercicio.id_categoria
