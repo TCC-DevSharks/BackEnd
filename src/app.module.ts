@@ -24,6 +24,7 @@ import { PlanoPartoModule } from './plano-parto/plano-parto.module';
 import { DietaModule } from './dieta/dieta.module';
 import { RefeicaoModule } from './refeicao/refeicao.module';
 import { RedefinirSenhaModule } from './redefinir-senha/redefinir-senha.module';
+import { ExerciciosModule } from './exercicios/exercicios.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { RedefinirSenhaModule } from './redefinir-senha/redefinir-senha.module';
     DietaModule,
     RefeicaoModule,
     RedefinirSenhaModule,
+    ExerciciosModule,
   ],
   controllers: [AppController],
   providers: [

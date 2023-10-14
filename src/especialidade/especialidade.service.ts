@@ -10,6 +10,9 @@ interface CreateEspecialidadeParams {
 
 @Injectable()
 export class EspecialidadeService {
+
+  constructor(private prisma: PrismaService) {}
+  
   async validacaoID(id: number) {
     const sqlValidacaoId = `select * from tbl_profissional_especialidade where id =${id};`;
     const resultValidacaoId: [] = await this.prisma.$queryRawUnsafe(
@@ -22,7 +25,6 @@ export class EspecialidadeService {
       return false;
     }
   }
-  constructor(private prisma: PrismaService) {}
 
   async create(body: CreateEspecialidadeParams) {
     const sql = `insert into tbl_profissional_especialidade(id_profissional, id_especialidade)values(${body.id_profissional}, ${body.id_especialidade});`;

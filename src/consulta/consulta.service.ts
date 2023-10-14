@@ -70,12 +70,13 @@ export class ConsultaService {
     const idProfissional = await this.validationIdProfissional(
       body.id_profissional,
     );
-      const gestanteData =  this.gestanteService.findOne(body.id_gestante)
+      const gestanteData = await this.gestanteService.findOne(body.id_gestante)
       let gestante : Gestante =  gestanteData[0]
-      const clinicaData = this.profissionalService.findOne(body.id_profissional)
+      const clinicaData = await this.profissionalService.findOne(body.id_profissional)
       let clinica : Clinica = clinicaData[0]
-      const profissionalData = this.profissionalService.findOne(body.id_profissional)
+      const profissionalData = await this.profissionalService.findOne(body.id_profissional)
       let profissional : Profissional = profissionalData[0]
+
 
     if (idGestante == true) {
       if (idProfissional == true) {
@@ -84,9 +85,9 @@ export class ConsultaService {
         );`;
 
         const result = await this.prisma.$queryRawUnsafe(sql);
-        console.log(gestante.email);
         
         const enviar = await this.enviarEmailConsulta(gestante.email,clinica,body.hora,body.dia,profissional)
+        
         return result;
       } else {
         return 'Id Profissional invalido';
