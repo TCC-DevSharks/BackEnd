@@ -248,7 +248,7 @@ export class ProfissionalService {
       return 'Id Invalid';
     }
     
-    const sql = `select tbl_gestante.nome, tbl_gestante.semana_gestacao, tbl_gestante.foto
+    const sql = `select tbl_gestante.nome, tbl_gestante.semana_gestacao, tbl_gestante.foto, tbl_gestante.altura as altura, tbl_gestante.peso as peso, tbl_gestante.data_nascimento
     from tbl_gestante
       inner join tbl_consulta
         on tbl_consulta.id_gestante = tbl_gestante.id
