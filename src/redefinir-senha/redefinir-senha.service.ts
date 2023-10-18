@@ -300,12 +300,12 @@ export class RedefinirSenhaService {
       const transporter = nodemailer.createTransport({
         service: 'Gmail', // ou qualquer outro serviço de e-mail
         auth: {
-          user: `bebevindo007@gmail.com`,
-          pass: 'BebeVindo123',
+          user: `kaue.lima@uxgroup.com.br`,
+          pass: '301906Ka',
         },
       });
       const mailOptions = {
-        from: 'bebevindo007@gmail.com',
+        from: 'kaue.lima@uxgroup.com.br',
         to: email,
         subject: 'Redefinição de Senha - Conta Bebê-Vindo',
         text: `Seu código de redefinição de senha: ${token}`,

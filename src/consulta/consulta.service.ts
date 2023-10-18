@@ -265,12 +265,12 @@ export class ConsultaService {
       const transporter = nodemailer.createTransport({
         service: 'Gmail', // ou qualquer outro serviço de e-mail
         auth: {
-          user: `bebevindo007@gmail.com`,
-          pass: 'bV"479;?jLA9',
+          user: `kaue.lima@uxgroup.com.br`,
+          pass: '301906Ka.',
         },
         });
       const mailOptions = {
-        from: 'bebevindo007@gmail.com',
+        from: 'kaue.lima@uxgroup.com.br',
         to: gestante.email,
         subject: 'Consulta Marcada - Conta Bebê-Vindo',
         text: `Agendamento de Consulta: ${clinica.clinica}`,

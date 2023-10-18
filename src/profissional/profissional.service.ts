@@ -248,7 +248,7 @@ export class ProfissionalService {
       return 'Id Invalid';
     }
     
-    const sql = `select tbl_gestante.nome, tbl_gestante.semana_gestacao, tbl_gestante.foto, tbl_gestante.altura as altura, tbl_gestante.peso as peso, tbl_gestante.data_nascimento, tbl_especialidade.nome as especialidade,
+    const sql = `select tbl_consulta.id as idConsulta ,tbl_gestante.nome, tbl_gestante.semana_gestacao, tbl_gestante.foto, tbl_gestante.altura as altura, tbl_gestante.peso as peso, tbl_gestante.data_nascimento, tbl_especialidade.nome as especialidade,
     date_format(tbl_consulta.dia, '%d/%m/%Y') as dia, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora
     from tbl_gestante
       inner join tbl_consulta
