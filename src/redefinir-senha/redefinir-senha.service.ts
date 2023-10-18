@@ -301,7 +301,7 @@ export class RedefinirSenhaService {
         service: 'Gmail', // ou qualquer outro serviço de e-mail
         auth: {
           user: `bebevindo007@gmail.com`,
-          pass: 'BebeVindo123.',
+          pass: 'BebeVindo123',
         },
       });
       const mailOptions = {

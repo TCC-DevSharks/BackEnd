@@ -266,7 +266,7 @@ export class ConsultaService {
         service: 'Gmail', // ou qualquer outro serviço de e-mail
         auth: {
           user: `bebevindo007@gmail.com`,
-          pass: 'BebeVindo123',
+          pass: 'bV"479;?jLA9',
         },
         });
       const mailOptions = {
