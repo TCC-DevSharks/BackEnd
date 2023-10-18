@@ -128,8 +128,8 @@ export class ProfissionalService {
 
   async findOne(id: number) {
     const sql = `select tbl_profissional.id as id, tbl_profissional.nome as nome, tbl_profissional.cpf as cpf, tbl_profissional.crm as crm, date_format(tbl_profissional.data_nascimento, '%d/%m/%Y') as data_nascimento,
-    tbl_profissional.foto as foto, time_format(tbl_profissional.inicio_atendimento,'%H:%i:0%s') as inicio_atendimento, time_format(tbl_profissional.fim_atendimento,'%H:%i:0%s') as fim_atendimento, tbl_profissional.email as email, tbl_profissional.senha as senha,
-    tbl_sexo.sexo as sexo, tbl_clinica.razao_social as clinica, tbl_telefone.numero as clinica_telefone, tbl_enderecoClinica.cep  as clinica_endereco, tbl_enderecoClinica.numero as clinica_numero, tbl_enderecoCLinica.complemento as clinica_complemento,
+    tbl_profissional.foto as foto,tbl_profissional.descricao as descricao, time_format(tbl_profissional.inicio_atendimento,'%H:%i:0%s') as inicio_atendimento, time_format(tbl_profissional.fim_atendimento,'%H:%i:0%s') as fim_atendimento, tbl_profissional.email as email, tbl_profissional.senha as senha,
+    tbl_sexo.sexo as sexo, tbl_clinica.razao_social as clinica,
     tbl_telefone.id as idTelefone, tbl_telefone.numero as telefone, tbl_tipo_telefone.tipo as tipo_telefone,tbl_endereco_Profissional.id as idEndereco, tbl_endereco_Profissional.numero as numero,
     tbl_endereco_Profissional.complemento as complemento, tbl_endereco_Profissional.cep as cep,
     tbl_especialidade.nome as especialidade
@@ -150,10 +150,6 @@ export class ProfissionalService {
         on tbl_profissional.id = tbl_profissional_especialidade.id_profissional
       inner join tbl_especialidade
         on tbl_especialidade.id = tbl_profissional_especialidade.id_especialidade
-        inner join tbl_clinica_telefone
-        on tbl_clinica_telefone.id_clinica = tbl_clinica.id
-      inner join tbl_enderecoClinica
-        on tbl_clinica.id = tbl_enderecoClinica.id_clinica
       where tbl_profissional.id = ${id}
       order by tbl_profissional.id asc;`;
 

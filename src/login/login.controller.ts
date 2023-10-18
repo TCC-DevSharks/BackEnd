@@ -40,6 +40,6 @@ export class LoginController {
   ) {
     const login = await this.loginService.findProfissional(body);
 
-    return login;
+    return { doctor: login };
   }
 }
