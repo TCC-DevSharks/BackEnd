@@ -25,6 +25,7 @@ import { DietaModule } from './dieta/dieta.module';
 import { RefeicaoModule } from './refeicao/refeicao.module';
 import { RedefinirSenhaModule } from './redefinir-senha/redefinir-senha.module';
 import { ExerciciosModule } from './exercicios/exercicios.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { ExerciciosModule } from './exercicios/exercicios.module';
     RefeicaoModule,
     RedefinirSenhaModule,
     ExerciciosModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
