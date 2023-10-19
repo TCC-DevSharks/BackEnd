@@ -53,7 +53,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     RedefinirSenhaModule,
     ExerciciosModule,
     UserModule,
-    MongooseModule.forRoot('mongodb+srv://root:<root>@cluster0.bjlbipq.mongodb.net/?retryWrites=true&w=majority')
+    MongooseModule.forRoot('mongodb+srv://root:root@cluster0.bjlbipq.mongodb.net/?retryWrites=true&w=majority')
   ],
   controllers: [AppController],
   providers: [
