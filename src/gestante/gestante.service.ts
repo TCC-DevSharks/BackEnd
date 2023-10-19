@@ -28,8 +28,26 @@ export class GestanteService {
     const query = `select id from tbl_gestante where email = '${body.email}'`;
 
     const result: [] = await this.prisma.$queryRawUnsafe(query);
-
+    console.log(result);
+    
     return result;
+  }
+
+  async findEmail(email: string){
+    const query = `select * from tbl_gestante where email = '${email}'`
+    const resultQuery = await this.prisma.$queryRawUnsafe(query);
+    let result = {}
+
+    
+    if(resultQuery){
+      
+        return resultQuery[0]
+      } else{
+        result = {
+          message: 'Gestante não encontrada',
+          status: HttpStatus.INTERNAL_SERVER_ERROR
+      }
+    }      
   }
 
   async validacaoCpf(body: CreateGestanteParams) {
@@ -57,6 +75,7 @@ export class GestanteService {
     const saltOrRounds = 10;
     const password = body.senha;
     const hash = await bcrypt.hash(password, saltOrRounds);
+
 
     const queryGestante = `call procInsertGestante(
       '${body.nome}', 
@@ -101,7 +120,8 @@ export class GestanteService {
     return result;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
+    
     const query = `select tbl_gestante.id, tbl_gestante.nome as nome, date_format(tbl_gestante.data_nascimento, '%d/%m/%Y') as data_nascimento,
     tbl_gestante.email as email,tbl_gestante.senha as senha, tbl_gestante.cpf as cpf, tbl_gestante.peso as peso, tbl_gestante.altura as altura,
     date_format(tbl_gestante.data_parto, '%d/%m/%Y') as data_parto, tbl_gestante.foto as foto, tbl_gestante.semana_gestacao,
@@ -110,7 +130,9 @@ export class GestanteService {
     where tbl_gestante.id = ${id}
     order by tbl_gestante.id asc`;
 
-    const result = this.prisma.$queryRawUnsafe(query);
+    const result = await this.prisma.$queryRawUnsafe(query);
+    console.log(result);
+    
     return result;
   }
 

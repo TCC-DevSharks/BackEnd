@@ -65,10 +65,36 @@ export class ProfissionalController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: number) {
     const result = await this.profissionalService.remove(+id);
     return {
       message: result[0].f0,
     };
+  }
+
+  @Get('gestante/:id')
+  async findPregnant(@Param('id')id: number){
+    const result = await this.profissionalService.findPregnants(id);
+
+    if (typeof result !== 'string') {
+      return {
+        pacientes: result,
+      };
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Get('consulta/:id')
+  async findConsult(@Param('id')id: number){
+    const result = await this.profissionalService.findConsult(id);
+
+    if (typeof result !== 'string') {
+      return {
+        pacientes: result,
+      };
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
   }
 }

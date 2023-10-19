@@ -15,4 +15,5 @@ export class CreateConsultaDto {
   @IsNotEmpty()
   @IsNumber()
   id_gestante: number;
+  
 }

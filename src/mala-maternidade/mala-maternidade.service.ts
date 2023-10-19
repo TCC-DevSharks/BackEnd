@@ -77,7 +77,7 @@ export class MalaMaternidadeService {
 
     if (idGestante == true) {
       if (idPlano == true) {
-        const sql = `delete from tbl_mala_gestante where tbl_mala_gestante.id_plano = ${id_mala} and tbl_mala_gestante.id_gestante = ${id_gestante}`;
+        const sql = `delete from tbl_mala_gestante where tbl_mala_gestante.id_mala = ${id_mala} and tbl_mala_gestante.id_gestante = ${id_gestante}`;
 
         await this.prisma.$queryRawUnsafe(sql);
 

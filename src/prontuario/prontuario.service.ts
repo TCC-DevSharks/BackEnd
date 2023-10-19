@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateProntuarioDto } from './dto/create-prontuario.dto';
 import { UpdateProntuarioDto } from './dto/update-prontuario.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -20,16 +20,23 @@ export class ProntuarioService {
     }
   }
 
-  async create(body: CreateProntuarioDto) {
-    const sql = `insert into tbl_prontuario (descricao, id_consulta)values('${body.descricao}', ${body.id_consulta});`;
-
-    await this.prisma.$queryRawUnsafe(sql);
-
-    const id = `select id from tbl_consulta order by id desc limit 1;`;
-
-    const result = await this.prisma.$queryRawUnsafe(id);
-
-    return result[0].id;
+  async create(body: CreateProntuarioDto) {    
+    if(body.descricao.length < 10 || body.descricao == undefined || body.descricao == ""){
+      return{
+        message: "Porfavor verifique sua descricão!",
+        status: HttpStatus.NOT_FOUND
+      }
+    } else{
+      const sql = `insert into tbl_prontuario (descricao, id_consulta)values('${body.descricao}', ${body.id_consulta});`;
+      await this.prisma.$queryRawUnsafe(sql);
+      const id = `select id from tbl_consulta order by id desc limit 1;`;
+      const result = await this.prisma.$queryRawUnsafe(id);
+      return {
+        message: "Prontuario criado com sucesso!",
+        status: HttpStatus.CREATED
+      } 
+    }
+    
   }
 
   async findAll() {

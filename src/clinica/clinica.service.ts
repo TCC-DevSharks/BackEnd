@@ -42,6 +42,23 @@ export class ClinicaService {
     }
   }
 
+  async findEmail(email: string){
+    const query = `select * from tbl_clinica where email = '${email}'`
+    const resultQuery = await this.prisma.$queryRawUnsafe(query);
+    let result = {}
+
+    
+    if(resultQuery){
+      
+        return resultQuery[0]
+      } else{
+        result = {
+          message: 'Clinica não encontrada',
+          status: HttpStatus.INTERNAL_SERVER_ERROR
+      }
+    }      
+  }
+
   async create(body: CreateClinicaParams) {
     const validacaoCnpjExistente = await this.validacaoCnpj(body);
 

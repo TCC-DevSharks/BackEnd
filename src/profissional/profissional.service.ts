@@ -126,9 +126,9 @@ export class ProfissionalService {
     return result;
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     const sql = `select tbl_profissional.id as id, tbl_profissional.nome as nome, tbl_profissional.cpf as cpf, tbl_profissional.crm as crm, date_format(tbl_profissional.data_nascimento, '%d/%m/%Y') as data_nascimento,
-    tbl_profissional.foto as foto, time_format(tbl_profissional.inicio_atendimento,'%H:%i:0%s') as inicio_atendimento, time_format(tbl_profissional.fim_atendimento,'%H:%i:0%s') as fim_atendimento, tbl_profissional.email as email, tbl_profissional.senha as senha,
+    tbl_profissional.foto as foto,tbl_profissional.descricao as descricao, time_format(tbl_profissional.inicio_atendimento,'%H:%i:0%s') as inicio_atendimento, time_format(tbl_profissional.fim_atendimento,'%H:%i:0%s') as fim_atendimento, tbl_profissional.email as email, tbl_profissional.senha as senha,
     tbl_sexo.sexo as sexo, tbl_clinica.razao_social as clinica,
     tbl_telefone.id as idTelefone, tbl_telefone.numero as telefone, tbl_tipo_telefone.tipo as tipo_telefone,tbl_endereco_Profissional.id as idEndereco, tbl_endereco_Profissional.numero as numero,
     tbl_endereco_Profissional.complemento as complemento, tbl_endereco_Profissional.cep as cep,
@@ -153,7 +153,7 @@ export class ProfissionalService {
       where tbl_profissional.id = ${id}
       order by tbl_profissional.id asc;`;
 
-    const result = this.prisma.$queryRawUnsafe(sql);
+    const result = await this.prisma.$queryRawUnsafe(sql);
 
     return result;
   }
@@ -234,5 +234,58 @@ export class ProfissionalService {
 
     const result = this.prisma.$queryRawUnsafe(query);
     return result;
+  }
+
+  async findPregnants(id: number){
+
+    const valId = await this.validacaoID(id);
+
+    if (valId == false) {
+      return 'Id Invalid';
+    }
+    
+    const sql = `select tbl_consulta.id as idConsulta ,tbl_gestante.nome, tbl_gestante.semana_gestacao, tbl_gestante.foto, tbl_gestante.altura as altura, tbl_gestante.peso as peso, tbl_gestante.data_nascimento, tbl_especialidade.nome as especialidade,
+    date_format(tbl_consulta.dia, '%d/%m/%Y') as dia, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora
+    from tbl_gestante
+      inner join tbl_consulta
+        on tbl_consulta.id_gestante = tbl_gestante.id
+      inner join tbl_profissional
+        on tbl_profissional.id = tbl_consulta.id_profissional
+        inner join tbl_profissional_especialidade
+        on tbl_profissional.id = tbl_profissional_especialidade.id_profissional
+      inner join tbl_especialidade
+        on tbl_especialidade.id = tbl_profissional_especialidade.id_especialidade
+    where tbl_profissional.id = ${id}`
+
+    const result = await this.prisma.$queryRawUnsafe(sql);
+
+    return result
+  }
+
+  async findConsult(id: number){
+
+    const valId = await this.validacaoID(id);
+
+    if (valId == false) {
+      return 'Id Invalid';
+    }
+    
+    const sql = `select tbl_consulta.id as idConsulta , tbl_especialidade.nome as especialidade,
+    date_format(tbl_consulta.dia, '%d/%m/%Y') as dia, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora
+    from tbl_gestante
+      inner join tbl_consulta
+        on tbl_consulta.id_gestante = tbl_gestante.id
+      inner join tbl_profissional
+        on tbl_profissional.id = tbl_consulta.id_profissional
+        inner join tbl_profissional_especialidade
+        on tbl_profissional.id = tbl_profissional_especialidade.id_profissional
+      inner join tbl_especialidade
+        on tbl_especialidade.id = tbl_profissional_especialidade.id_especialidade
+    where tbl_profissional.id = ${id}
+    order by tbl_consulta.dia, tbl_consulta.hora asc`
+
+    const result = await this.prisma.$queryRawUnsafe(sql);
+
+    return result
   }
 }
