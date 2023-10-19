@@ -76,6 +76,7 @@ export class GestanteService {
     const password = body.senha;
     const hash = await bcrypt.hash(password, saltOrRounds);
 
+
     const queryGestante = `call procInsertGestante(
       '${body.nome}', 
       '${body.data_nascimento}',
