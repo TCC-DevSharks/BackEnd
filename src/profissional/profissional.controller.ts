@@ -84,4 +84,17 @@ export class ProfissionalController {
       throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
     }
   }
+
+  @Get('consulta/:id')
+  async findConsult(@Param('id')id: number){
+    const result = await this.profissionalService.findConsult(id);
+
+    if (typeof result !== 'string') {
+      return {
+        pacientes: result,
+      };
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
+  }
 }

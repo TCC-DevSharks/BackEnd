@@ -261,4 +261,31 @@ export class ProfissionalService {
 
     return result
   }
+
+  async findConsult(id: number){
+
+    const valId = await this.validacaoID(id);
+
+    if (valId == false) {
+      return 'Id Invalid';
+    }
+    
+    const sql = `select tbl_consulta.id as idConsulta , tbl_especialidade.nome as especialidade,
+    date_format(tbl_consulta.dia, '%d/%m/%Y') as dia, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora
+    from tbl_gestante
+      inner join tbl_consulta
+        on tbl_consulta.id_gestante = tbl_gestante.id
+      inner join tbl_profissional
+        on tbl_profissional.id = tbl_consulta.id_profissional
+        inner join tbl_profissional_especialidade
+        on tbl_profissional.id = tbl_profissional_especialidade.id_profissional
+      inner join tbl_especialidade
+        on tbl_especialidade.id = tbl_profissional_especialidade.id_especialidade
+    where tbl_profissional.id = ${id}
+    order by tbl_consulta.dia, tbl_consulta.hora asc`
+
+    const result = await this.prisma.$queryRawUnsafe(sql);
+
+    return result
+  }
 }
