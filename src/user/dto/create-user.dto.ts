@@ -1,5 +1,12 @@
+import { IsBoolean, IsNumber, IsString } from "class-validator";
+
 export class CreateUserDto {
-    name: String
-    id: number
-    foto: String
+    @IsString()
+    name: string;
+
+    @IsNumber()
+    age: number;
+
+    @IsBoolean()
+    active: boolean;
 }
