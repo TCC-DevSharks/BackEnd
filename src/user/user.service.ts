@@ -18,12 +18,17 @@ export class UserService {
   }
 
   async findAll(): Promise<User[]> {
-
-    const users =(await this.userModel.find().lean())
-
-    console.log(users);
-
-    return users
+    const users = await this.userModel.find().lean();
+  
+    // Converter o _id de cada documento em uma string
+    const usersWithIdAsString = users.map(user => {
+      return {
+        ...user,
+        _id: user._id.toString(), // Converte o _id para string
+      };
+    });
+  
+    return usersWithIdAsString;
   }
 }
 
