@@ -27,6 +27,7 @@ import { RedefinirSenhaModule } from './redefinir-senha/redefinir-senha.module';
 import { ExerciciosModule } from './exercicios/exercicios.module';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -53,7 +54,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     RedefinirSenhaModule,
     ExerciciosModule,
     UserModule,
-    MongooseModule.forRoot('mongodb+srv://root:root@cluster0.bjlbipq.mongodb.net/?retryWrites=true&w=majority')
+    ChatModule
   ],
   controllers: [AppController],
   providers: [
