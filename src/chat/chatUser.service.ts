@@ -41,7 +41,7 @@ export class ChatUserService {
     return usersWithIdAsString;
   }
 
-  async findOne(email: string, usuario: string): Promise<User> {
+  async findOne(email: string, usuario: string){
 
     try{
       const user = await this.userModel.findOne({email, usuario}).lean()
@@ -54,8 +54,8 @@ export class ChatUserService {
         
       return usersWithIdAsString;
     }catch(error){
-      console.log("erro");
       
+      return ""
     }
 
 
