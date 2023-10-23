@@ -131,7 +131,7 @@ export class ProfissionalService {
     const sql = `select tbl_profissional.id as id, tbl_profissional.nome as nome, tbl_profissional.cpf as cpf, tbl_profissional.crm as crm, date_format(tbl_profissional.data_nascimento, '%d/%m/%Y') as data_nascimento,
     tbl_sexo.id as idSexo, tbl_telefone.id_tipo_telefone as idTipo,
     tbl_profissional.foto as foto,tbl_profissional.descricao as descricao, time_format(tbl_profissional.inicio_atendimento,'%H:%i:0%s') as inicio_atendimento, time_format(tbl_profissional.fim_atendimento,'%H:%i:0%s') as fim_atendimento, tbl_profissional.email as email, tbl_profissional.senha as senha,
-    tbl_sexo.sexo as sexo, tbl_clinica.razao_social as clinica,
+    tbl_sexo.sexo as sexo, tbl_clinica.razao_social as clinica, tbl_clinica.id as idClinica,
     tbl_telefone.id as idTelefone, tbl_telefone.numero as telefone, tbl_tipo_telefone.tipo as tipo_telefone,tbl_endereco_Profissional.id as idEndereco, tbl_endereco_Profissional.numero as numero,
     tbl_endereco_Profissional.complemento as complemento, tbl_endereco_Profissional.cep as cep,
     tbl_especialidade.nome as especialidade
