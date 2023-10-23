@@ -4,20 +4,20 @@ import { log } from 'console';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 // import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './schema/user.schema';
+import { Use } from './schema/user.schema';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('USER_MODEL') private readonly userModel: Model<User>
+    @Inject('USE_MODEL') private readonly userModel: Model<Use>
   ) {
   }
-  async create(body: CreateUserDto): Promise<User> {
+  async create(body: CreateUserDto): Promise<Use> {
     const createdUser = await new this.userModel(body).save();
     return createdUser.toObject();
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<Use[]> {
     const users = await this.userModel.find().lean();
   
     // Converter o _id de cada documento em uma string

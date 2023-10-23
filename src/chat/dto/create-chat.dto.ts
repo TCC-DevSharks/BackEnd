@@ -3,11 +3,11 @@ import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 export class CreateChatUserDto {
     @IsNotEmpty()
     @IsString()
-    nome:string
+    name:string
 
     @IsNotEmpty()
-    @IsNumber()
-    idGestante:number
+    @IsString()
+    usuario: string
 
     @IsNotEmpty()
     @IsString()
@@ -25,9 +25,11 @@ export class CreateChatMessagesDto{
 
         text: string;
 
-        users: Array<CreateChatUserDto>
+        from: CreateChatMessagesDto
 
-        sender: string
+        to: CreateChatMessagesDto
+
+        sender:CreateChatUserDto
     }
     timestamp: boolean
 }

@@ -11,7 +11,7 @@ export class ChatService {
     @Inject('MESSAGE_MODEL') private readonly messagesModel: Model<Message>
   ) {
   }
-  async create(body: CreateChatMessagesDto): Promise<Message>  {
+  async createMessage(body: CreateChatMessagesDto): Promise<Message>  {
     try {
       const data = await new this.messagesModel(body).save()
 

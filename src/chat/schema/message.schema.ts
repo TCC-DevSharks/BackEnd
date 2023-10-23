@@ -7,9 +7,11 @@ export class Text{
    
   text: string;
 
-  users: Array<User>;
+  from: User
 
-  sender: mongoose.Schema.Types.ObjectId;
+  to: User
+
+  sender: User
 
 }
 @Schema()

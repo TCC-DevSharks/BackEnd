@@ -7,10 +7,10 @@ export type UserDocument = User & Document
 export class User {
   
   @Prop({ required: true })
-  nome: string;
+  name: string;
 
-  @Prop()
-  id: number
+  @Prop({ required: true })
+  usuario: string;
 
   @Prop()
   foto: string
@@ -20,8 +20,8 @@ export class User {
 }
 
 export interface User {
-  nome: string;
-  id: number;
+  name: string;
+ usuario: string;
   foto:string;
   email:string
 }

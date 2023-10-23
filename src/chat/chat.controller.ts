@@ -8,13 +8,13 @@ export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
   @Post()
-  create(@Body() body: CreateChatMessagesDto) {
-    return this.chatService.create(body);
+  async create(@Body() body: CreateChatMessagesDto) {
+    return await this.chatService.createMessage(body);
   }
 
   @Get()
-  findAll() {
-    return this.chatService.findAll();
+  async findAll() {
+    return await this.chatService.findAll();
   }
 
   @Get(':id')
