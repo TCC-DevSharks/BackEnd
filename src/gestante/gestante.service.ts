@@ -148,7 +148,7 @@ export class GestanteService {
 			on tbl_gestante.id = tbl_consulta.id_gestante
     inner join tbl_clinica
       on tbl_clinica.id = tbl_profissional.id_clinica
-      where tbl_gestante.id - ${id}
+      where tbl_gestante.id = ${id}
       order by tbl_consulta.dia`;
 
     const result = await this.prisma.$queryRawUnsafe(query);
