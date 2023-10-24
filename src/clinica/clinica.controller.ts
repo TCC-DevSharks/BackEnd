@@ -52,6 +52,18 @@ export class ClinicaController {
     return result;
   }
 
+  @Get('gestante/:id')
+  async findQuantityPregnant(@Param('id') id: number) {
+    const result = { gestantes: await this.clinicaService.findQuantityPregnants(id) };
+    return result;
+  }
+
+  @Get('consulta/diaria/:id')
+  async findConsultDaily(@Param('id') id: number) {
+    const result = { gestantes: await this.clinicaService.findQuantityConsultDaily(id) };
+    return result;
+  }
+
   @Put(':id')
   async update(
     @Param('id') id: number,

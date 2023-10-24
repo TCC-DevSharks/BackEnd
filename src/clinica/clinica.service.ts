@@ -189,6 +189,63 @@ export class ClinicaService {
       return result
 
   }
+
+  async findQuantityPregnants(id: number) {
+    const sql = `SELECT COUNT(DISTINCT id_gestante) as quantidade
+    from tbl_consulta
+      inner join tbl_profissional
+        on tbl_consulta.id_profissional = tbl_profissional.id
+      inner join tbl_clinica
+        on tbl_clinica.id = tbl_profissional.id_clinica
+          where tbl_clinica.id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(sql);
+
+    const replacer = (key, value) => typeof value === 'bigint' ? value.toString() : value;
+    const data = result
+      const stringified = JSON.stringify(data, replacer);
+
+      let split = stringified.slice(16, -3);
+
+    return split;
+  }
+
+
+  async findQuantityConsultDaily(id: number) {
+    const sql = `SELECT tbl_consulta.dia
+    from tbl_consulta
+      inner join tbl_profissional
+        on tbl_consulta.id_profissional = tbl_profissional.id
+      inner join tbl_clinica
+        on tbl_clinica.id = tbl_profissional.id_clinica
+          where tbl_clinica.id = ${id}`;
+
+    const result: [] = await this.prisma.$queryRawUnsafe(sql);
+
+    const dataAtual = new Date()
+    var data 
+    
+    result.map((it: { dia: string }) => {
+      const data = new Date(it.dia);
+      if (dataAtual.getDay() === data.getDay() && dataAtual.getMonth() === data.getMonth() && dataAtual.getFullYear() === data.getFullYear()) {
+        console.log(dataAtual.getUTCMonth());
+        console.log(dataAtual.getDate());
+        console.log(dataAtual.getFullYear());
+        
+        
+      } else {
+      }
+    });
+    
+    
+
+    
+    console.log(result.length);
+    
+
+    return result;
+  }
+
   async update(id: number, body: UpdateClinicaDto) {
     const valId = await this.validacaoID(id);
 
