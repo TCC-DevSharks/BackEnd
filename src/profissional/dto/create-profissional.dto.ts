@@ -8,58 +8,59 @@ import {
 } from 'class-validator';
 
 export class CreateProfissionalDto {
-
+  @IsNotEmpty()
   @IsString()
   nome: string;
 
-
+  @IsNotEmpty()
   @IsString()
   cpf: string;
 
-
+  @IsNotEmpty()
   @IsString()
   crm: string;
 
-
+  @IsNotEmpty()
   @IsEmail()
   email: string;
 
-
+  @IsNotEmpty()
   @IsString()
   senha: string;
 
-
+  @IsNotEmpty()
   @IsDateString()
   data_nascimento: string;
 
-
+  @IsNotEmpty()
   @IsString()
   foto: string;
 
-
+  @IsNotEmpty()
   @IsString()
   descricao: string;
 
-
+  @IsNotEmpty()
   @IsString()
   inicio_atendimento: string;
 
-
+  @IsNotEmpty()
   @IsString()
   fim_atendimento: string;
 
-
+  @IsNotEmpty()
   @IsNumber()
   id_sexo: number;
 
-
+  @IsNotEmpty()
   @IsNumber()
   id_clinica: number;
 
-
+  @IsNotEmpty()
   @IsString()
   telefone: string;
 
+  @IsNotEmpty()
   @IsNumber()
   tipo_telefone: number;
 

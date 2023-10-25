@@ -190,8 +190,8 @@ export class ClinicaService {
 
   }
 
-  async findQuantityPregnants(id: number) {
-    const sql = `SELECT COUNT(DISTINCT id_gestante) as quantidade
+  async findQuantity(id: number) {
+    const sqlQuantityPregnants = `SELECT COUNT(DISTINCT id_gestante) as quantidade
     from tbl_consulta
       inner join tbl_profissional
         on tbl_consulta.id_profissional = tbl_profissional.id
@@ -199,61 +199,62 @@ export class ClinicaService {
         on tbl_clinica.id = tbl_profissional.id_clinica
           where tbl_clinica.id = ${id}`;
 
-    const result: [] = await this.prisma.$queryRawUnsafe(sql);
+    const resultQuantityPregnants: [] = await this.prisma.$queryRawUnsafe(sqlQuantityPregnants);
 
     const replacer = (key, value) => typeof value === 'bigint' ? value.toString() : value;
-    const data = result
-      const stringified = JSON.stringify(data, replacer);
+    const dataPregnants = resultQuantityPregnants
+      const stringified = JSON.stringify(dataPregnants, replacer);
 
       let split = stringified.slice(16, -3);
 
-    return split;
-  }
-
-
-  async findQuantityConsultDaily(id: number) {
-    const sql = `SELECT tbl_consulta.dia
-    from tbl_consulta
-      inner join tbl_profissional
-        on tbl_consulta.id_profissional = tbl_profissional.id
-      inner join tbl_clinica
-        on tbl_clinica.id = tbl_profissional.id_clinica
-          where tbl_clinica.id = ${id}`;
-
-    const result: [] = await this.prisma.$queryRawUnsafe(sql);
-
-    const dataAtual = new Date()
-    var data 
-    var list = []
-    
-    result.map((it: { dia: string }) => {
-      const data = new Date(it.dia);
-      if (dataAtual.getDate() === data.getDate() + 1 && dataAtual.getMonth() === data.getMonth() && dataAtual.getFullYear() === data.getFullYear()) {
-        console.log(data)
-        list.push(it)
-      }
-    });
+      const sqlQuantityConsultDaily = `SELECT tbl_consulta.dia
+      from tbl_consulta
+        inner join tbl_profissional
+          on tbl_consulta.id_profissional = tbl_profissional.id
+        inner join tbl_clinica
+          on tbl_clinica.id = tbl_profissional.id_clinica
+            where tbl_clinica.id = ${id}`;
   
-    return list;
+      const resultQuantityConsultDaily: [] = await this.prisma.$queryRawUnsafe(sqlQuantityConsultDaily);
+  
+      const dataAtual = new Date()
+      var list = []
+      
+      resultQuantityConsultDaily.map((it: { dia: string }) => {
+        const data = new Date(it.dia);
+        if (dataAtual.getDate() === data.getDate() + 1 && dataAtual.getMonth() === data.getMonth() && dataAtual.getFullYear() === data.getFullYear()) {
+          console.log(data)
+          list.push(it)
+        }
+      });
+
+      const sqlQuantityProfessional = `SELECT tbl_profissional.id
+      from tbl_profissional
+        inner join tbl_clinica
+          on tbl_profissional.id_clinica = tbl_clinica.id
+    where tbl_clinica.id = ${id};`;
+  
+      const resultQuantityProfessionals: [] = await this.prisma.$queryRawUnsafe(sqlQuantityProfessional);
+
+      const sqlComposition = `SELECT tbl_profissional.id
+      from tbl_profissional
+        inner join tbl_clinica
+          on tbl_profissional.id_clinica = tbl_clinica.id
+    inner join tbl_sexo
+      on tbl_sexo.id = tbl_profissional.id_sexo
+    where tbl_sexo.sigla = "F" and tbl_clinica.id = ${id};`;
+  
+      const resultComposition: [] = await this.prisma.$queryRawUnsafe(sqlComposition);
+
+    return {
+      pacientes_cadastrados: split,
+      consultas_diarias: list.length,
+      profissionais_cadastrados: resultQuantityProfessionals.length,
+      profissionais_femininos: resultComposition.length,
+      profissionais_masculinos: resultQuantityProfessionals.length - resultComposition.length
+    }
   }
 
-  async findQuantityProfessionals(id: number) {
-    const sql = `SELECT tbl_profissional.id
-    from tbl_profissional
-      inner join tbl_clinica
-        on tbl_profissional.id_clinica = tbl_clinica.id
-  where tbl_clinica.id = ${id};`;
-
-    const result: [] = await this.prisma.$queryRawUnsafe(sql);
-
-    const replacer = (key, value) => typeof value === 'bigint' ? value.toString() : value;
-    const data = result
-      const stringified = JSON.stringify(data, replacer);
-
-      let split = stringified.slice(16, -3);
-
-    return split;
-  }
 
   async update(id: number, body: UpdateClinicaDto) {
     const valId = await this.validacaoID(id);
