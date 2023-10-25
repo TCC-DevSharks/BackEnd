@@ -227,10 +227,8 @@ export class ClinicaService {
     
     result.map((it: { dia: string }) => {
       const data = new Date(it.dia);
-      if (dataAtual.getDay() === data.getDay() && dataAtual.getMonth() === data.getMonth() && dataAtual.getFullYear() === data.getFullYear()) {
-        console.log(dataAtual.getUTCMonth());
-        console.log(dataAtual.getDate());
-        console.log(dataAtual.getFullYear());
+      if (dataAtual.getDate() === data.getDate() && dataAtual.getMonth() === data.getMonth() && dataAtual.getFullYear() === data.getFullYear()) {
+        console.log(data)
         
         
       } else {

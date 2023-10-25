@@ -8,6 +8,7 @@ import {
   Put,
   HttpException,
   HttpStatus,
+  Patch,
 } from '@nestjs/common';
 import { ClinicaService } from './clinica.service';
 import { CreateClinicaDto } from './dto/create-clinica.dto';
@@ -64,7 +65,7 @@ export class ClinicaController {
     return result;
   }
 
-  @Put(':id')
+  @Patch(':id')
   async update(
     @Param('id') id: number,
     @Body() updateClinicaDto: UpdateClinicaDto,
