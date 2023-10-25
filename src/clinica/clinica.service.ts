@@ -224,24 +224,35 @@ export class ClinicaService {
 
     const dataAtual = new Date()
     var data 
+    var list = []
     
     result.map((it: { dia: string }) => {
       const data = new Date(it.dia);
-      if (dataAtual.getDate() === data.getDate() && dataAtual.getMonth() === data.getMonth() && dataAtual.getFullYear() === data.getFullYear()) {
+      if (dataAtual.getDate() === data.getDate() + 1 && dataAtual.getMonth() === data.getMonth() && dataAtual.getFullYear() === data.getFullYear()) {
         console.log(data)
-        
-        
-      } else {
+        list.push(it)
       }
     });
-    
-    
+  
+    return list;
+  }
 
-    
-    console.log(result.length);
-    
+  async findQuantityProfessionals(id: number) {
+    const sql = `SELECT tbl_profissional.id
+    from tbl_profissional
+      inner join tbl_clinica
+        on tbl_profissional.id_clinica = tbl_clinica.id
+  where tbl_clinica.id = ${id};`;
 
-    return result;
+    const result: [] = await this.prisma.$queryRawUnsafe(sql);
+
+    const replacer = (key, value) => typeof value === 'bigint' ? value.toString() : value;
+    const data = result
+      const stringified = JSON.stringify(data, replacer);
+
+      let split = stringified.slice(16, -3);
+
+    return split;
   }
 
   async update(id: number, body: UpdateClinicaDto) {
