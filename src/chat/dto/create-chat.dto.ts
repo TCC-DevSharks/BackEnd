@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 export class CreateChatUserDto {
     @IsNotEmpty()
     @IsString()
-    name:string
+    name: string
 
     @IsNotEmpty()
     @IsString()
@@ -11,26 +11,31 @@ export class CreateChatUserDto {
 
     @IsNotEmpty()
     @IsString()
-    foto:string
+    foto: string
 
     @IsNotEmpty()
     @IsString()
-    email:string
+    email: string
 }
 
-export class CreateChatMessagesDto{
+export class CreateChatMessagesDto {
 
     @IsNotEmpty()
-    message:{
+    @IsString()
+    text: string;
 
-        text: string;
+    @IsNotEmpty()
+    @IsString()
+    from: string;
 
-        from: CreateChatMessagesDto
+    @IsNotEmpty()
+    @IsString()
+    to: string;
+    
+    @IsNotEmpty()
+    @IsString()
+    sender: string;
 
-        to: CreateChatMessagesDto
-
-        sender:CreateChatUserDto
-    }
     timestamp: boolean
 }
 

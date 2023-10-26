@@ -17,7 +17,16 @@ export class Text{
 @Schema()
 export class Message {
   @Prop({ required: true })
-  message: Text
+  text: string;
+
+  @Prop({ required: true })
+  from: string
+
+  @Prop({ required: true })
+  to: string
+
+  @Prop({ required: true })
+  sender: string
 
   @Prop()
   timestamp: true

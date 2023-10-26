@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateChatUserDto, CreateChatMessagesDto } from './dto/create-chat.dto';
 import { UpdateChatDto } from './dto/update-chat.dto';
 import { Message } from './schema/message.schema';
-import { Model } from 'mongoose';
+import { Model, StringSchemaDefinition } from 'mongoose';
 
 @Injectable()
 export class ChatService {
@@ -38,8 +38,19 @@ export class ChatService {
     return usersWithIdAsString;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} chat`;
+  async findOne(from:string, to: string){
+
+    
+      const user = await this.messagesModel.find({from, to}).lean();
+
+      const usersWithIdAsString = user.map(user => {
+        return {
+          ...user,
+          _id: user._id.toString(), // Converte o _id para string
+        };
+      });
+    
+      return usersWithIdAsString;
   }
 
   update(id: number, updateChatDto: UpdateChatDto) {

@@ -90,6 +90,9 @@ export class GestanteService {
       '${body.foto}',
       '${body.telefone}');`;
 
+      console.log(body);
+      
+
     const idQueryGestante = `select funcLastIdGestante() as id`;
 
     const validacaoEmail: [] = await this.validacaoEmail(body);
