@@ -20,10 +20,7 @@ export class Message {
   text: string;
 
   @Prop({ required: true })
-  from: string
-
-  @Prop({ required: true })
-  to: string
+  users: Array<string>
 
   @Prop({ required: true })
   sender: string
@@ -33,6 +30,15 @@ export class Message {
   };
 
 
+  class arrayUser{
+
+  @Prop({ required: true })
+    from: string
+
+  @Prop({ required: true })
+    to: string
+
+  }
 
 
 export const MessagesSchema = SchemaFactory.createForClass(Message);

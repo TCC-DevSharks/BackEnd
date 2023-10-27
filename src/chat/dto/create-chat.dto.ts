@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateChatUserDto {
     @IsNotEmpty()
@@ -25,17 +25,24 @@ export class CreateChatMessagesDto {
     text: string;
 
     @IsNotEmpty()
-    @IsString()
-    from: string;
-
-    @IsNotEmpty()
-    @IsString()
-    to: string;
+    @IsArray()
+    users: Array<string>
     
     @IsNotEmpty()
     @IsString()
     sender: string;
 
     timestamp: boolean
+}
+
+class arrayUser{
+
+    @IsNotEmpty()
+    @IsString()
+    from:string
+
+    @IsNotEmpty()
+    @IsString()
+    to:string
 }
 

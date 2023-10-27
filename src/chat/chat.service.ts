@@ -41,7 +41,7 @@ export class ChatService {
   async findOne(from:string, to: string){
 
     
-      const user = await this.messagesModel.find({from, to}).lean();
+      const user = await this.messagesModel.find({users: {$all:["6537bb48f00aff863e5ca838", "65367be11588e293ee18a60d"]} }).lean();
 
       const usersWithIdAsString = user.map(user => {
         return {
