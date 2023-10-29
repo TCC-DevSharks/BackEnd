@@ -28,6 +28,7 @@ import { ExerciciosModule } from './exercicios/exercicios.module';
 import { UserModule } from './user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ChatModule } from './chat/chat.module';
+import { AppGateway } from './chat-socket/chat-socket.controller';
 
 @Module({
   imports: [
@@ -54,11 +55,12 @@ import { ChatModule } from './chat/chat.module';
     RedefinirSenhaModule,
     ExerciciosModule,
     UserModule,
-    ChatModule
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [
     AppService,
+    AppGateway,
     PrismaService,
     {
       provide: APP_INTERCEPTOR,
