@@ -39,6 +39,12 @@ export class GestanteController {
     return result;
   }
 
+  @Get('consulta/:id')
+  async findConsult(@Param('id') id: string) {
+    const result = { gestante: await this.gestanteService.findConsult(+id) };
+    return result;
+  }
+
   @Put(':id')
   async update(
     @Param('id') id: number,

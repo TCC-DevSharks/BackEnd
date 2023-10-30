@@ -136,6 +136,27 @@ export class GestanteService {
     return result;
   }
 
+  async findConsult(id: number) {
+    
+    const query = ` select 
+    tbl_consulta.id as id, date_format(tbl_consulta.dia, '%d/%m/%Y') as dia, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora, tbl_consulta.id_profissional as id_profissional, tbl_consulta.id_gestante as id_gestante,
+    tbl_profissional.nome as profissional, tbl_gestante.nome as gestante, tbl_clinica.razao_social as clinica
+    from tbl_consulta
+		inner join tbl_profissional
+			on tbl_profissional.id = tbl_consulta.id_profissional
+		inner join tbl_gestante
+			on tbl_gestante.id = tbl_consulta.id_gestante
+    inner join tbl_clinica
+      on tbl_clinica.id = tbl_profissional.id_clinica
+      where tbl_gestante.id = ${id}
+      order by tbl_consulta.dia`;
+
+    const result = await this.prisma.$queryRawUnsafe(query);
+    console.log(result);
+    
+    return result;
+  }
+
   async update(id: number, body: UpdateGestanteDto) {
     const valId = await this.validacaoID(id);
 

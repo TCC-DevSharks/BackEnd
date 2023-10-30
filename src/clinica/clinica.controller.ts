@@ -8,6 +8,7 @@ import {
   Put,
   HttpException,
   HttpStatus,
+  Patch,
 } from '@nestjs/common';
 import { ClinicaService } from './clinica.service';
 import { CreateClinicaDto } from './dto/create-clinica.dto';
@@ -44,8 +45,20 @@ export class ClinicaController {
     const result = { clinicas: await this.clinicaService.findSpeciality(+id) };
     return result;
   }
+  
+  @Get('profissional/:id')
+  async findProfessional(@Param('id') id: string) {
+    const result = { clinicas: await this.clinicaService.findProfessional(+id) };
+    return result;
+  }
 
-  @Put(':id')
+  @Get('data/:id')
+  async findQuantityPregnant(@Param('id') id: number) {
+    const result = { clinica: await this.clinicaService.findQuantity(id) };
+    return result;
+  }
+
+  @Patch(':id')
   async update(
     @Param('id') id: number,
     @Body() updateClinicaDto: UpdateClinicaDto,
