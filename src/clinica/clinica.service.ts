@@ -72,42 +72,30 @@ export class ClinicaService {
     const validacaoCnpjExistente = await this.validacaoCnpj(body);
     const validacaoEmailExistente = await this.validationEmail(body.email);
 
-    if (validacaoEmailExistente.length === 0) {
-      if (validacaoCnpjExistente.length === 0) {
-        const saltOrRounds = 10;
-        const password = body.senha;
-        const hash = await bcrypt.hash(password, saltOrRounds);
-  
-        const queryClinica = `call procInsertClinica(
-              '${hash}',
-              '${body.email}',
-              '${body.cnpj}',
-              '${body.foto}',
-              '${body.razao_social}',
-              '${body.descricao}',
-              '${body.telefone}',
-              ${body.tipo_telefone},
-              '${body.numero}',
-              '${body.complemento}',
-              '${body.cep}'
-              );`;
-  
-        console.log(hash);
-        const isMatch = await bcrypt.compare(password, hash);
-        console.log(isMatch);
-  
-        const result = await this.prisma.$queryRawUnsafe(queryClinica);
-        console.log(result);
-  
-        return result[0].f0 + `. id: ${result[0].f1}`;
-      }
-      throw new HttpException(
-        {
-          status: HttpStatus.CONFLICT,
-          error: 'CNPJ já cadastrado',
-        },
-        HttpStatus.CONFLICT,
-      );
+    if (validacaoCnpjExistente.length === 0) {
+      const saltOrRounds = 10;
+      const password = body.senha;
+      const hash = await bcrypt.hash(password, saltOrRounds);
+
+      const queryClinica = `call procInsertClinica(
+            '${hash}',
+            '${body.email}',
+            '${body.cnpj}',
+            '${body.foto}',
+            '${body.razao_social}',
+            '${body.descricao}',
+            '${body.telefone}',
+            ${body.tipo_telefone},
+            '${body.numero}',
+            '${body.complemento}',
+            '${body.cep}'
+            );`;
+
+      const isMatch = await bcrypt.compare(password, hash);
+
+      const result = await this.prisma.$queryRawUnsafe(queryClinica);
+
+      return result[0].f0 + `. id: ${result[0].f1}`;
     }
     throw new HttpException(
       {

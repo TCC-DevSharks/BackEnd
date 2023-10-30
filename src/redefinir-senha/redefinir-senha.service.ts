@@ -195,7 +195,6 @@ export class RedefinirSenhaService {
           queryResetPassword,
         );
         if (resultRedefine) {
-          console.log('aqui');
           message = {
             message: 'Sua senha foi redefinida com sucesso;'
           }

@@ -14,7 +14,6 @@ export class LoginController {
 
   @Post('gestante')
   async findGestante( @Body() body: CreateLoginDto) {
-    console.log(body);
     
     const login = await this.loginService.findGestante(body);
 
