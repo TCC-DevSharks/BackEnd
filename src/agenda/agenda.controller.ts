@@ -44,7 +44,6 @@ export class AgendaController {
   @Put(':id')
   async update(@Param('id') id: string, @Body() body: UpdateAgendaDto) {
     const result = await this.agendaService.update(+id, body);
-    console.log(result);
 
     if (typeof result !== 'string') {
       return {

@@ -21,7 +21,6 @@ export class ClinicaController {
   async create(@Body() body: CreateClinicaDto) {
     const result = await this.clinicaService.create(body);
 
-    console.log(result);
 
     return {
       message: result,

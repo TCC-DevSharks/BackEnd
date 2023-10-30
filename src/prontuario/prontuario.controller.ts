@@ -20,7 +20,6 @@ export class ProntuarioController {
   @Post()
   async create(@Body() body: CreateProntuarioDto) {
     const result = await this.prontuarioService.create(body);
-    console.log(result);
     
     return {
       result

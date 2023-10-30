@@ -20,8 +20,8 @@ export class ChatController {
   }
 
   @Get('mensagem')
-  findOne(@Query('from') from: string, @Query('to') to: string) {
-    return this.chatService.findOne(from, to);
+  async findOne(@Query('from') from: string, @Query('to') to: string) {
+    return {conversa: await this.chatService.findOne(from, to)}
   }
 
   @Patch(':id')

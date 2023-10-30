@@ -28,7 +28,6 @@ export class GestanteService {
     const query = `select id from tbl_gestante where email = '${body.email}'`;
 
     const result: [] = await this.prisma.$queryRawUnsafe(query);
-    console.log(result);
     
     return result;
   }
@@ -90,7 +89,6 @@ export class GestanteService {
       '${body.foto}',
       '${body.telefone}');`;
 
-      console.log(body);
       
 
     const idQueryGestante = `select funcLastIdGestante() as id`;
@@ -134,7 +132,6 @@ export class GestanteService {
     order by tbl_gestante.id asc`;
 
     const result = await this.prisma.$queryRawUnsafe(query);
-    console.log(result);
     
     return result;
   }

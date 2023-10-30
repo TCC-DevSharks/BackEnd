@@ -81,12 +81,9 @@ export class ClinicaService {
             '${body.cep}'
             );`;
 
-      console.log(hash);
       const isMatch = await bcrypt.compare(password, hash);
-      console.log(isMatch);
 
       const result = await this.prisma.$queryRawUnsafe(queryClinica);
-      console.log(result);
 
       return result[0].f0 + `. id: ${result[0].f1}`;
     }
