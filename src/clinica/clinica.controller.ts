@@ -52,6 +52,12 @@ export class ClinicaController {
     return result;
   }
 
+  @Get('consulta/:id')
+  async findConsult(@Param('id') id: string) {
+    const result = { clinicas: await this.clinicaService.findConsult(+id) };
+    return result;
+  }
+
   @Get('data/:id')
   async findQuantityPregnant(@Param('id') id: number) {
     const result = { clinica: await this.clinicaService.findQuantity(id) };
