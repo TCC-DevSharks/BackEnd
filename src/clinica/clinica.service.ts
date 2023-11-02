@@ -201,6 +201,7 @@ export class ClinicaService {
   async findConsult(id: number){
 
     const sql = `select tbl_profissional.nome as profissional, tbl_gestante.nome as gestante, 
+    tbl_gestante.semana_gestacao, tbl_gestante.peso as peso, tbl_gestante.altura as altura,
     tbl_gestante.telefone as telefone , tbl_endereco_gestante.id as idEndereco, tbl_gestante.foto as foto,
     tbl_endereco_gestante.numero as numero, tbl_endereco_gestante.complemento as complemento, 
     tbl_endereco_gestante.cep as cep,
