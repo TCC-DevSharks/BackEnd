@@ -61,9 +61,13 @@ export class ConsultaController {
     if (typeof result !== 'string') {
       return {
         message: 'Prontuario deletado com sucesso',
+        status: 200
       };
     } else {
-      throw new HttpException(`Id Invalid`, HttpStatus.NOT_FOUND);
+      return {
+        message: 'Consulta já foi deletada',
+        status: 404
+      };
     }
   }
 }

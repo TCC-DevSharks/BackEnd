@@ -282,7 +282,8 @@ export class ConsultaService {
       }
     } else{
       message = {
-        result : 'Não foi possível enviar o E-mail'
+        result : {message:'Não foi possível enviar o E-mail',status: 200}
+        
       }
     }
     return message
