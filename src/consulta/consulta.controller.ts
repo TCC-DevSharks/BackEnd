@@ -60,12 +60,12 @@ export class ConsultaController {
 
     if (typeof result !== 'string') {
       return {
-        message: 'Prontuario deletado com sucesso',
+        message: 'Consulta cancelada com sucesso',
         status: 200
       };
     } else {
       return {
-        message: 'Consulta já foi deletada',
+        message: 'Consulta já foi cancelada',
         status: 404
       };
     }
