@@ -156,6 +156,15 @@ export class RefeicaoService {
     return result;
   }
 
+  async findCategoryFood() {
+    const sql = `select tbl_categoriaAlimento.id as id,tbl_categoriaAlimento.nome as nome
+    from tbl_categoriaAlimento`;
+
+    const result = await this.prisma.$queryRawUnsafe(sql);
+
+    return result;
+  }
+
   async findFood() {
     const sql = `select tbl_alimento.id as id,tbl_alimento.nome as nome, tbl_alimento.imagem as imagem, tbl_categoriaAlimento.nome as categoria, tbl_categoriaAlimento.id as idCategoria
     from tbl_alimento
@@ -167,6 +176,17 @@ export class RefeicaoService {
     return result;
   }
 
+  async findFoodByCategory(id: number) {
+    const sql = `select tbl_alimento.id as id,tbl_alimento.nome as nome, tbl_alimento.imagem as imagem, tbl_categoriaAlimento.nome as categoria, tbl_categoriaAlimento.id as idCategoria
+    from tbl_alimento
+      inner join tbl_categoriaAlimento
+        on tbl_categoriaAlimento.id = tbl_alimento.id_categoria
+      where tbl_categoriaAlimento.id = ${id}`;
+      
+    const result = await this.prisma.$queryRawUnsafe(sql);
+
+    return result;
+  }
   //Refeição Default
   async createMealDefault(body: CreateRefeicaoDto) {
     const idProfissional = await this.validationIdProfissional(
@@ -261,7 +281,7 @@ export class RefeicaoService {
   }
 
   async removeFoodToMealDefault(idRefeicao: number, idAlimento: number) {
-    const valId = await this.validacaoID(idRefeicao);
+    const valId = await this.validationIdMealDefault(idRefeicao)
 
     if (valId == false) {
       return 'Id Invalido';

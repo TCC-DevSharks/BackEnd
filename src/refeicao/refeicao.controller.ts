@@ -33,12 +33,12 @@ export class RefeicaoController {
 
   @Get('profissional/:id')
   async findAll(@Param('id') id: number) {
-    return { refeição: await this.refeicaoService.findAllMeal(id) };
+    return { refeicao: await this.refeicaoService.findAllMeal(id) };
   }
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    return { refeição: await this.refeicaoService.findOneMeal(+id) };
+    return { refeicao: await this.refeicaoService.findOneMeal(+id) };
   }
 
   @Patch(':id')
@@ -103,6 +103,16 @@ export class RefeicaoController {
     return { alimentos: await this.refeicaoService.findFood() };
   }
 
+  @Get('categoria/alimento/:id')
+  async findFoodByCategory(@Param('id')id: number) {
+    return { alimentos: await this.refeicaoService.findFoodByCategory(+id) };
+  }
+
+  @Get('lista/categoria')
+  async findCategoryFood() {
+    return { categorias: await this.refeicaoService.findCategoryFood() };
+  }
+
   //Refeição Padrão
   @Post('padrao')
   async createMealDefault(@Body() body: CreateRefeicaoDto) {
@@ -117,12 +127,12 @@ export class RefeicaoController {
 
   @Get('padrao/profissional/:id')
   async findAllDefault(@Param('id') id: number) {
-    return { refeição: await this.refeicaoService.findAllMealDefault(id) };
+    return { refeicao: await this.refeicaoService.findAllMealDefault(id) };
   }
 
   @Get('padrao/:id')
   async findOneDefault(@Param('id') id: number) {
-    return { refeição: await this.refeicaoService.findOneMealDefault(+id) };
+    return { refeicao: await this.refeicaoService.findOneMealDefault(+id) };
   }
 
   @Patch('padrao/:id')
