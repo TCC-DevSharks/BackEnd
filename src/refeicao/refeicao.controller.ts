@@ -150,7 +150,7 @@ export class RefeicaoController {
 
   @Delete('padrao/:id')
   async removeDefault(@Param('id') id: number) {
-    const result = await this.refeicaoService.removeMealDefault(+id);
+    const result = await this.refeicaoService.removeMealDefault(id);
 
     if (typeof result !== 'string') {
       return {
