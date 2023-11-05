@@ -35,14 +35,5 @@ export class CreateChatMessagesDto {
     timestamp: boolean
 }
 
-class arrayUser{
 
-    @IsNotEmpty()
-    @IsString()
-    from:string
-
-    @IsNotEmpty()
-    @IsString()
-    to:string
-}
 

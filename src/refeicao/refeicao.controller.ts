@@ -102,4 +102,84 @@ export class RefeicaoController {
   async findFood() {
     return { alimentos: await this.refeicaoService.findFood() };
   }
+
+  //Refeição Padrão
+  @Post('padrao')
+  async createMealDefault(@Body() body: CreateRefeicaoDto) {
+    const result = await this.refeicaoService.createMealDefault(body);
+
+    if (typeof result !== 'string') {
+      return { message: 'Refeição Padrão criada com sucesso' };
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Get('padrao/profissional/:id')
+  async findAllDefault(@Param('id') id: number) {
+    return { refeição: await this.refeicaoService.findAllMealDefault(id) };
+  }
+
+  @Get('padrao/:id')
+  async findOneDefault(@Param('id') id: number) {
+    return { refeição: await this.refeicaoService.findOneMealDefault(+id) };
+  }
+
+  @Patch('padrao/:id')
+  async updateDefault(@Param('id') id: number, @Body() body: UpdateRefeicaoDto) {
+    const result = await this.refeicaoService.updateMealDefault(+id, body);
+
+    if (typeof result !== 'string') {
+      return {
+        message: 'Refeição Padrão editada com sucesso',
+      };
+    } else {
+      throw new HttpException(result, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Delete('padrao/:id')
+  async removeDefault(@Param('id') id: number) {
+    const result = await this.refeicaoService.removeMealDefault(+id);
+
+    if (typeof result !== 'string') {
+      return {
+        message: 'Refeição apagada com sucesso',
+      };
+    } else {
+      throw new HttpException(result, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Post('padrao/alimento')
+  async createFoodToMealDefault(@Body() body: CreateFoodToMealDto) {
+    const result = await this.refeicaoService.createFoodToMealDefault(body);
+
+    if (typeof result !== 'string') {
+      return { message: 'Alimento adicionado com sucesso' };
+    } else {
+      throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @Get('padrao/alimento/:id')
+  async findAllFoodMealDefault(@Param('id') id: number) {
+    return { alimentos: await this.refeicaoService.findAllFoodMealDefault(+id) };
+  }
+
+  @Delete('padrao/:idRefeicao/alimento/:idAlimento')
+  async removeFoodToMealDefault(
+    @Param('idRefeicao') id: number,
+    @Param('idAlimento') idAlimento: number,
+  ) {
+    const result = await this.refeicaoService.removeFoodToMealDefault(id, idAlimento);
+
+    if (typeof result !== 'string') {
+      return {
+        message: 'Alimento retirado com sucesso',
+      };
+    } else {
+      throw new HttpException(result, HttpStatus.NOT_FOUND);
+    }
+  }
 }
