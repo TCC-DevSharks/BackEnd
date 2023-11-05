@@ -181,7 +181,8 @@ export class RefeicaoService {
     from tbl_alimento
       inner join tbl_categoriaAlimento
         on tbl_categoriaAlimento.id = tbl_alimento.id_categoria
-      where tbl_categoriaAlimento.id = ${id}`;
+      where tbl_categoriaAlimento.id = ${id}
+      order by tbl_refeicaoPadrao.id asc`;
       
     const result = await this.prisma.$queryRawUnsafe(sql);
 
@@ -273,7 +274,8 @@ export class RefeicaoService {
         on tbl_alimento_refeicaoPadrao.id_alimento = tbl_alimento.id
       inner join tbl_categoriaAlimento
         on tbl_alimento.id_categoria = tbl_categoriaAlimento.id
-       where tbl_refeicaoPadrao.id = ${id}`;
+       where tbl_refeicaoPadrao.id = ${id}
+       order by tbl_refeicaoPadrao.id desc`;
 
     const result = await this.prisma.$queryRawUnsafe(sql);
 
