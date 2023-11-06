@@ -13,13 +13,13 @@ export class ArtigosController {
   }
 
   @Get()
-  findAll() {
-    return this.artigosService.findAll();
+  async findAll() {
+    return {artigos :await this.artigosService.findAll()}
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.artigosService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return {artigos :await this.artigosService.findOne(+id)}
   }
 
   @Patch(':id')
