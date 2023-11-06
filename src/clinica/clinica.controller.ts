@@ -54,7 +54,7 @@ export class ClinicaController {
 
   @Get('consulta/:id')
   async findConsult(@Param('id') id: string) {
-    const result = { clinicas: await this.clinicaService.findConsult(+id) };
+    const result = { consultas: await this.clinicaService.findConsult(+id) };
     return result;
   }
 

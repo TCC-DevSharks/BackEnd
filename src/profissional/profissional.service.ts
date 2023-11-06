@@ -84,7 +84,6 @@ export class ProfissionalService {
 
       const result = await this.prisma.$queryRawUnsafe(queryProfissional);
 
-      const corpo = {name: `${body.nome}`, usuario:`Profissional`, email: `${body.email}`, foto: `${body.foto}`}
 
       return result;
     } else {

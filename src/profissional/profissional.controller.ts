@@ -12,6 +12,7 @@ import {
 import { ProfissionalService } from './profissional.service';
 import { CreateProfissionalDto } from './dto/create-profissional.dto';
 import { UpdateProfissionalDto } from './dto/update-profissional.dto';
+import {ChatUserService} from '../chat/chatUser.service'
 
 @Controller('profissional')
 export class ProfissionalController {
@@ -20,6 +21,8 @@ export class ProfissionalController {
   @Post()
   async create(@Body() body: CreateProfissionalDto) {
     const result = await this.profissionalService.create(body);
+
+    const corpo = {name: `${body.nome}`, usuario:`Profissional`, email: `${body.email}`, foto: `${body.foto}`}
 
     return {
       message: result[0].f0,

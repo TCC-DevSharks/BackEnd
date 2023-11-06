@@ -30,6 +30,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ChatModule } from './chat/chat.module';
 import { AppGateway } from './chat-socket/chat-socket.controller';
 import { TimelineModule } from './timeline/timeline.module';
+import { ArtigosModule } from './artigos/artigos.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { TimelineModule } from './timeline/timeline.module';
     UserModule,
     ChatModule,
     TimelineModule,
+    ArtigosModule,
   ],
   controllers: [AppController],
   providers: [
