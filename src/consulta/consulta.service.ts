@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as nodemailer from 'nodemailer';
 import { GestanteService } from 'src/gestante/gestante.service';
 import { ProfissionalService } from 'src/profissional/profissional.service';
+import { ChatUserService } from 'src/chat/chatUser.service';
 
 interface  Clinica {
   clinica : string,
@@ -36,7 +37,8 @@ export class ConsultaService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly gestanteService: GestanteService,
-    private readonly profissionalService : ProfissionalService,) {}
+    private readonly profissionalService : ProfissionalService,
+    private readonly chatUserService: ChatUserService) {}
 
   async validacaoID(id: number) {
     const sqlValidacaoId = `select * from tbl_consulta where id =${id};`;
@@ -87,7 +89,17 @@ export class ConsultaService {
       const profissionalData = await this.profissionalService.findOne(body.id_profissional)
       let profissional : Profissional = profissionalData[0]
 
+      const chat = await this.chatUserService.findOne(gestante.email,"Gestante")
 
+      
+    if (chat.toString().length == 0) {
+
+    const corpo = {name: `${gestante.nome}`, usuario:`Gestante`, email: `${gestante.email}`, foto: `${gestante.foto}`}
+
+    await this.chatUserService.createUser(corpo)
+      
+    }
+      
     if (idGestante == true) {
       if (idProfissional == true) {
         const sql = `insert into tbl_consulta(dia, hora, id_profissional, id_gestante) values (

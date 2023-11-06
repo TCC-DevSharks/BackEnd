@@ -22,7 +22,7 @@ export class ConsultaController {
     const result = await this.consultaService.create(body);
 
     if (typeof result !== 'string') {
-      return result;
+      return {Mensagem: "Consulta criada com sucesso"};
     } else {
       throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
     }
