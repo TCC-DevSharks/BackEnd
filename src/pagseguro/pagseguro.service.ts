@@ -136,6 +136,10 @@ export class PagseguroService {
     //   cartao: ress.charges[0].payment_method,
     // };
 
+    console.log(body.cpf);
+    console.log(body.telefone);
+    
+
     const sql = `insert into tbl_transacao(id_gestante,id_clinica,ordem, dia)values(${body.id_gestante}, ${body.id_clinica}, "${ress.id}", "${ress.created_at}" )`;
 
     await this.prisma.$queryRawUnsafe(sql);

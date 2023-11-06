@@ -45,6 +45,13 @@ export class GestanteController {
     return result;
   }
 
+
+  @Get('consulta/unica/:id/:idConsulta')
+  async findOneConsult(@Param('id') id: string, @Param('idConsulta') idClinica: string) {
+    const result = { gestante: await this.gestanteService.findOneConsult(+id, +idClinica) };
+    return result;
+  }
+
   @Put(':id')
   async update(
     @Param('id') id: number,
