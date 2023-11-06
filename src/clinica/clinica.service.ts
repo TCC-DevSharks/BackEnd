@@ -202,25 +202,22 @@ export class ClinicaService {
 
     const sql = `select tbl_profissional.nome as profissional, tbl_gestante.nome as gestante, 
     tbl_gestante.semana_gestacao, tbl_gestante.peso as peso, tbl_gestante.altura as altura,
-    tbl_gestante.telefone as telefone , tbl_endereco_gestante.id as idEndereco, tbl_gestante.foto as foto,
-    tbl_endereco_gestante.numero as numero, tbl_endereco_gestante.complemento as complemento, 
-    tbl_endereco_gestante.cep as cep,
+    tbl_gestante.telefone as telefone , tbl_gestante.foto as foto,
     tbl_especialidade.nome as especialidade,
+    tbl_clinica.id as idClinica,
     tbl_consulta.id as idConsulta, date_format(tbl_consulta.dia, '%d/%m/%Y') as dia, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora
-    from tbl_profissional 
-      inner join tbl_profissional_especialidade
-        on tbl_profissional.id = tbl_profissional_especialidade.id_profissional
-      inner join tbl_especialidade
-        on tbl_especialidade.id = tbl_profissional_especialidade.id_especialidade
-      inner join tbl_consulta
-        on tbl_consulta.id_profissional = tbl_profissional.id
-      inner join tbl_gestante
-        on tbl_consulta.id_gestante = tbl_gestante.id
-      inner join tbl_clinica
-        on tbl_clinica.id = tbl_profissional.id_clinica
-      inner join tbl_endereco_gestante
-        on tbl_gestante.id = tbl_endereco_gestante.id_gestante
-      where tbl_clinica.id = ${id};`;
+	from tbl_profissional
+		inner join tbl_consulta
+			on tbl_consulta.id_profissional = tbl_profissional.id
+		inner join tbl_gestante
+			on tbl_gestante.id = tbl_consulta.id_gestante
+		inner join tbl_profissional_especialidade
+			on tbl_profissional_especialidade.id_profissional = tbl_profissional.id
+		inner join tbl_especialidade
+			on tbl_especialidade.id = tbl_profissional_especialidade.id_especialidade
+		inner join tbl_clinica
+			on tbl_profissional.id_clinica = tbl_clinica.id
+		where tbl_clinica.id = ${id};`;
 
       const result = await this.prisma.$queryRawUnsafe(sql)
 
