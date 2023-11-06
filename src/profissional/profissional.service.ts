@@ -3,6 +3,7 @@ import { CreateProfissionalDto } from './dto/create-profissional.dto';
 import { UpdateProfissionalDto } from './dto/update-profissional.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { ChatUserService } from 'src/chat/chatUser.service';
 
 interface CreateProfissionalParams {
   id?: number;
@@ -29,7 +30,7 @@ interface CreateProfissionalParams {
 
 @Injectable()
 export class ProfissionalService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService,) {}
 
   async validacaoEmail(body: CreateProfissionalParams) {
     const query = `select id from tbl_profissional where email = '${body.email}'`;
@@ -82,6 +83,8 @@ export class ProfissionalService {
         );`;
 
       const result = await this.prisma.$queryRawUnsafe(queryProfissional);
+
+      const corpo = {name: `${body.nome}`, usuario:`Profissional`, email: `${body.email}`, foto: `${body.foto}`}
 
       return result;
     } else {
