@@ -205,7 +205,7 @@ export class ClinicaService {
       tbl_gestante.telefone as telefone , tbl_gestante.foto as foto,
       tbl_especialidade.nome as especialidade,
       tbl_clinica.id as idClinica,
-      tbl_consulta.id as idConsulta, date_format(tbl_consulta.dia, '%d/%m/%Y') as dia,tbl_consulta.dia as diaDesformatado, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora
+      tbl_consulta.id as idConsulta, date_format(tbl_consulta.dia, '%d/%m/%Y') as dia, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora
     from tbl_profissional
       inner join tbl_consulta
         on tbl_consulta.id_profissional = tbl_profissional.id
