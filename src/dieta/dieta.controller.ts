@@ -29,6 +29,11 @@ export class DietaController {
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
+    return { dieta: await this.dietaService.findDietaName(+id) };
+  }
+
+  @Get('refeicao/:id')
+  async findOneDiet(@Param('id') id: number) {
     return { dieta: await this.dietaService.findDieta(+id) };
   }
 
