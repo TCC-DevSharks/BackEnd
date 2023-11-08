@@ -8,6 +8,10 @@ export class CreateRefeicaoDto {
     @IsNumber()
     @IsNotEmpty()
     id_profissional: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    id_gestante: number;
 }
 
 export class CreateFoodToMealDto {

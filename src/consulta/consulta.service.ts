@@ -141,7 +141,7 @@ export class ConsultaService {
         tbl_clinica.razao_social as clinica, tbl_enderecoClinica.numero as numeroClinica, tbl_enderecoCLinica.complemento as complementoClinica, tbl_telefone.numero as telefoneClinica,
         tbl_enderecoClinica.cep as cepClinica,
         tbl_profissional.nome as profissional, tbl_especialidade.nome as especialidade,
-        tbl_consulta.dia as dia, tbl_consulta.hora as hora
+        date_format(tbl_consulta.dia, '%d/%m/%Y') as dia, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora,
     from tbl_consulta
       inner join tbl_gestante
         on tbl_consulta.id_gestante = tbl_gestante.id

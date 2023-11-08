@@ -4,6 +4,7 @@ export class CreateDietaDto {
   @IsNotEmpty()
   @IsNumber()
   id_consulta: number;
+
 }
 
 export class CreateMealDto {
