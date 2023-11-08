@@ -136,21 +136,41 @@ export class ConsultaService {
   }
 
   async findOne(id: number) {
-    const sql = `    select 
-    tbl_consulta.id as id, date_format(tbl_consulta.dia, '%d/%m/%Y') as dia, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora, tbl_consulta.id_profissional as id_profissional, tbl_consulta.id_gestante as id_gestante,
-    tbl_profissional.nome as profissional, tbl_gestante.nome as gestante
+    const sql = `select tbl_gestante.nome as gestante, tbl_gestante.email as email, tbl_gestante.cpf as cpf, tbl_gestante.telefone as telefone,
+    tbl_endereco_gestante.numero as numero, tbl_endereco_gestante.complemento as complemento, tbl_endereco_gestante.cep as cep,
+        tbl_clinica.razao_social as clinica, tbl_enderecoClinica.numero as numeroClinica, tbl_enderecoCLinica.complemento as complementoClinica, tbl_telefone.numero as telefoneClinica,
+        tbl_enderecoClinica.cep as cepClinica,
+        tbl_profissional.nome as profissional, tbl_especialidade.nome as especialidade,
+        tbl_consulta.dia as dia, tbl_consulta.hora as hora
     from tbl_consulta
-		inner join tbl_profissional
-			on tbl_profissional.id = tbl_consulta.id_profissional
-		inner join tbl_gestante
-			on tbl_gestante.id = tbl_consulta.id_gestante
-    where tbl_consulta.id = ${id}
-    order by id asc;`;
+      inner join tbl_gestante
+        on tbl_consulta.id_gestante = tbl_gestante.id
+      inner join tbl_profissional
+        on tbl_consulta.id_profissional = tbl_profissional.id
+      inner join tbl_clinica
+        on tbl_clinica.id = tbl_profissional.id_clinica
+      inner join tbl_profissional_especialidade
+        on tbl_profissional.id = tbl_profissional_especialidade.id_profissional
+      inner join tbl_especialidade
+        on tbl_especialidade.id = tbl_profissional_especialidade.id_especialidade
+             inner join tbl_clinica_telefone
+            on tbl_clinica_telefone.id_clinica = tbl_clinica.id
+          inner join tbl_telefone
+            on tbl_telefone.id = tbl_clinica_telefone.id_telefone
+          inner join tbl_tipo_telefone
+            on tbl_tipo_telefone.id = tbl_telefone.id_tipo_telefone
+          inner join tbl_enderecoClinica
+            on tbl_clinica.id = tbl_enderecoClinica.id_clinica
+      inner join tbl_endereco_gestante
+        on tbl_endereco_gestante.id_gestante = tbl_gestante.id
+      where tbl_consulta.id = ${id};`;
 
     const result = await this.prisma.$queryRawUnsafe(sql);
 
     return result;
   }
+
+
 
   async update(id: number, body: UpdateConsultaDto) {
     const valId = await this.validacaoID(id);

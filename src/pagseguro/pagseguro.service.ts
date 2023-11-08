@@ -34,6 +34,9 @@ export class PagseguroService {
   }
 
   async create(body: CreatePagseguroDto) {
+
+    console.log(body);
+    
     const valIdGestante = await this.validacaoIDGestante(body.id_gestante);
     const valIdClinica = await this.validacaoIDClinica(body.id_clinica);
 
