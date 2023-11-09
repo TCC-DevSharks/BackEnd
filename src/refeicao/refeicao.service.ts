@@ -52,7 +52,7 @@ export class RefeicaoService {
       body.id_profissional,
     );
     if (idProfissional == true) {
-      const sql = `insert into tbl_refeicao(nome, id_profissional)values("${body.nome}", ${body.id_profissional})`;
+      const sql = `insert into tbl_refeicao(nome, id_profissional,id_gestante)values("${body.nome}", ${body.id_profissional}, ${body.id_gestante})`;
 
       const result = await this.prisma.$queryRawUnsafe(sql);
 
@@ -188,6 +188,9 @@ export class RefeicaoService {
 
     return result;
   }
+
+
+  
   //Refeição Default
   async createMealDefault(body: CreateRefeicaoDto) {
     const idProfissional = await this.validationIdProfissional(
