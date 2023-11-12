@@ -52,4 +52,10 @@ export class DietaController {
   async findMealCategory(@Param('id') id: number) {
     return { categoria: await this.dietaService.findMealCategory(+id) };
   }
+
+  @Delete('refeicao/:id')
+  async deleteMealDiet(@Param("id")id: number){
+    const result = await this.dietaService.deleteDietMeal(id);
+    return {message: 'Refeição deletada com sucesso'}
+  }
 }

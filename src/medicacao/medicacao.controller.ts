@@ -39,7 +39,7 @@ export class MedicacaoController {
     const result =  await this.medicacaoService.findGestante(+id);    
     if (typeof result !== 'string') {
       return {
-        medicação: result,
+        medicacao: result,
       };
     } else {
       throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);

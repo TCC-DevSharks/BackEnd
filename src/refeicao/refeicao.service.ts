@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import {
   CreateFoodToMealDto,
   CreateRefeicaoDto,
+  CreateDefaultRefeicaoDto,
 } from './dto/create-refeicao.dto';
 import { UpdateRefeicaoDto } from './dto/update-refeicao.dto';
 
@@ -192,7 +193,7 @@ export class RefeicaoService {
 
   
   //Refeição Default
-  async createMealDefault(body: CreateRefeicaoDto) {
+  async createMealDefault(body: CreateDefaultRefeicaoDto) {
     const idProfissional = await this.validationIdProfissional(
       body.id_profissional,
     );
@@ -223,7 +224,7 @@ export class RefeicaoService {
     return result;
   }
   
-  async updateMealDefault(id: number, body: CreateRefeicaoDto) {
+  async updateMealDefault(id: number, body: CreateDefaultRefeicaoDto) {
     const valId = await this.validacaoID(id);
 
     if (valId == false) {

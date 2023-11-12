@@ -14,6 +14,16 @@ export class CreateRefeicaoDto {
     id_gestante: number;
 }
 
+export class CreateDefaultRefeicaoDto {
+    @IsString()
+    @IsNotEmpty()
+    nome: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_profissional: number;
+}
+
 export class CreateFoodToMealDto {
 
     @IsNumber()

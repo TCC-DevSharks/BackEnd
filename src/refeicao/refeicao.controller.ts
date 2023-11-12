@@ -13,6 +13,7 @@ import { RefeicaoService } from './refeicao.service';
 import {
   CreateFoodToMealDto,
   CreateRefeicaoDto,
+  CreateDefaultRefeicaoDto
 } from './dto/create-refeicao.dto';
 import { UpdateRefeicaoDto } from './dto/update-refeicao.dto';
 
@@ -115,7 +116,7 @@ export class RefeicaoController {
 
   //Refeição Padrão
   @Post('padrao')
-  async createMealDefault(@Body() body: CreateRefeicaoDto) {
+  async createMealDefault(@Body() body: CreateDefaultRefeicaoDto) {
     const result = await this.refeicaoService.createMealDefault(body);
 
     if (typeof result !== 'string') {

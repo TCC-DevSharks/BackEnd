@@ -14,9 +14,19 @@ export class CreateMealDto {
 
   @IsNotEmpty()
   @IsNumber()
-  id_refeicao: number;
+  id_gestante: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_profissional: number;
 
   @IsNotEmpty()
   @IsString()
   horario: string;
+
+  @IsNotEmpty()
+  @IsString()
+  nome: string;
+
+  
 }
