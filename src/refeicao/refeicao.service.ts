@@ -299,4 +299,12 @@ export class RefeicaoService {
 
     return result;
   }
+
+  async addFoodDefaultToMeal(idRefeicao: number, idRefeicaoPadrao: number){
+    const sql = `call procFoodDefaultToMeal(${idRefeicaoPadrao},${idRefeicao})`
+
+    const result = await this.prisma.$queryRawUnsafe(sql)
+
+    return result[0].f0
+  }
 }

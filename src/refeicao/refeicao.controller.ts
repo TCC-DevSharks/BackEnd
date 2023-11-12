@@ -193,4 +193,14 @@ export class RefeicaoController {
       throw new HttpException(result, HttpStatus.NOT_FOUND);
     }
   }
+
+  @Post('alimento/:idRefeicao/padrao/:idRefeicaoPadrao')
+  async addFoodDefaultToMeal(
+    @Param('idRefeicao') id: number,
+    @Param('idRefeicaoPadrao') idRefeicao: number,
+  ){
+      const result = await this.refeicaoService.addFoodDefaultToMeal(id, idRefeicao);
+
+      return {message: result}
+  }
 }
