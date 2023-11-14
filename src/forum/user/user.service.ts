@@ -9,7 +9,7 @@ import { Use } from './schema/user.schema';
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('USE_MODEL') private readonly userModel: Model<Use>
+    @Inject('FORUM-USER_MODEL') private readonly userModel: Model<Use>
   ) {
   }
   async create(body: CreateUserDto): Promise<Use> {

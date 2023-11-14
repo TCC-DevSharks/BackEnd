@@ -7,19 +7,24 @@ export type UseDocument = Use & Document
 export class Use {
   
   @Prop({ required: true })
-  name: string;
+  username: string;
+
+  @Prop()
+  foto: string;
+
+  @Prop({ required: true })
+  mysql: number
 
   @Prop()
   age: number;
 
-  @Prop()
-  active: boolean;
 }
 
 export interface Use {
-  name: string;
+  username: string;
+  foto: string;
+  mysql: number;
   age: number;
-  active: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(Use);

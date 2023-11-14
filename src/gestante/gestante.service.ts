@@ -110,6 +110,10 @@ export class GestanteService {
   }
 
   async findAll() {
+
+    console.log(5 + 7 * 2 - 3/2);
+    
+
     const query = `select tbl_gestante.id, tbl_gestante.nome as nome, date_format(tbl_gestante.data_nascimento, '%d/%m/%Y') as data_nascimento,
     tbl_gestante.email as email,tbl_gestante.senha as senha, tbl_gestante.cpf as cpf, tbl_gestante.peso as peso, tbl_gestante.altura as altura,
     date_format(tbl_gestante.data_parto, '%d/%m/%Y') as data_parto, tbl_gestante.foto as foto, tbl_gestante.semana_gestacao,

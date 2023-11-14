@@ -25,12 +25,15 @@ import { DietaModule } from './dieta/dieta.module';
 import { RefeicaoModule } from './refeicao/refeicao.module';
 import { RedefinirSenhaModule } from './redefinir-senha/redefinir-senha.module';
 import { ExerciciosModule } from './exercicios/exercicios.module';
-import { UserModule } from './user/user.module';
+import { UserModule } from './forum/user/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ChatModule } from './chat/chat.module';
 import { AppGateway } from './chat-socket/chat-socket.controller';
 import { TimelineModule } from './timeline/timeline.module';
 import { ArtigosModule } from './artigos/artigos.module';
+import { CategoryModule } from './forum/categoria/category.module';
+import { TopicModule } from './forum/topic/topic.module';
+import { MessagesModule } from './forum/messages/messages.module';
 
 @Module({
   imports: [
@@ -60,6 +63,9 @@ import { ArtigosModule } from './artigos/artigos.module';
     ChatModule,
     TimelineModule,
     ArtigosModule,
+    CategoryModule,
+    TopicModule,
+    MessagesModule
   ],
   controllers: [AppController],
   providers: [
