@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   app:
-    build: .
+    image: cotilen/backend-app
     ports:
       - 3000:3000
     volumes:
@@ -11,7 +11,7 @@ services:
       - db
 
   db:
-    image: mysql:8.0
+    image: cotilen/banco
     environment:
       - MYSQL_DATABASE=mydb
       - MYSQL_ROOT_PASSWORD=root
