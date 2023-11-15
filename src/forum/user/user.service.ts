@@ -30,5 +30,24 @@ export class UserService {
   
     return usersWithIdAsString;
   }
+
+  async findOne(mysql: number){
+
+    try{
+      const user = await this.userModel.findOne({mysql}).lean()
+
+      const usersWithIdAsString = 
+     {
+      ...user,
+      _id: user._id.toString()
+     }
+        
+      return usersWithIdAsString;
+    }catch(error){
+      
+      return ""
+    }
+}
+
 }
 

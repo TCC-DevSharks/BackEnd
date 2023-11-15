@@ -20,4 +20,9 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get(':id')
+  findOne(@Param('id') mysql:number) {
+    return this.userService.findOne(mysql)
+  }
+
 }
