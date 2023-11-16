@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-app
+  template:
+    metadata:
+      labels:
+        app: backend-app
+    spec:
+      containers:
+        - name: app
+          image: cotilen/backend-app
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: app-volume
+              mountPath: /home/node/app
+
+      volumes:
+        - name: app-volume
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  selector:
+    app: backend-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          image: cotilen/banco
+          env:
+            - name: MYSQL_DATABASE
+              value: mydb
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_INNODB_FAST_SHUTDOWN
+              value: "0"
+          volumeMounts:
+            - name: db-data-volume
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: db-data-volume
+          persistentVolumeClaim:
+            claimName: db-data-pvc  # Nome do seu PersistentVolumeClaim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+spec:
+  selector:
+    app: db
+  ports:
+    - protocol: TCP
+      port: 3306  # Ajuste a porta conforme necessário
+      targetPort: 3306  # Ajuste a porta conforme necessário
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  selector:
+    app: backend-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi  # Tamanho do armazenamento solicitado
+---
