@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { ChatController } from './chat.controller';
-import { DatabaseModule } from 'src/mongodb/database.module';
+import { DatabaseModule } from '../mongodb/database.module';
 import { messageProviders } from './chat.providers';
 import { ChatUserController } from './chatUser.controller';
 import { ChatUserService } from './chatUser.service';

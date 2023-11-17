@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { DietaService } from './dieta.service';
 import { DietaController } from './dieta.controller';
-import { PrismaModule } from 'src/prisma/prisma.module';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
   imports: [PrismaModule],

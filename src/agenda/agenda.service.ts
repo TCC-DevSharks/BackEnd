@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateAgendaDto } from './dto/update-agenda.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 interface CreateAgendaParams {
   id?: number;

@@ -1,9 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { log } from 'console';
 import { Model } from 'mongoose';
 import { CreateMessagesDto } from './dto/create-messages.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
 import { Message } from './schema/messages.schema';
 
 @Injectable()

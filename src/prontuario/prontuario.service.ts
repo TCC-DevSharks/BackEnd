@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateProntuarioDto } from './dto/create-prontuario.dto';
 import { UpdateProntuarioDto } from './dto/update-prontuario.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ProntuarioService {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEspecialidadeDto } from './dto/create-especialidade.dto';
 import { UpdateEspecialidadeDto } from './dto/update-especialidade.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 interface CreateEspecialidadeParams {
   id_profissional: number;

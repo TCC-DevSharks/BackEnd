@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { EnxovalService } from './enxoval.service';
 import { EnxovalController } from './enxoval.controller';
-import { PrismaModule } from 'src/prisma/prisma.module';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Module({
   imports: [PrismaModule],

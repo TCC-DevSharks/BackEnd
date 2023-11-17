@@ -1,7 +1,7 @@
 import { Body, Injectable } from '@nestjs/common';
 import { CreateSugestaoNomeDto } from './dto/create-sugestao-nome.dto';
 import { UpdateSugestaoNomeDto } from './dto/update-sugestao-nome.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class SugestaoNomeService {

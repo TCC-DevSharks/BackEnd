@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateProfissionalDto } from './dto/create-profissional.dto';
 import { UpdateProfissionalDto } from './dto/update-profissional.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { ChatUserService } from 'src/chat/chatUser.service';
+import { ChatUserService } from '../chat/chatUser.service';
 
 interface CreateProfissionalParams {
   id?: number;

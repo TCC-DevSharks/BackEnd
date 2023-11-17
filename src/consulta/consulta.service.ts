@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateConsultaDto } from './dto/create-consulta.dto';
 import { UpdateConsultaDto } from './dto/update-consulta.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import * as nodemailer from 'nodemailer';
-import { GestanteService } from 'src/gestante/gestante.service';
-import { ProfissionalService } from 'src/profissional/profissional.service';
-import { ChatUserService } from 'src/chat/chatUser.service';
+import { GestanteService } from '../gestante/gestante.service';
+import { ProfissionalService } from '../profissional/profissional.service';
+import { ChatUserService } from '../chat/chatUser.service';
 
 interface  Clinica {
   clinica : string,

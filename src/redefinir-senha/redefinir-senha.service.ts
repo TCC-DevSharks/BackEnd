@@ -1,9 +1,9 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { GestanteService } from 'src/gestante/gestante.service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { GestanteService } from '../gestante/gestante.service';
+import { PrismaService } from '../prisma/prisma.service';
 import * as nodemailer from 'nodemailer';
 import * as bcrypt from 'bcrypt';
-import { ClinicaService } from 'src/clinica/clinica.service';
+import { ClinicaService } from '../clinica/clinica.service';
 
 interface Gestante {
   id: number;

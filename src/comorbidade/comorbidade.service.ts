@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateComorbidadeDto } from './dto/create-comorbidade.dto';
 import { UpdateComorbidadeDto } from './dto/update-comorbidade.dto';
 

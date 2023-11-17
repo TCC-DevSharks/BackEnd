@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AlergiaService } from './alergia.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { PrismaModule } from 'src/prisma/prisma.module';
+import { PrismaModule } from '../prisma/prisma.module';
 
 
 describe('AlergiaService', () => {
