@@ -245,7 +245,7 @@ export class ProfissionalService {
     }
     
     const sql = `select tbl_consulta.id as idConsulta ,tbl_gestante.id as idGestante, tbl_gestante.nome, tbl_gestante.email as emailGestante, tbl_gestante.semana_gestacao, tbl_gestante.foto, tbl_gestante.altura as altura, tbl_gestante.peso as peso, tbl_gestante.data_nascimento, tbl_especialidade.nome as especialidade, 
-    date_format(tbl_consulta.dia, '%d/%m/%Y') as dia,tbl_consulta.dia as diaDesformatado, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora
+    date_format(tbl_consulta.dia, '%d/%m/%Y') as dia,tbl_consulta.dia as diaDesformatado, time_format(tbl_consulta.hora,'%H:%i:0%s') as hora, tbl_consulta.hora as horaDesformatada
     from tbl_gestante
       inner join tbl_consulta
         on tbl_consulta.id_gestante = tbl_gestante.id
