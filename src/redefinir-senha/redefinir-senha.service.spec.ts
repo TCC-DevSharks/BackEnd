@@ -1,4 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ClinicaService } from '../clinica/clinica.service';
+import { GestanteService } from '../gestante/gestante.service';
+import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaService } from '../prisma/prisma.service';
 import { RedefinirSenhaService } from './redefinir-senha.service';
 
 describe('RedefinirSenhaService', () => {
@@ -6,7 +10,8 @@ describe('RedefinirSenhaService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RedefinirSenhaService],
+      imports:[PrismaModule],
+      providers: [RedefinirSenhaService, GestanteService, PrismaService, ClinicaService],
     }).compile();
 
     service = module.get<RedefinirSenhaService>(RedefinirSenhaService);

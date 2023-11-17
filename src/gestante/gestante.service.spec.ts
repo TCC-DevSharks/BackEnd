@@ -1,4 +1,8 @@
+import { ClassSerializerInterceptor } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaModule } from '../prisma/prisma.module';
+import { PrismaService } from '../prisma/prisma.service';
 import { GestanteService } from './gestante.service';
 
 describe('GestanteService', () => {
@@ -6,7 +10,15 @@ describe('GestanteService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [GestanteService],
+      imports: [PrismaModule],
+      providers: [
+        GestanteService,
+        PrismaService,
+        {
+          provide: APP_INTERCEPTOR,
+          useClass: ClassSerializerInterceptor,
+        },
+      ],
     }).compile();
 
     service = module.get<GestanteService>(GestanteService);

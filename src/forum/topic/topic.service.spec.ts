@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { DatabaseModule } from '../../mongodb/database.module';
+import { topicProviders } from './topic.providers';
 import { TopicService } from './topic.service';
 
 describe('TopicService', () => {
@@ -6,7 +8,8 @@ describe('TopicService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TopicService],
+      imports: [DatabaseModule],
+      providers: [TopicService, ...topicProviders],
     }).compile();
 
     service = module.get<TopicService>(TopicService);
