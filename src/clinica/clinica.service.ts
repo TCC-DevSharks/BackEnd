@@ -100,7 +100,7 @@ export class ClinicaService {
     throw new HttpException(
       {
         status: HttpStatus.CONFLICT,
-        error: 'EMAIL já cadastrado',
+        error: 'CNPJ já cadastrado',
       },
       HttpStatus.CONFLICT,
     );

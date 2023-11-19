@@ -46,5 +46,23 @@ export class UserService {
     }
 }
 
+async findOneById(id: string){
+
+  try{
+    const user = await this.userModel.findOne({user: id}).lean()
+
+    const usersWithIdAsString = 
+   {
+    ...user,
+    _id: user._id.toString()
+   }
+      
+    return usersWithIdAsString;
+  }catch(error){
+    
+    return ""
+  }
+}
+
 }
 

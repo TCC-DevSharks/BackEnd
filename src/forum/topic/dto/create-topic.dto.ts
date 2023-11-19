@@ -5,6 +5,9 @@ export class CreateTopicDto {
     title: string
 
     @IsString()
+    text: string
+
+    @IsString()
     user: string
 
     @IsString()

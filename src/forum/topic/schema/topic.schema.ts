@@ -12,6 +12,10 @@ export class Topic {
   @Prop({ required: true })
   title: string;
 
+  
+  @Prop({ required: true })
+  text: string;
+
   @Prop({ required: true })
   user: string;
   
@@ -23,6 +27,7 @@ export class Topic {
 export interface Topic {
   category: string;
   title: string;
+  text: string;
   user: string;
   date: string;
 }

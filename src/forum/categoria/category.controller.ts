@@ -7,16 +7,14 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post()
-  create(@Body() categoryUserDto: CreateCategoryDto) {
-
-    console.log(categoryUserDto);
+  async create(@Body() categoryUserDto: CreateCategoryDto) {
     
-    return this.categoryService.create(categoryUserDto);
+    return await this.categoryService.create(categoryUserDto);
   }
 
   @Get()
-  findAll() {
-    return this.categoryService.findAll();
+  async findAll() {
+    return {categorys: await this.categoryService.findAll()}
   }
 
 }
