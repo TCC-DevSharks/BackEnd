@@ -23,6 +23,11 @@ export class TopicController {
     return {topics:await this.topicService.findAll()}
   }
 
+  @Get('categoria/:id')
+  async findAllById(@Param('id')id: string) {
+    return {topics:await this.topicService.findAllByCategory(id)}
+  }
+
   @Get(':id')
   async findOneByID(@Param("id")id: string) {
     return {topic:await this.topicService.findOneById(id)}

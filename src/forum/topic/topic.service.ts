@@ -83,5 +83,34 @@ export class TopicService {
     }
 
   }
+
+  async findAllByCategory(id: string):Promise<any> {
+    const topics = await this.topicModel.find({category: id}).lean();
+  
+    // Converter o _id de cada documento em uma string
+    const usersWithIdAsString =  topics.map( user => {
+      return {
+        ...user,
+        _id: user._id.toString(), // Converte o _id para string
+      };
+    });
+
+   const topic = usersWithIdAsString.map(async (user) => {
+
+     const usuario = await this.forumUser.findOneById(user.user.toString());
+
+     return {
+       ...user,
+       user: usuario
+     };
+
+   })
+
+   const resolvedTopics = await Promise.all(topic);
+  console.log("topic", resolvedTopics);
+  
+  return resolvedTopics;
+
+  }
 }
 
