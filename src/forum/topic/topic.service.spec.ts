@@ -3,7 +3,7 @@ import { DatabaseModule } from '../../mongodb/database.module';
 import { topicProviders } from './topic.providers';
 import { TopicService } from './topic.service';
 import { UserModule } from '../user/user.module';
-import { useProviders } from '../user/user.providers';
+import { userProviders } from '../user/user.providers';
 import { UserService } from '../user/user.service';
 
 describe('TopicService', () => {
@@ -12,7 +12,7 @@ describe('TopicService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [DatabaseModule, UserModule],
-      providers: [TopicService, ...topicProviders, ...useProviders, UserService],
+      providers: [TopicService, ...topicProviders, ...userProviders, UserService],
     }).compile();
 
     service = module.get<TopicService>(TopicService);

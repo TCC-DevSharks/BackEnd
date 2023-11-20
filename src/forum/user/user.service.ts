@@ -49,8 +49,9 @@ export class UserService {
 async findOneById(id: string){
 
   try{
-    const user = await this.userModel.findOne({user: id}).lean()
-
+    
+    const user = await this.userModel.findOne({_id: id}).lean()
+    
     const usersWithIdAsString = 
    {
     ...user,

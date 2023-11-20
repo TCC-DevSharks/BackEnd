@@ -27,5 +27,21 @@ export class MessageService {
   
     return usersWithIdAsString;
   }
+
+  async findById(id: string): Promise<any> {
+    const messages = await this.messageModel.find({topic: id}).lean();
+  
+    // Converter o _id de cada documento em uma string
+    const usersWithIdAsString = messages.map(msg =>{
+
+      return{
+        ...msg,
+        _id: msg._id.toString()
+      }
+      
+    })
+  
+    return usersWithIdAsString;
+  }
 }
 

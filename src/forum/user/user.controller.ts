@@ -10,8 +10,6 @@ export class UserController {
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
 
-    console.log(createUserDto);
-    
     return this.userService.create(createUserDto);
   }
 
@@ -21,7 +19,7 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') mysql:number) {
+  findOne(@Param('id') mysql: number) {
     return this.userService.findOne(mysql)
   }
 
