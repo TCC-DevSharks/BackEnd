@@ -9,6 +9,7 @@ services:
       - .:/home/node/app
     depends_on:
       - db
+    restart: always
 
   db:
     image: cotilen/banco
