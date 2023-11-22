@@ -298,10 +298,16 @@ export class ClinicaService {
       return 'Id Invalido';
     }
 
+    console.log(body);
+    
+
     const sql = `call procUpdateClinica(${id},'${body.cnpj}','${body.razao_social}','${body.email}','${body.descricao}',
         '${body.foto}','${body.telefone}',${body.tipo_telefone},
         ${body.id_telefone},${body.id_endereco},
         '${body.numero}','${body.complemento}','${body.cep}');`;
+
+        console.log(sql);
+        
 
     const result = await this.prisma.$queryRawUnsafe(sql);
 
