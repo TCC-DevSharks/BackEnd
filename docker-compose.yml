@@ -18,4 +18,4 @@ services:
       - MYSQL_INNODB_FAST_SHUTDOWN=0
     volumes:
       - ./dbdata:/var/lib/mysql
-      - ./import.sql:/import.sql
+      - ./import.sql:/docker-entrypoint-initdb.d/import.sql
