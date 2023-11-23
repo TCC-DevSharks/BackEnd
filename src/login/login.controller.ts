@@ -25,20 +25,18 @@ export class LoginController {
     @Body() body: CreateLoginDto
   ) {
     const login = await this.loginService.findClinica(body);
-
-    if (typeof login !== 'string') {
-      return { id: login};
-    } else {
-      throw new HttpException(`${login}`, HttpStatus.NOT_FOUND);
-    }
+    
+    return { doctor: login };
+    
   }
 
   @Post('profissional')
   async findProfissional(
     @Body() body: CreateLoginDto
-  ) {
+  ) {    
     const login = await this.loginService.findProfissional(body);
-
+    
+    
     return { doctor: login };
   }
 }
