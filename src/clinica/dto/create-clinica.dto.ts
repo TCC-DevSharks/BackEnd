@@ -115,3 +115,45 @@ export class CreateResponseClinicaDto {
   @IsString()
   complemento: string;
 }
+
+export class UpdateProfissional{
+
+  @IsString()
+  @IsNotEmpty()
+  email: string
+
+  @IsString()
+  @IsNotEmpty()
+  id_especialidade: string
+
+  @IsString()
+  @IsNotEmpty()
+  inicio_atendimento: string
+
+  @IsString()
+  @IsNotEmpty()
+  fim_atendimento: string
+
+  @IsString()
+  @IsNotEmpty()
+  telefone: string
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_telefone: number
+
+  @IsNotEmpty()
+  @IsNumber()
+  id_endereco: number
+
+  @IsString()
+  @IsNotEmpty()
+  numero: string
+
+  @IsString()
+  complemento: string
+
+  @IsString()
+  @IsNotEmpty()
+  cep: string
+}

@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UpdateClinicaDto } from './dto/update-clinica.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { UpdateProfissional } from './dto/create-clinica.dto';
 
 interface CreateClinicaParams {
   email: string;
@@ -324,5 +325,27 @@ export class ClinicaService {
 
     const result = this.prisma.$queryRawUnsafe(query);
     return result;
+  }
+
+  async updateProfissional(id: number, body: UpdateProfissional){
+    const sql = `call procUpdateProfissionalByClinic(
+      ${id},
+      '${body.email}',
+      ${body.id_especialidade},
+      '${body.inicio_atendimento}',
+      '${body.fim_atendimento}',
+      '${body.telefone}',
+      ${body.id_telefone},
+      ${body.id_endereco},
+      '${body.numero}',
+      '${body.complemento}',
+      '${body.cep}'
+    )`
+    console.log(sql);
+    
+
+    const result = await this.prisma.$queryRawUnsafe(sql)
+
+    return result[0].f0;
   }
 }

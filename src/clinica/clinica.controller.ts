@@ -11,7 +11,7 @@ import {
   Patch,
 } from '@nestjs/common';
 import { ClinicaService } from './clinica.service';
-import { CreateClinicaDto } from './dto/create-clinica.dto';
+import { CreateClinicaDto, UpdateProfissional } from './dto/create-clinica.dto';
 import { UpdateClinicaDto } from './dto/update-clinica.dto';
 
 @Controller('clinica')
@@ -62,6 +62,13 @@ export class ClinicaController {
   async findQuantityPregnant(@Param('id') id: number) {
     const result = { clinica: await this.clinicaService.findQuantity(id) };
     return result;
+  }
+
+  @Put('profissional/:id')
+  async updateProfissional(@Param('id') id: number, @Body() body: UpdateProfissional){
+    const result = await this.clinicaService.updateProfissional(id, body)
+
+    return {message: result}
   }
 
   @Patch(':id')
