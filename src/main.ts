@@ -16,8 +16,8 @@ async function bootstrap() {
     }),
   );
   const corsOptions = {
-    origin: 'https://teste-web-iota.vercel.app', // Permitir apenas este domínio
-    methods: ['GET', 'POST'], // Métodos permitidos
+    origin: '*', // Permitir apenas este domínio
+    methods: ['GET', 'POST','PUT','PATCH','DELETE'], // Métodos permitidos
     allowedHeaders: ['Content-Type'], // Cabeçalhos permitidos
   };
 
