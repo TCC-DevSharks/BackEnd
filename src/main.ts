@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import * as cors from 'cors';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,7 +15,14 @@ async function bootstrap() {
       },
     }),
   );
-  app.enableCors();
+  const corsOptions = {
+    origin: 'https://teste-web-iota.vercel.app', // Permitir apenas este domínio
+    methods: ['GET', 'POST'], // Métodos permitidos
+    allowedHeaders: ['Content-Type'], // Cabeçalhos permitidos
+  };
+
+  // Aplicar as opções de CORS usando o middleware CorsModule
+  app.use(cors(corsOptions));
   await app.listen(process.env.PORT || 3000);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
