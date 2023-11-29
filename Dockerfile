@@ -11,3 +11,4 @@ ENV MYSQL_DATABASE=mydatabase \
 COPY ./import.sql /docker-entrypoint-initdb.d/
 
 # Exponha a porta que o MySQL está usando (padrão é 3306)
+EXPOSE 3306
