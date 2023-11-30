@@ -1,14 +1,12 @@
-# Use a imagem oficial do MySQL 8 como base
-FROM mysql:8
+FROM node:latest
 
-# Defina variáveis de ambiente para configurar o MySQL
-ENV MYSQL_DATABASE=mydatabase \
-    MYSQL_USER=myuser \
-    MYSQL_PASSWORD=mypassword \
-    MYSQL_ROOT_PASSWORD=root
+WORKDIR /usr/src/api
 
-# Copie um script SQL para a pasta docker-entrypoint-initdb.d para ser executado na inicialização do container
-COPY ./import.sql /docker-entrypoint-initdb.d/
+COPY . .
+COPY ./.env.production ./.env
 
-# Exponha a porta que o MySQL está usando (padrão é 3306)
-EXPOSE 3306
+RUN npm install --quiet --no-optional --no-fund --loglevel-=error
+
+ RUN npm run build
+
+CMD ["npm","run","start:prod"]

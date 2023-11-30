@@ -23,7 +23,7 @@ async function bootstrap() {
 
   // Aplicar as opções de CORS usando o middleware CorsModule
   app.use(cors(corsOptions));
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 8080);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
