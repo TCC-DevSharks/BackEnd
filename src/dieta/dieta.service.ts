@@ -58,7 +58,7 @@ export class DietaService {
 
     const resultDieta = await this.prisma.$queryRawUnsafe(sqlDieta)
 
-    return resultDieta[0].id;
+    return resultDieta;
   }
 
   async findDieta(id: number) {
