@@ -21,7 +21,10 @@ export class DietaController {
     const result = await this.dietaService.createDieta(body);
 
     if (typeof result !== 'string') {
-      return { message: 'Dieta criada com sucesso' };
+      return { 
+        message: 'Dieta criada com sucesso',
+        id: result
+      };
     } else {
       throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
     }
