@@ -193,6 +193,37 @@ export class ProfissionalService {
     return result;
   }
 
+  findSpecialityClinic(id: number, clinic: number) {
+    const sql = `select tbl_profissional.id as id, tbl_profissional.nome as nome, tbl_profissional.cpf as cpf, tbl_profissional.crm as crm, date_format(tbl_profissional.data_nascimento, '%d/%m/%Y') as data_nascimento,
+    tbl_profissional.foto as foto,tbl_profissional.descricao as descricao, time_format(tbl_profissional.inicio_atendimento,'%H:%i:0%s') as inicio_atendimento, time_format(tbl_profissional.fim_atendimento,'%H:%i:0%s') as fim_atendimento, tbl_profissional.email as email, tbl_profissional.senha as senha,
+    tbl_sexo.sexo as sexo, tbl_clinica.razao_social as clinica,
+    tbl_telefone.id as idTelefone, tbl_telefone.numero as telefone, tbl_tipo_telefone.tipo as tipo_telefone,tbl_endereco_Profissional.id as idEndereco, tbl_endereco_Profissional.numero as numero,
+    tbl_endereco_Profissional.complemento as complemento, tbl_endereco_Profissional.cep as cep,
+    tbl_especialidade.nome as especialidade
+    from tbl_profissional 
+      inner join tbl_telefone_profissional
+        on tbl_telefone_profissional.id_profissional = tbl_profissional.id
+      inner join tbl_telefone
+        on tbl_telefone.id = tbl_telefone_profissional.id_telefone
+      inner join tbl_tipo_telefone
+        on tbl_tipo_telefone.id = tbl_telefone.id_tipo_telefone
+      inner join tbl_endereco_Profissional
+        on tbl_profissional.id = tbl_endereco_Profissional.id_profissional
+      inner join tbl_sexo
+        on tbl_sexo.id = tbl_profissional.id_sexo
+      inner join tbl_clinica
+        on tbl_clinica.id = tbl_profissional.id_clinica
+      inner join tbl_profissional_especialidade
+        on tbl_profissional.id = tbl_profissional_especialidade.id_profissional
+      inner join tbl_especialidade
+        on tbl_especialidade.id = tbl_profissional_especialidade.id_especialidade
+      where tbl_especialidade.id = ${id} and tbl_clinica.id = ${clinic};`;
+
+    const result = this.prisma.$queryRawUnsafe(sql);
+
+    return result;
+  }
+
   async update(id: number, body: UpdateProfissionalDto) {
     const valId = await this.validacaoID(id);
 
