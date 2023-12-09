@@ -24,6 +24,17 @@ interface CreateGestanteParams {
 export class GestanteService {
   constructor(private prisma: PrismaService) {}
 
+
+async teste(){
+  const saltOrRounds = 10;
+  const password = "Bebevindo01";
+  const hash = await bcrypt.hash(password, saltOrRounds);
+
+  console.log(hash);
+  
+}
+
+
   async validacaoEmail(body: CreateGestanteParams) {
     const query = `select id from tbl_gestante where email = '${body.email}'`;
 
@@ -110,9 +121,8 @@ export class GestanteService {
   }
 
   async findAll() {
-
-    console.log(5 + 7 * 2 - 3/2);
     
+    this.teste()
 
     const query = `select tbl_gestante.id, tbl_gestante.nome as nome, date_format(tbl_gestante.data_nascimento, '%d/%m/%Y') as data_nascimento,
     tbl_gestante.email as email,tbl_gestante.senha as senha, tbl_gestante.cpf as cpf, tbl_gestante.peso as peso, tbl_gestante.altura as altura,
