@@ -54,11 +54,11 @@ export class DietaService {
 
     const result = await this.prisma.$queryRawUnsafe(sql);
 
-    const sqlDieta = `SELECT MAX(id) FROM tbl_dieta;`
+    const sqlDieta = `SELECT MAX(id) as id FROM tbl_dieta;`
 
     const resultDieta = await this.prisma.$queryRawUnsafe(sqlDieta)
 
-    return resultDieta;
+    return resultDieta[0].id;
   }
 
   async findDieta(id: number) {
