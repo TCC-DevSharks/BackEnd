@@ -23,7 +23,7 @@ export class DietaController {
     if (typeof result !== 'string') {
       return { 
         message: 'Dieta criada com sucesso',
-        result[0]
+        id: result[0].id
       };
     } else {
       throw new HttpException(`${result}`, HttpStatus.NOT_FOUND);
