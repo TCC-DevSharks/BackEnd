@@ -3,7 +3,6 @@ import { Model } from 'mongoose';
 import { CreateTopicDto } from './dto/create-topic.dto';
 import { Topic } from './schema/topic.schema';
 import { UserService } from '../user/user.service';
-import { log } from 'console';
 import { MessageService } from '../messages/messages.service';
 
 @Injectable()

@@ -9,7 +9,7 @@ import { ChatModule } from '../chat/chat.module';
 import { userProviders } from '../chat/chat.providers';
 import { ChatUserService } from '../chat/chatUser.service';
 import { DatabaseModule } from '../mongodb/database.module';
-import { ClinicaService } from 'src/clinica/clinica.service';
+import { ClinicaService } from '../clinica/clinica.service';
 
 @Module({
   imports: [PrismaModule,  ChatModule, DatabaseModule],

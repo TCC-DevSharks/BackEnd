@@ -6,7 +6,7 @@ import * as nodemailer from "nodemailer";
 import { GestanteService } from "../gestante/gestante.service";
 import { ProfissionalService } from "../profissional/profissional.service";
 import { ChatUserService } from "../chat/chatUser.service";
-import { ClinicaService } from "src/clinica/clinica.service";
+import { ClinicaService } from "../clinica/clinica.service";
 
 interface Clinica {
   clinica: string;

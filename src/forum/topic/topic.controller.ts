@@ -1,14 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TopicService } from './topic.service';
 import { CreateTopicDto } from './dto/create-topic.dto';
-import { UpdateTopicDto } from './dto/update-topic.dto';
-import { UserService } from '../user/user.service';
 
 @Controller('forum/topico')
 export class TopicController {
   constructor(
-    private readonly topicService: TopicService, 
-    private readonly userService: UserService) {}
+    private readonly topicService: TopicService) {}
 
   @Post()
   create(@Body() body: CreateTopicDto) {
