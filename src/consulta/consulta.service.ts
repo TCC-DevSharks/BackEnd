@@ -1,35 +1,44 @@
-import { Injectable } from '@nestjs/common';
-import { CreateConsultaDto } from './dto/create-consulta.dto';
-import { UpdateConsultaDto } from './dto/update-consulta.dto';
-import { PrismaService } from '../prisma/prisma.service';
-import * as nodemailer from 'nodemailer';
-import { GestanteService } from '../gestante/gestante.service';
-import { ProfissionalService } from '../profissional/profissional.service';
-import { ChatUserService } from '../chat/chatUser.service';
+import { Injectable } from "@nestjs/common";
+import { CreateConsultaDto } from "./dto/create-consulta.dto";
+import { UpdateConsultaDto } from "./dto/update-consulta.dto";
+import { PrismaService } from "../prisma/prisma.service";
+import * as nodemailer from "nodemailer";
+import { GestanteService } from "../gestante/gestante.service";
+import { ProfissionalService } from "../profissional/profissional.service";
+import { ChatUserService } from "../chat/chatUser.service";
+import { ClinicaService } from "src/clinica/clinica.service";
 
-interface  Clinica {
-  clinica : string,
-  telefone : string,
-  endereco : string
+interface Clinica {
+  clinica: string;
+  telefone: string;
+  endereco: string;
+  idClinica: number;
+}
+
+interface Cep {
+  logradouro: string;
+  bairro: string;
+  localidade: string;
+  uf: string;
 }
 
 interface Profissional {
-  nome : string,
-  especialidade : string
+  nome: string;
+  especialidade: string;
 }
 
-interface Gestante{
-  nome: string,
-  data_nascimento : string,
-  email : string,
-  senha : string,
-  cpf : string,
-  peso : number,
-  altura : number,
-  data_parto: string,
-  foto: string,
-  semana_gestacao: number,
-  telefone: string
+interface Gestante {
+  nome: string;
+  data_nascimento: string;
+  email: string;
+  senha: string;
+  cpf: string;
+  peso: number;
+  altura: number;
+  data_parto: string;
+  foto: string;
+  semana_gestacao: number;
+  telefone: string;
 }
 
 @Injectable()
@@ -37,13 +46,15 @@ export class ConsultaService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly gestanteService: GestanteService,
-    private readonly profissionalService : ProfissionalService,
-    private readonly chatUserService: ChatUserService) {}
+    private readonly clinicaService: ClinicaService,
+    private readonly profissionalService: ProfissionalService,
+    private readonly chatUserService: ChatUserService
+  ) {}
 
   async validacaoID(id: number) {
     const sqlValidacaoId = `select * from tbl_consulta where id =${id};`;
     const resultValidacaoId: [] = await this.prisma.$queryRawUnsafe(
-      sqlValidacaoId,
+      sqlValidacaoId
     );
 
     if (resultValidacaoId.length !== 0) {
@@ -80,26 +91,40 @@ export class ConsultaService {
   async create(body: CreateConsultaDto) {
     const idGestante = await this.validationIdGestante(body.id_gestante);
     const idProfissional = await this.validationIdProfissional(
-      body.id_profissional,
+      body.id_profissional
     );
-      const gestanteData = await this.gestanteService.findOne(body.id_gestante)
-      let gestante : Gestante =  gestanteData[0]
-      const clinicaData = await this.profissionalService.findOne(body.id_profissional)
-      let clinica : Clinica = clinicaData[0]
-      const profissionalData = await this.profissionalService.findOne(body.id_profissional)
-      let profissional : Profissional = profissionalData[0]
+    const gestanteData = await this.gestanteService.findOne(body.id_gestante);
+    let gestante: Gestante = gestanteData[0];
+    const clinicaData = await this.profissionalService.findOne(
+      body.id_profissional
+    );
+    let clinica: Clinica = clinicaData[0];
+    const profissionalData = await this.profissionalService.findOne(
+      body.id_profissional
+    );
+    let profissional: Profissional = profissionalData[0];
+    const clinicaCep = await this.clinicaService.findOne(clinica.idClinica);
+    console.log(clinicaCep[0].cep);
 
-      const chat = await this.chatUserService.findOne(gestante.email,"Gestante")
+    const reqs = await fetch(
+      `https://viacep.com.br/ws/${clinicaCep[0].cep}/json/`
+    );
+    const r = await reqs.json();
+    let cep : Cep = r
 
-      
+    const chat = await this.chatUserService.findOne(gestante.email, "Gestante");
+
     if (chat.toString().length == 0) {
+      const corpo = {
+        name: `${gestante.nome}`,
+        usuario: `Gestante`,
+        email: `${gestante.email}`,
+        foto: `${gestante.foto}`,
+      };
 
-    const corpo = {name: `${gestante.nome}`, usuario:`Gestante`, email: `${gestante.email}`, foto: `${gestante.foto}`}
-
-    await this.chatUserService.createUser(corpo)
-      
+      await this.chatUserService.createUser(corpo);
     }
-      
+
     if (idGestante == true) {
       if (idProfissional == true) {
         const sql = `insert into tbl_consulta(dia, hora, id_profissional, id_gestante) values (
@@ -107,14 +132,29 @@ export class ConsultaService {
         );`;
 
         const result = await this.prisma.$queryRawUnsafe(sql);
-        
-        const enviar = await this.enviarEmailConsulta(gestante,clinica,body.hora,body.dia,profissional)
+
+        const data = new Date(body.dia);
+        const formatter = new Intl.DateTimeFormat("pt-BR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+        const dataFormatada = formatter.format(data);
+
+        const enviar = await this.enviarEmailConsulta(
+          gestante,
+          clinica,
+          cep,
+          body.hora,
+          dataFormatada,
+          profissional
+        );
         return result;
       } else {
-        return 'Id Profissional invalido';
+        return "Id Profissional invalido";
       }
     } else {
-      return 'Id Gestante invalido';
+      return "Id Gestante invalido";
     }
   }
 
@@ -170,13 +210,11 @@ export class ConsultaService {
     return result;
   }
 
-
-
   async update(id: number, body: UpdateConsultaDto) {
     const valId = await this.validacaoID(id);
 
     if (valId == false) {
-      return 'Id Invalid';
+      return "Id Invalid";
     }
 
     const sql = `update tbl_consulta set 
@@ -195,18 +233,26 @@ export class ConsultaService {
     const valId = await this.validacaoID(id);
 
     if (valId == false) {
-      return 'Id Invalid';
+      return "Id Invalid";
     }
     const sql = `delete from tbl_consulta where id = ${id};`;
 
     return await this.prisma.$queryRawUnsafe(sql);
   }
 
-  async enviarEmailConsulta(gestante : Gestante, clinica: Clinica, hora: string, dia: string, medico: Profissional): Promise<{}>{
-    
-    const gestanteValidation = await this.gestanteService.findEmail(gestante.email)
-    let message = {}
-    if(gestanteValidation){
+  async enviarEmailConsulta(
+    gestante: Gestante,
+    clinica: Clinica,
+    cep: Cep,
+    hora: string,
+    dia: string,
+    medico: Profissional
+  ): Promise<{}> {
+    const gestanteValidation = await this.gestanteService.findEmail(
+      gestante.email
+    );
+    let message = {};
+    if (gestanteValidation) {
       let htmlEmail = `
 
 <!DOCTYPE html>
@@ -253,14 +299,20 @@ export class ConsultaService {
                                                     Olá mamãe, ${gestante.nome}
                                                 </h2>
                                                 <p style="font-size: 0.9rem; color: #464444; width: 80%;">
-                                                  Estamos felizes em informar que sua consulta na ${clinica.clinica} foi 
+                                                  Estamos felizes em informar que sua consulta na ${
+                                                    clinica.clinica
+                                                  } foi 
                                                   marcada com sucesso! Aqui estão os detalhes da sua consulta:
                                                 </p>
                                                 <h3 style="font-size: 1rem; color: #b6b6f6;">
-                                                  Data e Hora: ${dia.split('$$$$-')} as ${hora}
+                                                  Data e Hora: ${dia.split(
+                                                    "$$$$-"
+                                                  )} as ${hora}
                                                 </h3>
                                                 <h3 style="font-size: 1rem; color: #b6b6f6;">
-                                                  Especialidade: ${medico.especialidade}
+                                                  Especialidade: ${
+                                                    medico.especialidade
+                                                  }
                                                 </h3>
                                                 <h3 style="font-size: 1rem; color: #b6b6f6;">
                                                   Médico: ${medico.nome}
@@ -271,14 +323,21 @@ export class ConsultaService {
                                                   para preenchimento de formulários, se necessário.
                                                 </p>
                                                 <p style="font-size: 0.9rem; color: #464444; width:80%">
-                                                      Se você precisar cancelar ou reagendar a consulta, por favor, entre em contato conosco o mais rápido possível pelo telefone: <h2 style="color: #464444; font-size: 1rem;" >${clinica.telefone}</h2> 
+                                                      Se você precisar cancelar ou reagendar a consulta, por favor, entre em contato conosco o mais rápido possível pelo telefone: <h2 style="color: #464444; font-size: 1rem;" >${
+                                                        clinica.telefone
+                                                      }</h2> 
                                                 </p>
                                                 <h3 style="font-size: 0.9rem; color: #464444;">
                                                   Desejamos que a sua consulta seja produtiva e tranquila.
                                                 </h3>
                                                 <h3 style="font-size:1.2rem; color: #b6b6f6;">
-                                                  Atenciosamente, ${clinica.clinica}
+                                                  Atenciosamente, ${
+                                                    clinica.clinica
+                                                  }
                                                 </h3>
+                                                <h3 style="font-size: 0.9rem; color: #b6b6f6;">
+                                                ${cep.logradouro}, ${cep.bairro}, ${cep.localidade}, ${cep.uf}
+                                              </h3>
                                             </div>
                                         </td>
                                     </tr>
@@ -295,29 +354,28 @@ export class ConsultaService {
 
       `;
       const transporter = nodemailer.createTransport({
-        service: 'Gmail', // ou qualquer outro serviço de e-mail
+        service: "Gmail", // ou qualquer outro serviço de e-mail
         auth: {
-          user: `kaue.lima@uxgroup.com.br`,
-          pass: '301906Ka.',
+          user: `bebevindo0@gmail.com`,
+          pass: "koui hzie rdop tuwe",
         },
-        });
+      });
       const mailOptions = {
-        from: 'kaue.lima@uxgroup.com.br',
+        from: "bebevindo0@gmail.com",
         to: gestante.email,
-        subject: 'Consulta Marcada - Conta Bebê-Vindo',
+        subject: "Consulta Marcada - Conta Bebê-Vindo",
         text: `Agendamento de Consulta: ${clinica.clinica}`,
-        html: `${htmlEmail}`
+        html: `${htmlEmail}`,
       };
       await transporter.sendMail(mailOptions);
       message = {
-        result : 'E-mail da consulta enviada'
-      }
-    } else{
+        result: "E-mail da consulta enviada",
+      };
+    } else {
       message = {
-        result : {message:'Não foi possível enviar o E-mail',status: 200}
-        
-      }
+        result: { message: "Não foi possível enviar o E-mail", status: 200 },
+      };
     }
-    return message
+    return message;
   }
 }

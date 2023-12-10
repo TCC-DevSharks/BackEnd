@@ -9,10 +9,11 @@ import { ChatModule } from '../chat/chat.module';
 import { userProviders } from '../chat/chat.providers';
 import { ChatUserService } from '../chat/chatUser.service';
 import { DatabaseModule } from '../mongodb/database.module';
+import { ClinicaService } from 'src/clinica/clinica.service';
 
 @Module({
   imports: [PrismaModule,  ChatModule, DatabaseModule],
   controllers: [ConsultaController],
-  providers: [ConsultaService, PrismaService, GestanteService, ProfissionalService, ChatUserService, ...userProviders],
+  providers: [ConsultaService, PrismaService, GestanteService, ClinicaService, ProfissionalService, ChatUserService, ...userProviders],
 })
 export class ConsultaModule {}
